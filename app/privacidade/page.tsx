@@ -277,12 +277,11 @@ export default function PrivacidadePage() {
                     <div>
                       <p className="font-bold mb-2">Plataforma (domínios oficiais):</p>
                       <ul className="space-y-1 ml-4">
-                        <li>• https://somostetra.org</li>
-                        <li>• https://soutetra.com</li>
-                        <li>• https://soutetra.org</li>
+                        <li>• https://somostetra.org (principal)</li>
                       </ul>
                       <p className="text-sm mt-2 italic">
-                        Todos os domínios acima pertencem à mesma plataforma SomosTetra.
+                        Domínios alternativos (soutetra.com, soutetra.org) redirecionam automaticamente para
+                        somostetra.org
                       </p>
                     </div>
                   </div>

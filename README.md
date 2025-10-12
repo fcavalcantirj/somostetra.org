@@ -15,8 +15,8 @@
 ### 🌐 Acesse a Plataforma
 
 - **Principal**: [somostetra.org](https://somostetra.org)
-- **Alternativo**: [soutetra.com](https://soutetra.com)
-- **Alternativo**: [soutetra.org](https://soutetra.org)
+
+*Domínios alternativos (soutetra.com, soutetra.org) redirecionam automaticamente para somostetra.org*
 
 ---
 
