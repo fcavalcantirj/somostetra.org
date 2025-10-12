@@ -57,8 +57,8 @@ export default async function DashboardPage() {
     .eq("referred_by", user.id)
 
   const userRank = leaderboard?.findIndex((p) => p.id === user.id) ?? -1
-  const referralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/signup?ref=${profile?.referral_code}`
-  const supporterLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/supporter-signup?ref=${profile?.referral_code}`
+  const referralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/signup?ref=${profile?.referral_code}`
+  const supporterLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/supporter-signup?ref=${profile?.referral_code}`
   const isAdmin = profile?.is_admin === true
 
   return (
@@ -70,7 +70,7 @@ export default async function DashboardPage() {
       </div>
 
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between max-w-full">
           <Link href="/" className="text-2xl font-bold tracking-tight">
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
@@ -78,7 +78,7 @@ export default async function DashboardPage() {
         </div>
       </header>
 
-      <main className="pt-32 pb-20 px-6 lg:px-12">
+      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="mb-16 space-y-6">
             <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">
@@ -132,10 +132,10 @@ export default async function DashboardPage() {
             <div className="lg:col-span-2 space-y-12">
               {/* Member Referral */}
               <div className="space-y-6">
-                <h2 className="text-4xl font-black">Seus Links de Convite</h2>
+                <h2 className="text-3xl sm:text-4xl font-black break-words">Seus Links de Convite</h2>
 
                 {/* Member Referral */}
-                <div className="glass-strong p-10 rounded-3xl space-y-6">
+                <div className="glass-strong p-6 sm:p-10 rounded-3xl space-y-6">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
                       <Users className="w-6 h-6" />
@@ -152,7 +152,9 @@ export default async function DashboardPage() {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1 glass px-6 py-4 rounded-2xl font-mono text-sm break-all">{referralLink}</div>
+                    <div className="flex-1 glass px-4 sm:px-6 py-4 rounded-2xl font-mono text-xs sm:text-sm break-all overflow-hidden">
+                      {referralLink}
+                    </div>
                     <CopyButton text={referralLink} />
                   </div>
 
@@ -179,7 +181,7 @@ export default async function DashboardPage() {
                 </div>
 
                 {/* Supporter Referral */}
-                <div className="glass-strong p-10 rounded-3xl space-y-6 border-2 border-accent/30">
+                <div className="glass-strong p-6 sm:p-10 rounded-3xl space-y-6 border-2 border-accent/30">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl gradient-accent flex items-center justify-center">
                       <Heart className="w-6 h-6" />
@@ -205,7 +207,7 @@ export default async function DashboardPage() {
                   )}
 
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1 glass px-6 py-4 rounded-2xl font-mono text-sm break-all">
+                    <div className="flex-1 glass px-4 sm:px-6 py-4 rounded-2xl font-mono text-xs sm:text-sm break-all overflow-hidden">
                       {supporterLink}
                     </div>
                     <CopyButton text={supporterLink} />
@@ -235,9 +237,9 @@ export default async function DashboardPage() {
               </div>
 
               <div className="space-y-6">
-                <div className="flex items-end justify-between">
-                  <h2 className="text-4xl font-black">Votações Ativas</h2>
-                  <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+                  <h2 className="text-3xl sm:text-4xl font-black">Votações Ativas</h2>
+                  <div className="flex gap-3 flex-wrap">
                     {isAdmin && (
                       <Button className="gradient-primary font-bold" asChild>
                         <Link href="/votes/create">
@@ -246,7 +248,7 @@ export default async function DashboardPage() {
                         </Link>
                       </Button>
                     )}
-                    <Button variant="ghost" className="font-bold uppercase tracking-wider" asChild>
+                    <Button variant="ghost" className="font-bold uppercase tracking-wider whitespace-nowrap" asChild>
                       <Link href="/votes">Ver Todas →</Link>
                     </Button>
                   </div>

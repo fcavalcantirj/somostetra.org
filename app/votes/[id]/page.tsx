@@ -49,7 +49,7 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold tracking-tight">
             SOU<span className="text-gradient">TETRA</span>
           </Link>
@@ -62,7 +62,7 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
         </div>
       </header>
 
-      <main className="pt-32 pb-20 px-6 lg:px-12">
+      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-4xl">
           <div className="glass-strong p-12 rounded-3xl space-y-8">
             <div className="space-y-6">

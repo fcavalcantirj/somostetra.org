@@ -75,7 +75,7 @@ export default async function AdminDashboard() {
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <header className="border-b border-white/10 bg-black/50 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-6 py-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold">Admin Dashboard</h1>
@@ -91,7 +91,7 @@ export default async function AdminDashboard() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-7xl px-6 py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Stats Grid */}
         <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => {

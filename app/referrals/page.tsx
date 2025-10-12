@@ -44,8 +44,8 @@ export default async function ReferralsPage() {
     .eq("referred_by", user.id)
     .order("created_at", { ascending: false })
 
-  const memberReferralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/signup?ref=${profile?.referral_code}`
-  const supporterReferralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/supporter-signup?ref=${profile?.referral_code}`
+  const memberReferralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/signup?ref=${profile?.referral_code}`
+  const supporterReferralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/supporter-signup?ref=${profile?.referral_code}`
 
   const totalMemberReferrals = memberReferrals?.length || 0
   const totalSupporterReferrals = supporterReferrals?.length || 0
@@ -60,7 +60,7 @@ export default async function ReferralsPage() {
       </div>
 
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold tracking-tight">
             SOU<span className="text-gradient">TETRA</span>
           </Link>
@@ -73,7 +73,7 @@ export default async function ReferralsPage() {
         </div>
       </header>
 
-      <main className="pt-32 pb-20 px-6 lg:px-12">
+      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-5xl">
           <div className="mb-16 space-y-6">
             <h1 className="text-6xl lg:text-7xl font-black tracking-tighter">

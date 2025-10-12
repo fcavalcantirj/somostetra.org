@@ -125,7 +125,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="py-32 px-6 lg:px-12">
+      <section id="comunidade" className="py-32 px-6 lg:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="glass-strong p-16 rounded-3xl">
             <div className="grid md:grid-cols-3 gap-12 text-center">
@@ -179,13 +179,23 @@ export default async function LandingPage() {
               SOMOS<span className="text-gradient">TETRA</span>
             </div>
             <div className="flex gap-8 text-sm font-bold uppercase tracking-wider text-muted-foreground">
-              <Link href="#" className="hover:text-foreground transition-colors">
+              <Link
+                href="https://instagram.com/sou.tetra"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors"
+              >
                 Instagram
               </Link>
-              <Link href="#" className="hover:text-foreground transition-colors">
+              <Link
+                href="https://linkedin.com/company/sou-tetra"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors"
+              >
                 LinkedIn
               </Link>
-              <Link href="#" className="hover:text-foreground transition-colors">
+              <Link href="/privacidade" className="hover:text-foreground transition-colors">
                 Privacidade
               </Link>
             </div>
