@@ -45,7 +45,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="glass-card p-8 rounded-3xl">
           <h1 className="text-3xl font-bold mb-2">Entrar</h1>
-          <p className="text-muted-foreground mb-6">Entre na sua conta SomosTetra</p>
+          <p className="text-muted-foreground mb-6">Entre na sua conta SouTetra</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>

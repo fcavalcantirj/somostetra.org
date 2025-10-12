@@ -37,7 +37,7 @@ export default async function LeaderboardPage() {
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold tracking-tight">
-            SOMOS<span className="text-gradient">TETRA</span>
+            Sou<span className="text-gradient">Tetra</span>
           </Link>
           <Button asChild variant="outline" className="glass-strong font-bold bg-transparent">
             <Link href="/dashboard">
@@ -54,7 +54,7 @@ export default async function LeaderboardPage() {
             <h1 className="text-6xl lg:text-7xl font-black tracking-tighter">
               <span className="text-gradient">Ranking</span> da Comunidade
             </h1>
-            <p className="text-xl text-muted-foreground">Os membros mais engajados da SomosTetra</p>
+            <p className="text-xl text-muted-foreground">Os membros mais engajados da SouTetra</p>
           </div>
 
           {userRank >= 0 && (

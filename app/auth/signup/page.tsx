@@ -70,7 +70,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="glass-card p-8 rounded-3xl">
           <h1 className="text-3xl font-bold mb-2">Cadastre-se</h1>
-          <p className="text-muted-foreground mb-6">Junte-se à comunidade SomosTetra</p>
+          <p className="text-muted-foreground mb-6">Junte-se à comunidade SouTetra</p>
 
           {referralCode && (
             <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">

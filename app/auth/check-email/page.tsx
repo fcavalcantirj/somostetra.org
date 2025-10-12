@@ -20,7 +20,7 @@ export default function CheckEmailPage() {
           <h1 className="text-3xl font-bold mb-2">Verifique seu email</h1>
           <p className="text-muted-foreground mb-6">
             Enviamos um link de confirmação para seu email. Clique no link para ativar sua conta e começar a usar o
-            SomosTetra.
+            SouTetra.
           </p>
 
           <Button asChild variant="outline" className="w-full bg-transparent">

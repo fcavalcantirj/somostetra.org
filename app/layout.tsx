@@ -12,7 +12,7 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: "SomosTetra - Comunidade Brasileira de Tetraplégicos",
+  title: "SouTetra - Comunidade Brasileira de Tetraplégicos",
   description: "Plataforma comunitária para unir, fortalecer e dar voz à comunidade tetraplégica do Brasil",
   generator: "v0.app",
 }

@@ -139,7 +139,7 @@ export default async function DashboardPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
                       <a
-                        href={`https://wa.me/?text=${encodeURIComponent(`Junte-se à comunidade SomosTetra! ${referralLink}`)}`}
+                        href={`https://wa.me/?text=${encodeURIComponent(`Junte-se à comunidade SouTetra! ${referralLink}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -149,7 +149,7 @@ export default async function DashboardPage() {
                     </Button>
                     <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
                       <a
-                        href={`mailto:?subject=Junte-se à SomosTetra&body=${encodeURIComponent(`Olá! Convido você a fazer parte da comunidade SomosTetra: ${referralLink}`)}`}
+                        href={`mailto:?subject=Junte-se à SouTetra&body=${encodeURIComponent(`Olá! Convido você a fazer parte da comunidade SouTetra: ${referralLink}`)}`}
                       >
                         <Share2 className="w-5 h-5 mr-2" />
                         Email
