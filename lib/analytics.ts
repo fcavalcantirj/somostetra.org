@@ -128,3 +128,19 @@ export const trackUserTypeSelection = (userType: "member" | "supporter", hasRefe
     value: hasReferral ? 1 : 0,
   })
 }
+
+export const trackLeaderboardView = (source: "homepage" | "navigation" | "direct") => {
+  event({
+    action: "leaderboard_viewed",
+    category: "Engagement",
+    label: source,
+  })
+}
+
+export const trackHowItWorksInteraction = (action: "view" | "cta_click") => {
+  event({
+    action: action === "view" ? "how_it_works_viewed" : "how_it_works_cta_clicked",
+    category: "Engagement",
+    label: "Como Funciona Section",
+  })
+}

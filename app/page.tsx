@@ -3,11 +3,11 @@
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Sparkles, Users, Vote, Trophy } from "lucide-react"
+import { ArrowRight, Sparkles, Users, Vote, Trophy, Gift, Zap, Target } from "lucide-react"
 import Link from "next/link"
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { trackReferralClick } from "@/lib/analytics"
+import { trackReferralClick, trackLeaderboardView, trackHowItWorksInteraction } from "@/lib/analytics"
 import { createClient } from "@/lib/supabase/client"
 
 export default function LandingPage() {
@@ -43,6 +43,27 @@ export default function LandingPage() {
     }
 
     fetchStats()
+  }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            trackHowItWorksInteraction("view")
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.3 },
+    )
+
+    const section = document.getElementById("como-funciona")
+    if (section) {
+      observer.observe(section)
+    }
+
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -151,6 +172,172 @@ export default function LandingPage() {
                 Ganhe reconhecimento por suas contribuições. Desbloqueie badges e suba no ranking.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="como-funciona" className="py-32 px-6 lg:px-12 bg-gradient-to-b from-background to-background/50">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center space-y-6 mb-20">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight">
+              COMO <span className="text-gradient">FUNCIONA</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Ganhe pontos, desbloqueie badges e suba no ranking enquanto fortalece nossa comunidade
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 mb-16">
+            <div className="glass-strong p-10 rounded-3xl space-y-8">
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                  <Gift className="w-7 h-7" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black">Cadastre-se e Ganhe</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    <span className="font-bold text-primary">+10 pontos</span> ao criar sua conta. Comece sua jornada na
+                    comunidade com pontos de boas-vindas.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-accent flex items-center justify-center flex-shrink-0">
+                  <Vote className="w-7 h-7" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black">Vote e Participe</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    <span className="font-bold text-accent">+5 pontos</span> por cada votação. Sua opinião importa e é
+                    recompensada.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                  <Users className="w-7 h-7" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black">Convide Membros</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    <span className="font-bold text-primary">+20 pontos</span> por cada membro tetraplégico que você
+                    trouxer. Fortaleça nossa voz coletiva.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-accent flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-7 h-7" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black">Traga Apoiadores</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    <span className="font-bold text-accent">+10 pontos</span> por cada apoiador. Amplie o alcance da
+                    nossa causa.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-strong p-10 rounded-3xl space-y-8">
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-7 h-7" />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-black">Desbloqueie Badges</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Conquiste badges automáticos conforme acumula pontos:
+                  </p>
+                  <div className="space-y-3 pl-4 border-l-2 border-primary/30">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span className="text-muted-foreground">
+                        <span className="font-bold text-foreground">Primeiro Passo</span> - Ao se cadastrar
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span className="text-muted-foreground">
+                        <span className="font-bold text-foreground">Engajado</span> - 50 pontos
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span className="text-muted-foreground">
+                        <span className="font-bold text-foreground">Influenciador</span> - 100 pontos
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <span className="text-muted-foreground">
+                        <span className="font-bold text-foreground">Ativista</span> - 150 pontos
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-accent" />
+                      <span className="text-muted-foreground">
+                        <span className="font-bold text-accent">Líder Comunitário</span> - 500 pontos
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-accent flex items-center justify-center flex-shrink-0">
+                  <Target className="w-7 h-7" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black">Suba no Ranking</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Apareça no leaderboard e seja reconhecido como um dos membros mais ativos da comunidade. Quanto mais
+                    você participa, mais visibilidade ganha.
+                  </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="glass-strong font-bold bg-transparent mt-4"
+                    onClick={() => trackLeaderboardView("homepage")}
+                  >
+                    <Link href="/leaderboard">
+                      Ver Ranking Completo
+                      <Trophy className="ml-2 w-4 h-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6">
+                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-7 h-7" />
+                </div>
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-black">Impacto Real</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Seus pontos não são apenas números - representam sua contribuição real para fortalecer nossa voz
+                    coletiva e criar mudanças concretas.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Button
+              asChild
+              size="lg"
+              className="gradient-primary font-bold text-lg h-16 px-10"
+              onClick={() => trackHowItWorksInteraction("cta_click")}
+            >
+              <Link href="/auth/join">
+                Começar a Ganhar Pontos
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
