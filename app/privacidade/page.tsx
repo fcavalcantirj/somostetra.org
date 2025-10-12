@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Shield, Lock, Eye, UserCheck, Database, Mail } from "lucide-react"
+import { ArrowLeft, Shield, Lock, Eye, UserCheck, Database, Mail, Code2, Heart } from "lucide-react"
 
 export default function PrivacidadePage() {
   return (
@@ -199,6 +199,52 @@ export default function PrivacidadePage() {
               Nossa plataforma é destinada a maiores de 18 anos. Não coletamos intencionalmente dados de menores de
               idade. Se você acredita que coletamos dados de um menor, entre em contato conosco imediatamente.
             </p>
+          </div>
+
+          {/* Transparency & Open Source */}
+          <div className="space-y-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
+                <Code2 className="w-6 h-6" />
+              </div>
+              <div className="space-y-4 flex-1">
+                <h2 className="text-3xl font-black">Transparência e Código Aberto</h2>
+                <div className="glass-strong p-8 rounded-2xl space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Heart className="w-6 h-6 text-gradient flex-shrink-0 mt-1" />
+                    <div className="space-y-3">
+                      <p className="text-lg font-bold">Organização Sem Fins Lucrativos</p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        A SomosTetra é uma <strong>ONG (Organização Não Governamental)</strong> sem fins lucrativos.
+                        Nunca visamos lucro e toda nossa operação é voltada exclusivamente para o benefício da
+                        comunidade de pessoas tetraplégicas e seus apoiadores.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 pt-4">
+                    <Code2 className="w-6 h-6 text-gradient flex-shrink-0 mt-1" />
+                    <div className="space-y-3">
+                      <p className="text-lg font-bold">Código 100% Aberto</p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Todo o código-fonte da plataforma SomosTetra é <strong>totalmente aberto e público</strong>.
+                        Qualquer pessoa pode auditar, contribuir e verificar como seus dados são tratados.
+                      </p>
+                      <div className="pt-2">
+                        <a
+                          href="https://github.com/fcavalcantirj/somostetra.org"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-gradient font-bold hover:underline"
+                        >
+                          <Code2 className="w-5 h-5" />
+                          Ver código no GitHub →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Changes */}
