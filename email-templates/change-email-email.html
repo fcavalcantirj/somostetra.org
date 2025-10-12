@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmar Mudança de E-mail - SomosTetra</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" style="max-width: 600px; width: 100%; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;">
+           Header 
+          <tr>
+            <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
+              <h1 style="margin: 0; color: white; font-size: 32px; font-weight: 800; letter-spacing: -0.5px;">
+                SOMOS<span style="color: #a8ff78;">TETRA</span>
+              </h1>
+              <p style="margin: 10px 0 0; color: rgba(255,255,255,0.9); font-size: 16px;">Confirme seu novo e-mail</p>
+            </td>
+          </tr>
+          
+           Content 
+          <tr>
+            <td style="padding: 40px 30px;">
+              <h2 style="margin: 0 0 20px; color: #1a202c; font-size: 24px; font-weight: 700;">Mudança de E-mail</h2>
+              
+              <p style="margin: 0 0 20px; color: #4a5568; font-size: 16px; line-height: 1.6;">
+                Você solicitou a mudança do e-mail da sua conta na <strong>SomosTetra</strong>.
+              </p>
+              
+              <p style="margin: 0 0 30px; color: #4a5568; font-size: 16px; line-height: 1.6;">
+                Para confirmar esta alteração, clique no botão abaixo:
+              </p>
+              
+               CTA Button 
+              <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td align="center" style="padding: 0 0 30px;">
+                    <a href="{{ .ConfirmationURL }}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                      Confirmar Novo E-mail
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              
+              <p style="margin: 0 0 20px; color: #718096; font-size: 14px; line-height: 1.6;">
+                Ou copie e cole este link no seu navegador:
+              </p>
+              
+              <p style="margin: 0 0 30px; padding: 15px; background: #f7fafc; border-radius: 8px; word-break: break-all; font-size: 13px; color: #4a5568; font-family: monospace;">
+                {{ .ConfirmationURL }}
+              </p>
+              
+              <div style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 30px;">
+                <p style="margin: 0 0 10px; color: #e53e3e; font-size: 14px; font-weight: 600;">
+                  ⚠️ Importante:
+                </p>
+                <p style="margin: 0; color: #a0aec0; font-size: 13px; line-height: 1.6;">
+                  Se você não solicitou esta mudança, ignore este e-mail e seu e-mail atual permanecerá inalterado. Entre em contato conosco se tiver dúvidas.
+                </p>
+              </div>
+            </td>
+          </tr>
+          
+           Footer 
+          <tr>
+            <td style="background: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
+              <p style="margin: 0 0 10px; color: #718096; font-size: 14px;">
+                <strong>SomosTetra</strong> - ONG sem fins lucrativos
+              </p>
+              <p style="margin: 0 0 15px; color: #a0aec0; font-size: 13px;">
+                Fortalecendo vozes, construindo futuro
+              </p>
+              <p style="margin: 0; color: #cbd5e0; font-size: 12px;">
+                © 2025 SomosTetra. Todos os direitos reservados.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
