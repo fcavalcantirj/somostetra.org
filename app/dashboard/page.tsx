@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Users, Trophy, Share2, TrendingUp, Sparkles } from "lucide-react"
+import { Users, Trophy, Share2, TrendingUp, Sparkles, Plus, Heart } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -51,8 +51,15 @@ export default async function DashboardPage() {
     .order("points", { ascending: false })
     .limit(10)
 
+  const { count: supporterCount } = await supabase
+    .from("supporters")
+    .select("*", { count: "exact", head: true })
+    .eq("referred_by", user.id)
+
   const userRank = leaderboard?.findIndex((p) => p.id === user.id) ?? -1
   const referralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/signup?ref=${profile?.referral_code}`
+  const supporterLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/supporter-signup?ref=${profile?.referral_code}`
+  const isAdmin = profile?.is_admin === true
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -123,12 +130,25 @@ export default async function DashboardPage() {
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-12">
+              {/* Member Referral */}
               <div className="space-y-6">
-                <h2 className="text-4xl font-black">Seu Link de Convite</h2>
+                <h2 className="text-4xl font-black">Seus Links de Convite</h2>
+
+                {/* Member Referral */}
                 <div className="glass-strong p-10 rounded-3xl space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
+                      <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Convide Membros</h3>
+                      <p className="text-sm text-muted-foreground">Pessoas tetraplégicas para a comunidade</p>
+                    </div>
+                  </div>
+
                   <p className="text-lg text-muted-foreground leading-relaxed">
                     Compartilhe este link e ganhe <span className="text-accent font-bold">20 pontos</span> por cada
-                    pessoa que se cadastrar
+                    membro que se cadastrar
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -139,7 +159,7 @@ export default async function DashboardPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
                       <a
-                        href={`https://wa.me/?text=${encodeURIComponent(`Junte-se à comunidade SouTetra! ${referralLink}`)}`}
+                        href={`https://wa.me/?text=${encodeURIComponent(`Junte-se à comunidade SomosTetra! ${referralLink}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -149,7 +169,62 @@ export default async function DashboardPage() {
                     </Button>
                     <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
                       <a
-                        href={`mailto:?subject=Junte-se à SouTetra&body=${encodeURIComponent(`Olá! Convido você a fazer parte da comunidade SouTetra: ${referralLink}`)}`}
+                        href={`mailto:?subject=Junte-se à SomosTetra&body=${encodeURIComponent(`Olá! Convido você a fazer parte da comunidade SomosTetra: ${referralLink}`)}`}
+                      >
+                        <Share2 className="w-5 h-5 mr-2" />
+                        Email
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Supporter Referral */}
+                <div className="glass-strong p-10 rounded-3xl space-y-6 border-2 border-accent/30">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl gradient-accent flex items-center justify-center">
+                      <Heart className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Convide Apoiadores</h3>
+                      <p className="text-sm text-muted-foreground">Pessoas engajadas que querem ajudar</p>
+                    </div>
+                  </div>
+
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    Compartilhe este link e ganhe <span className="text-accent font-bold">10 pontos</span> por cada
+                    apoiador que se cadastrar. Apoiadores nos ajudam com números para pressionar autoridades!
+                  </p>
+
+                  {supporterCount && supporterCount > 0 && (
+                    <div className="glass px-6 py-4 rounded-2xl">
+                      <p className="text-center">
+                        <span className="text-3xl font-black text-gradient">{supporterCount}</span>
+                        <span className="text-muted-foreground ml-2">apoiadores convidados</span>
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1 glass px-6 py-4 rounded-2xl font-mono text-sm break-all">
+                      {supporterLink}
+                    </div>
+                    <CopyButton text={supporterLink} />
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(`Ajude a comunidade SomosTetra! Torne-se um apoiador: ${supporterLink}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Share2 className="w-5 h-5 mr-2" />
+                        WhatsApp
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
+                      <a
+                        href={`mailto:?subject=Apoie a SomosTetra&body=${encodeURIComponent(`Olá! Convido você a apoiar a comunidade SomosTetra e ajudar a fazer a diferença: ${supporterLink}`)}`}
                       >
                         <Share2 className="w-5 h-5 mr-2" />
                         Email
@@ -162,9 +237,19 @@ export default async function DashboardPage() {
               <div className="space-y-6">
                 <div className="flex items-end justify-between">
                   <h2 className="text-4xl font-black">Votações Ativas</h2>
-                  <Button variant="ghost" className="font-bold uppercase tracking-wider" asChild>
-                    <Link href="/votes">Ver Todas →</Link>
-                  </Button>
+                  <div className="flex gap-3">
+                    {isAdmin && (
+                      <Button className="gradient-primary font-bold" asChild>
+                        <Link href="/votes/create">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Criar
+                        </Link>
+                      </Button>
+                    )}
+                    <Button variant="ghost" className="font-bold uppercase tracking-wider" asChild>
+                      <Link href="/votes">Ver Todas →</Link>
+                    </Button>
+                  </div>
                 </div>
 
                 {activeVotes && activeVotes.length > 0 ? (

@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Users, ArrowLeft, Plus } from "lucide-react"
+import { Users, ArrowLeft, Plus, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-export default async function VotesPage() {
+export default async function VotesPage({
+  searchParams,
+}: {
+  searchParams: { error?: string }
+}) {
   const supabase = await createClient()
 
   const {
@@ -15,6 +20,10 @@ export default async function VotesPage() {
   if (!user) {
     redirect("/auth/login")
   }
+
+  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).maybeSingle()
+
+  const isAdmin = profile?.is_admin === true
 
   // Fetch all active votes
   const { data: votes } = await supabase
@@ -61,14 +70,26 @@ export default async function VotesPage() {
             </p>
           </div>
 
-          <div className="mb-12">
-            <Button size="lg" className="gradient-primary font-bold h-14 px-8" asChild>
-              <Link href="/votes/create">
-                <Plus className="w-5 h-5 mr-2" />
-                Criar Nova Votação
-              </Link>
-            </Button>
-          </div>
+          {searchParams.error === "admin_only" && (
+            <Alert className="glass-strong border-accent/50 mb-8">
+              <AlertCircle className="h-5 w-5 text-accent" />
+              <AlertTitle className="text-xl font-bold">Apenas administradores podem criar votações</AlertTitle>
+              <AlertDescription className="text-base mt-2">
+                Para propor uma nova votação, entre em contato com um administrador da comunidade.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {isAdmin && (
+            <div className="mb-12">
+              <Button size="lg" className="gradient-primary font-bold h-14 px-8" asChild>
+                <Link href="/votes/create">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Criar Nova Votação
+                </Link>
+              </Button>
+            </div>
+          )}
 
           {votes && votes.length > 0 ? (
             <div className="space-y-6">

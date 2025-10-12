@@ -33,20 +33,21 @@ export async function updateSession(request: NextRequest) {
     const isAuthPage = request.nextUrl.pathname.startsWith("/auth")
     const isLandingPage = request.nextUrl.pathname === "/"
 
-    const protectedRoutes = ["/dashboard", "/votes", "/referrals", "/badges", "/leaderboard"]
+    const protectedRoutes = ["/dashboard", "/votes", "/referrals", "/badges", "/leaderboard", "/admin"]
     const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
 
-    // Redirect to login if not authenticated and trying to access protected routes
     if (!user && isProtectedRoute) {
       const url = request.nextUrl.clone()
       url.pathname = "/auth/login"
+      url.searchParams.set("redirect", request.nextUrl.pathname)
       return NextResponse.redirect(url)
     }
 
-    // Redirect to dashboard if authenticated and trying to access auth pages
     if (user && isAuthPage) {
       const url = request.nextUrl.clone()
-      url.pathname = "/dashboard"
+      const redirectTo = request.nextUrl.searchParams.get("redirect")
+      url.pathname = redirectTo || "/dashboard"
+      url.search = "" // Clear query params
       return NextResponse.redirect(url)
     }
 

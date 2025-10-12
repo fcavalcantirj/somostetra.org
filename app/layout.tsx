@@ -4,6 +4,7 @@ import { Space_Grotesk } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
+import { Toaster } from "@/components/ui/toaster"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -12,7 +13,7 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: "SouTetra - Comunidade Brasileira de Tetraplégicos",
+  title: "SomosTetra - Comunidade Brasileira de Tetraplégicos",
   description: "Plataforma comunitária para unir, fortalecer e dar voz à comunidade tetraplégica do Brasil",
   generator: "v0.app",
 }
@@ -29,6 +30,7 @@ export default function RootLayout({
           {children}
           <Analytics />
         </Suspense>
+        <Toaster />
       </body>
     </html>
   )

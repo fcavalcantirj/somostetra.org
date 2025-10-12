@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 /* Light theme as default with Brazilian flag colors - green, blue, yellow accents */
 :root {
   --background: oklch(0.98 0.005 120);

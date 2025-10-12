@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 export default function LoginPage() {
@@ -16,6 +16,8 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams.get("redirect")
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,15 +26,22 @@ export default function LoginPage() {
     setError(null)
 
     try {
+      const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost"
+      const redirectUrl = isLocalhost
+        ? process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`
+        : process.env.NEXT_PUBLIC_SITE_URL
+          ? `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`
+          : `${window.location.origin}/dashboard`
+
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
         options: {
-          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`,
+          emailRedirectTo: redirectUrl,
         },
       })
       if (error) throw error
-      router.push("/dashboard")
+      router.push(redirect || "/dashboard")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "Erro ao fazer login")
     } finally {
@@ -45,7 +54,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="glass-card p-8 rounded-3xl">
           <h1 className="text-3xl font-bold mb-2">Entrar</h1>
-          <p className="text-muted-foreground mb-6">Entre na sua conta SouTetra</p>
+          <p className="text-muted-foreground mb-6">Entre na sua conta SomosTetra</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>

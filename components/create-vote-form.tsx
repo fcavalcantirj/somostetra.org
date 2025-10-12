@@ -11,37 +11,61 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Plus } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 export function CreateVoteForm({ userId }: { userId: string }) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState("")
-  const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (isLoading) return
+
     setIsLoading(true)
-    setError(null)
     const supabase = createClient()
 
+    console.log("[v0] Starting vote creation...", { title, category })
+
     try {
-      const { error } = await supabase.from("votes").insert({
-        title,
-        description,
-        category,
-        created_by: userId,
-        status: "active",
-      })
+      const { data, error } = await supabase
+        .from("votes")
+        .insert({
+          title,
+          description,
+          category,
+          created_by: userId,
+          status: "active",
+        })
+        .select()
+        .single()
+
+      console.log("[v0] Vote creation result:", { data, error })
 
       if (error) throw error
 
-      router.push("/votes")
+      console.log("[v0] Showing success toast...")
+      toast({
+        title: "Votação criada com sucesso!",
+        description: "Sua votação foi publicada e está disponível para a comunidade.",
+      })
+
+      setIsLoading(false)
+
+      console.log("[v0] Redirecting to vote page...")
+      router.push(`/votes/${data.id}`)
       router.refresh()
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Erro ao criar votação")
-    } finally {
+      console.log("[v0] Error creating vote:", error)
+      toast({
+        title: "Erro ao criar votação",
+        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado. Tente novamente.",
+        variant: "destructive",
+      })
       setIsLoading(false)
     }
   }
@@ -61,6 +85,7 @@ export function CreateVoteForm({ userId }: { userId: string }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="mt-2 h-14 text-lg"
+            disabled={isLoading}
           />
         </div>
 
@@ -76,6 +101,7 @@ export function CreateVoteForm({ userId }: { userId: string }) {
             onChange={(e) => setDescription(e.target.value)}
             className="mt-2 min-h-32 text-lg"
             rows={5}
+            disabled={isLoading}
           />
         </div>
 
@@ -83,7 +109,7 @@ export function CreateVoteForm({ userId }: { userId: string }) {
           <Label htmlFor="category" className="text-lg font-bold">
             Categoria
           </Label>
-          <Select value={category} onValueChange={setCategory} required>
+          <Select value={category} onValueChange={setCategory} required disabled={isLoading}>
             <SelectTrigger className="mt-2 h-14 text-lg">
               <SelectValue placeholder="Selecione uma categoria" />
             </SelectTrigger>
@@ -97,8 +123,6 @@ export function CreateVoteForm({ userId }: { userId: string }) {
             </SelectContent>
           </Select>
         </div>
-
-        {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg">{error}</p>}
 
         <Button type="submit" size="lg" className="w-full gradient-primary font-bold h-16 text-lg" disabled={isLoading}>
           {isLoading ? (

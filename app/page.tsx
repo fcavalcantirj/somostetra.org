@@ -1,8 +1,20 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles, Users, Vote, Trophy } from "lucide-react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/server"
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = await createClient()
+
+  const { data: stats } = await supabase
+    .from("platform_statistics")
+    .select("total_members, total_votes, total_connections")
+    .single()
+
+  const members = stats?.total_members || 0
+  const votes = stats?.total_votes || 0
+  const connections = stats?.total_connections || 0
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="fixed inset-0 -z-10">
@@ -118,15 +130,15 @@ export default function LandingPage() {
           <div className="glass-strong p-16 rounded-3xl">
             <div className="grid md:grid-cols-3 gap-12 text-center">
               <div className="space-y-4">
-                <p className="text-7xl md:text-8xl font-black text-gradient">1.2K+</p>
+                <p className="text-7xl md:text-8xl font-black text-gradient">{members}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Membros</p>
               </div>
               <div className="space-y-4">
-                <p className="text-7xl md:text-8xl font-black text-gradient">500+</p>
+                <p className="text-7xl md:text-8xl font-black text-gradient">{votes}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Votações</p>
               </div>
               <div className="space-y-4">
-                <p className="text-7xl md:text-8xl font-black text-gradient">50K+</p>
+                <p className="text-7xl md:text-8xl font-black text-gradient">{connections}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Conexões</p>
               </div>
             </div>

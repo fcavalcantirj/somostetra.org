@@ -8,6 +8,11 @@ import { VoteButton } from "@/components/vote-button"
 
 export default async function VoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+
+  if (id === "create") {
+    redirect("/votes/create")
+  }
+
   const supabase = await createClient()
 
   const {
@@ -31,7 +36,7 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
     .select("*")
     .eq("user_id", user.id)
     .eq("vote_id", id)
-    .single()
+    .maybeSingle()
 
   const hasVoted = !!userVote
 
@@ -46,7 +51,7 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold tracking-tight">
-            SOMOS<span className="text-gradient">TETRA</span>
+            SOU<span className="text-gradient">TETRA</span>
           </Link>
           <Button asChild variant="outline" className="glass-strong font-bold bg-transparent">
             <Link href="/votes">

@@ -16,10 +16,19 @@ export default async function LeaderboardPage() {
     redirect("/auth/login")
   }
 
-  // Fetch leaderboard
+  // Fetch leaderboard with referral counts
   const { data: leaderboard } = await supabase
     .from("profiles")
-    .select("id, display_name, points, created_at")
+    .select(
+      `
+      id, 
+      display_name, 
+      points, 
+      created_at,
+      member_referrals:referrals!referrer_id(count),
+      supporter_referrals:supporters!referred_by(count)
+    `,
+    )
     .order("points", { ascending: false })
     .limit(50)
 
@@ -37,7 +46,7 @@ export default async function LeaderboardPage() {
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold tracking-tight">
-            Sou<span className="text-gradient">Tetra</span>
+            Somos<span className="text-gradient">Tetra</span>
           </Link>
           <Button asChild variant="outline" className="glass-strong font-bold bg-transparent">
             <Link href="/dashboard">
@@ -54,7 +63,7 @@ export default async function LeaderboardPage() {
             <h1 className="text-6xl lg:text-7xl font-black tracking-tighter">
               <span className="text-gradient">Ranking</span> da Comunidade
             </h1>
-            <p className="text-xl text-muted-foreground">Os membros mais engajados da SouTetra</p>
+            <p className="text-xl text-muted-foreground">Os membros mais engajados da SomosTetra</p>
           </div>
 
           {userRank >= 0 && (
@@ -67,6 +76,10 @@ export default async function LeaderboardPage() {
                   <div>
                     <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1">Sua Posição</p>
                     <p className="text-3xl font-black">{userProfile?.display_name}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {(userProfile as any)?.member_referrals?.[0]?.count || 0} membros +{" "}
+                      {(userProfile as any)?.supporter_referrals?.[0]?.count || 0} apoiadores indicados
+                    </p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -81,6 +94,8 @@ export default async function LeaderboardPage() {
             {leaderboard?.map((member, index) => {
               const isCurrentUser = member.id === user.id
               const isTop3 = index < 3
+              const memberReferrals = (member as any).member_referrals?.[0]?.count || 0
+              const supporterReferrals = (member as any).supporter_referrals?.[0]?.count || 0
 
               return (
                 <div
@@ -119,7 +134,7 @@ export default async function LeaderboardPage() {
                         {isTop3 && !isCurrentUser && <Badge className="gradient-primary font-bold">Top 3</Badge>}
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Membro desde {new Date(member.created_at).toLocaleDateString("pt-BR")}
+                        {memberReferrals} membros + {supporterReferrals} apoiadores indicados
                       </p>
                     </div>
 

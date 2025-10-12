@@ -13,7 +13,17 @@ export default async function CreateVotePage() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect("/auth/login")
+    redirect("/auth/login?redirect=/votes/create")
+  }
+
+  const { data: profile, error } = await supabase.from("profiles").select("is_admin").eq("id", user.id).maybeSingle()
+
+  console.log("[v0] Profile check:", { profile, error, userId: user.id })
+
+  const isAdmin = profile?.is_admin === true
+
+  if (!isAdmin) {
+    redirect("/votes?error=admin_only")
   }
 
   return (
@@ -27,7 +37,7 @@ export default async function CreateVotePage() {
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold tracking-tight">
-            SOMOS<span className="text-gradient">TETRA</span>
+            SOU<span className="text-gradient">TETRA</span>
           </Link>
           <Button asChild variant="outline" className="glass-strong font-bold bg-transparent">
             <Link href="/votes">
