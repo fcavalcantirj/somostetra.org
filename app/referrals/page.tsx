@@ -37,7 +37,7 @@ export default async function ReferralsPage() {
     .eq("referrer_id", user.id)
     .order("created_at", { ascending: false })
 
-  const referralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://somostetra.org"}/auth/signup?ref=${profile?.referral_code}`
+  const referralLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://soutetra.com"}/auth/signup?ref=${profile?.referral_code}`
   const totalReferrals = referrals?.length || 0
   const totalPointsEarned = totalReferrals * 20
 
