@@ -84,6 +84,14 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1"
               />
+              <div className="mt-2 text-right">
+                <Link
+                  href="/auth/reset-password"
+                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                >
+                  Esqueceu a senha?
+                </Link>
+              </div>
             </div>
 
             {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg">{error}</p>}

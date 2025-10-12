@@ -144,3 +144,13 @@ export const trackHowItWorksInteraction = (action: "view" | "cta_click") => {
     label: "Como Funciona Section",
   })
 }
+
+export const trackPasswordReset = (email: string) => {
+  event({
+    action: "password_reset_requested",
+    category: "Auth",
+    label: email,
+  })
+}
+
+export const trackEvent = event
