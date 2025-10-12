@@ -27,11 +27,20 @@ export default async function DashboardPage() {
   // Fetch user profile
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
-  // Fetch referral count
-  const { count: referralCount } = await supabase
-    .from("referrals")
+  // Fetch member referrals count
+  const { count: memberReferralCount } = await supabase
+    .from("profiles")
     .select("*", { count: "exact", head: true })
-    .eq("referrer_id", user.id)
+    .eq("referred_by", user.id)
+
+  // Fetch supporter referrals count
+  const { count: supporterReferralCount } = await supabase
+    .from("supporters")
+    .select("*", { count: "exact", head: true })
+    .eq("referred_by", user.id)
+
+  // Total referrals = members + supporters
+  const referralCount = (memberReferralCount || 0) + (supporterReferralCount || 0)
 
   // Fetch user votes count
   const { count: votesCount } = await supabase
