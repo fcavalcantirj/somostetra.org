@@ -6,6 +6,9 @@ Modelos de e-mail profissionais e responsivos para a plataforma SomosTetra.
 
 1. **confirmation-email.html** - E-mail de confirmação de cadastro
 2. **password-reset-email.html** - E-mail de redefinição de senha
+3. **invite-user-email.html** - E-mail de convite para novos usuários
+4. **magic-link-email.html** - E-mail com link mágico de acesso
+5. **change-email-email.html** - E-mail de confirmação de mudança de e-mail
 
 ## 🎨 Características
 
@@ -35,6 +38,24 @@ Vá para: https://supabase.com/dashboard/project/[SEU_PROJECT_ID]/auth/templates
 
 1. Clique em **"Reset password"**
 2. Cole o conteúdo de `password-reset-email.html`
+3. Clique em **"Save"**
+
+#### E-mail de Convite (Invite user)
+
+1. Clique em **"Invite user"**
+2. Cole o conteúdo de `invite-user-email.html`
+3. Clique em **"Save"**
+
+#### E-mail de Link Mágico (Magic Link)
+
+1. Clique em **"Magic Link"**
+2. Cole o conteúdo de `magic-link-email.html`
+3. Clique em **"Save"**
+
+#### E-mail de Mudança de E-mail (Change Email Address)
+
+1. Clique em **"Change Email Address"**
+2. Cole o conteúdo de `change-email-email.html`
 3. Clique em **"Save"**
 
 ### 3. Variáveis Disponíveis
@@ -76,10 +97,10 @@ Os templates são compatíveis com:
 
 ## 🎨 Paleta de Cores
 
-- **Verde Principal**: #4a7c59
-- **Verde Claro**: #7fa85c
-- **Verde Accent**: #a8d08d
-- **Texto Escuro**: #1a1a1a
+- **Roxo Principal**: #667eea
+- **Roxo Escuro**: #764ba2
+- **Verde Accent**: #a8ff78
+- **Texto Escuro**: #1a202c
 - **Texto Médio**: #4a5568
 - **Texto Claro**: #718096
 
