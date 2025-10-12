@@ -1,7 +1,13 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export default function CheckEmailPage() {
+export default function CheckEmailPage({
+  searchParams,
+}: {
+  searchParams: { type?: string }
+}) {
+  const isSupporter = searchParams.type === "supporter"
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-md">
@@ -19,8 +25,9 @@ export default function CheckEmailPage() {
 
           <h1 className="text-3xl font-bold mb-2">Verifique seu email</h1>
           <p className="text-muted-foreground mb-6">
-            Enviamos um link de confirmação para seu email. Clique no link para ativar sua conta e começar a usar o
-            SomosTetra.
+            {isSupporter
+              ? "Enviamos um link de confirmação para seu email. Clique no link para ativar sua conta de apoiador e começar a acompanhar seu impacto na comunidade."
+              : "Enviamos um link de confirmação para seu email. Clique no link para ativar sua conta e começar a usar o SomosTetra."}
           </p>
 
           <Button asChild variant="outline" className="w-full bg-transparent">

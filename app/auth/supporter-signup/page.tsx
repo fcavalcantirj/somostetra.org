@@ -1,83 +1,95 @@
+"use client"
+
+import type React from "react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import { Heart, Users, TrendingUp } from "lucide-react"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 
-export default async function SupporterSignupPage({
-  searchParams,
-}: {
-  searchParams: { ref?: string }
-}) {
-  const supabase = await createClient()
-  const referralCode = searchParams.ref
+export default function SupporterSignupPage() {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [phone, setPhone] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [referrerName, setReferrerName] = useState<string | null>(null)
 
-  let referrerName = null
-  if (referralCode) {
-    const { data: referrer } = await supabase
-      .from("profiles")
-      .select("display_name")
-      .eq("referral_code", referralCode)
-      .maybeSingle()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const referralCode = searchParams.get("ref")
 
-    referrerName = referrer?.display_name
-  }
+  useEffect(() => {
+    async function fetchReferrer() {
+      if (referralCode) {
+        const supabase = createClient()
+        const { data: referrer } = await supabase
+          .from("profiles")
+          .select("display_name")
+          .eq("referral_code", referralCode)
+          .maybeSingle()
 
-  async function handleSignup(formData: FormData) {
-    "use server"
-
-    const supabase = await createClient()
-    const name = formData.get("name") as string
-    const email = formData.get("email") as string
-    const phone = formData.get("phone") as string
-    const referralCode = formData.get("referralCode") as string
-
-    // Find referrer
-    let referrerId = null
-    if (referralCode) {
-      const { data: referrer } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("referral_code", referralCode)
-        .maybeSingle()
-
-      referrerId = referrer?.id
+        setReferrerName(referrer?.display_name || null)
+      }
     }
+    fetchReferrer()
+  }, [referralCode])
 
-    // Insert supporter
-    const { error } = await supabase.from("supporters").insert({
-      name,
-      email,
-      phone,
-      referred_by: referrerId,
-    })
+  async function handleSignup(e: React.FormEvent) {
+    e.preventDefault()
+    setIsLoading(true)
+    setError(null)
 
-    if (error) {
-      console.error("[v0] Error creating supporter:", error)
-      redirect(`/auth/supporter-signup?ref=${referralCode}&error=true`)
-    }
+    const supabase = createClient()
 
-    // Award points to referrer
-    if (referrerId) {
-      // Add 10 points for supporter referral
-      await supabase.rpc("increment_user_points", {
-        user_id: referrerId,
-        points_to_add: 10,
+    try {
+      let referrerId = null
+      if (referralCode) {
+        const { data: referrer } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("referral_code", referralCode)
+          .maybeSingle()
+
+        referrerId = referrer?.id
+      }
+
+      const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost"
+      const redirectUrl = isLocalhost
+        ? process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/supporter-success`
+        : process.env.NEXT_PUBLIC_SITE_URL
+          ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/supporter-success`
+          : `${window.location.origin}/auth/supporter-success`
+
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            user_type: "supporter",
+            display_name: name,
+            phone: phone || null,
+            referred_by: referrerId,
+          },
+        },
       })
 
-      // Log activity
-      await supabase.from("activities").insert({
-        user_id: referrerId,
-        activity_type: "supporter_referral",
-        points: 10,
-        description: `Convidou ${name} como apoiador`,
-      })
-    }
+      if (signUpError) throw signUpError
 
-    redirect("/auth/supporter-success")
+      router.push("/auth/check-email?type=supporter")
+    } catch (err: unknown) {
+      console.error("[v0] Error creating supporter:", err)
+      setError(err instanceof Error ? err.message : "Erro ao criar conta de apoiador")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -118,15 +130,22 @@ export default async function SupporterSignupPage({
           </div>
         </div>
 
-        <form action={handleSignup} className="glass-strong p-10 rounded-3xl space-y-8">
-          <input type="hidden" name="referralCode" value={referralCode || ""} />
-
+        <form onSubmit={handleSignup} className="glass-strong p-10 rounded-3xl space-y-8">
           <div className="grid gap-6">
             <div className="space-y-3">
               <Label htmlFor="name" className="text-base font-bold">
                 Nome completo
               </Label>
-              <Input id="name" name="name" type="text" placeholder="Seu nome" required className="h-14 text-lg glass" />
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Seu nome"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="h-14 text-lg glass"
+              />
             </div>
 
             <div className="space-y-3">
@@ -139,6 +158,25 @@ export default async function SupporterSignupPage({
                 type="email"
                 placeholder="seu@email.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-14 text-lg glass"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="password" className="text-base font-bold">
+                Senha
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Mínimo 6 caracteres"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="h-14 text-lg glass"
               />
             </div>
@@ -147,17 +185,36 @@ export default async function SupporterSignupPage({
               <Label htmlFor="phone" className="text-base font-bold">
                 Telefone (opcional)
               </Label>
-              <Input id="phone" name="phone" type="tel" placeholder="(00) 00000-0000" className="h-14 text-lg glass" />
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="(00) 00000-0000"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="h-14 text-lg glass"
+              />
             </div>
           </div>
 
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
           <div className="space-y-4 pt-4">
-            <Button type="submit" size="lg" className="w-full gradient-primary font-bold h-14 text-lg">
-              Tornar-me Apoiador
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full gradient-primary font-bold h-14 text-lg"
+              disabled={isLoading}
+            >
+              {isLoading ? "Criando conta..." : "Tornar-me Apoiador"}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Ao se cadastrar, você receberá atualizações sobre nossas campanhas e ações
+              Ao se cadastrar, você receberá um email de confirmação e poderá acompanhar seu impacto na comunidade
             </p>
           </div>
         </form>

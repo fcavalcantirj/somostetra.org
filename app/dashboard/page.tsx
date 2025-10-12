@@ -18,6 +18,12 @@ export default async function DashboardPage() {
     redirect("/auth/login")
   }
 
+  const { data: supporter } = await supabase.from("supporters").select("*").eq("auth_user_id", user.id).maybeSingle()
+
+  if (supporter) {
+    redirect("/supporter-dashboard")
+  }
+
   // Fetch user profile
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
