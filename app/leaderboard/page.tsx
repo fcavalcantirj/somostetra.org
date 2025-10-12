@@ -139,8 +139,8 @@ export default async function LeaderboardPage() {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-3xl font-black text-gradient">{member.points}</p>
-                      <p className="text-sm text-muted-foreground font-bold">pontos</p>
+                      <p className="text-4xl font-black text-gradient leading-none">{member.points}</p>
+                      <p className="text-sm text-muted-foreground font-bold mt-1">pontos</p>
                     </div>
 
                     {isCurrentUser && <TrendingUp className="w-6 h-6 text-accent" />}
