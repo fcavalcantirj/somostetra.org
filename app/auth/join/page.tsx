@@ -4,11 +4,20 @@ import { Button } from "@/components/ui/button"
 import { Users, Heart, ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { trackUserTypeSelection } from "@/lib/analytics"
 
 export default function JoinPage() {
   const searchParams = useSearchParams()
   const referralCode = searchParams.get("ref")
   const refParam = referralCode ? `?ref=${referralCode}` : ""
+
+  const handleMemberClick = () => {
+    trackUserTypeSelection("member", !!referralCode)
+  }
+
+  const handleSupporterClick = () => {
+    trackUserTypeSelection("supporter", !!referralCode)
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
@@ -68,7 +77,7 @@ export default function JoinPage() {
             </div>
 
             <Button asChild size="lg" className="w-full gradient-primary font-bold h-14 text-lg">
-              <Link href={`/auth/signup${refParam}`}>
+              <Link href={`/auth/signup${refParam}`} onClick={handleMemberClick}>
                 Cadastrar como Membro
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
@@ -107,7 +116,7 @@ export default function JoinPage() {
             </div>
 
             <Button asChild size="lg" className="w-full gradient-accent font-bold h-14 text-lg">
-              <Link href={`/auth/supporter-signup${refParam}`}>
+              <Link href={`/auth/supporter-signup${refParam}`} onClick={handleSupporterClick}>
                 Cadastrar como Apoiador
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>

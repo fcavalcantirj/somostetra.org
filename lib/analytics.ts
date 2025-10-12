@@ -119,3 +119,12 @@ export const trackAdminAction = (action: string, target: string) => {
     label: target,
   })
 }
+
+export const trackUserTypeSelection = (userType: "member" | "supporter", hasReferral: boolean) => {
+  event({
+    action: "user_type_selected",
+    category: "Onboarding",
+    label: userType,
+    value: hasReferral ? 1 : 0,
+  })
+}
