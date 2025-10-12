@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirme sua Reautenticação - SomosTetra</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f0f4f0;
+      line-height: 1.6;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #4a7c59 0%, #7fa85c 100%);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #4a7c59 0%, #7fa85c 100%);
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+    .logo-tetra {
+      color: #a8d08d;
+    }
+    .tagline {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 14px;
+      margin: 8px 0 0 0;
+      font-weight: 500;
+    }
+    .content {
+      background: white;
+      padding: 40px 30px;
+    }
+    .content h1 {
+      color: #2d3748;
+      font-size: 24px;
+      margin: 0 0 20px 0;
+      font-weight: 700;
+    }
+    .content p {
+      color: #4a5568;
+      font-size: 16px;
+      margin: 0 0 20px 0;
+    }
+    .token-container {
+      background: linear-gradient(135deg, #f0f4f0 0%, #e8f0e8 100%);
+      border: 2px solid #4a7c59;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px 0;
+      text-align: center;
+    }
+    .token-label {
+      color: #4a7c59;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 12px 0;
+    }
+    .token-code {
+      font-size: 32px;
+      font-weight: 900;
+      color: #2d3748;
+      letter-spacing: 4px;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      word-break: break-all;
+    }
+    .security-notice {
+      background: #fff5f5;
+      border-left: 4px solid #fc8181;
+      padding: 16px;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+    .security-notice p {
+      margin: 0;
+      color: #742a2a;
+      font-size: 14px;
+    }
+    .footer {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-top: 1px solid #e2e8f0;
+    }
+    .footer p {
+      color: #718096;
+      font-size: 14px;
+      margin: 8px 0;
+    }
+    .footer a {
+      color: #4a7c59;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">
+      <h1 class="logo">SOMOS<span class="logo-tetra">TETRA</span></h1>
+      <p class="tagline">Juntos pela inclusão e representatividade</p>
+    </div>
+    
+    <div class="content">
+      <h1>Confirme sua Reautenticação</h1>
+      
+      <p>Recebemos uma solicitação para reautenticar sua conta. Para continuar, use o código abaixo:</p>
+      
+      <div class="token-container">
+        <p class="token-label">Seu Código de Reautenticação</p>
+        <p class="token-code">{{ .Token }}</p>
+      </div>
+      
+      <p>Copie e cole este código na página de reautenticação para confirmar sua identidade.</p>
+      
+      <div class="security-notice">
+        <p><strong>Importante:</strong> Este código expira em alguns minutos. Se você não solicitou esta reautenticação, ignore este e-mail e sua conta permanecerá segura.</p>
+      </div>
+      
+      <p>Se você tiver alguma dúvida ou precisar de ajuda, entre em contato conosco.</p>
+    </div>
+    
+    <div class="footer">
+      <p><strong>SomosTetra</strong> - Comunidade de Inclusão e Representatividade</p>
+      <p>
+        <a href="https://somostetra.org">somostetra.org</a> | 
+        <a href="https://soutetra.com">soutetra.com</a> | 
+        <a href="https://soutetra.org">soutetra.org</a>
+      </p>
+      <p style="font-size: 12px; color: #a0aec0; margin-top: 16px;">
+        Este é um e-mail automático de segurança. Por favor, não responda.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

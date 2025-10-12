@@ -9,11 +9,12 @@ Modelos de e-mail profissionais e responsivos para a plataforma SomosTetra.
 3. **invite-user-email.html** - E-mail de convite para novos usuários
 4. **magic-link-email.html** - E-mail com link mágico de acesso
 5. **change-email-email.html** - E-mail de confirmação de mudança de e-mail
+6. **reauthentication-email.html** - E-mail de reautenticação com código
 
 ## 🎨 Características
 
 - ✅ Design responsivo (mobile-friendly)
-- ✅ Cores da marca SomosTetra
+- ✅ Cores da marca SomosTetra (gradiente verde)
 - ✅ Gradientes modernos
 - ✅ Botões de call-to-action destacados
 - ✅ Links alternativos para compatibilidade
@@ -58,12 +59,18 @@ Vá para: https://supabase.com/dashboard/project/[SEU_PROJECT_ID]/auth/templates
 2. Cole o conteúdo de `change-email-email.html`
 3. Clique em **"Save"**
 
+#### E-mail de Reautenticação (Reauthentication)
+
+1. Clique em **"Reauthentication"**
+2. Cole o conteúdo de `reauthentication-email.html`
+3. Clique em **"Save"**
+
 ### 3. Variáveis Disponíveis
 
 O Supabase substitui automaticamente estas variáveis:
 
 - `{{ .ConfirmationURL }}` - Link de confirmação/redefinição
-- `{{ .Token }}` - Token de confirmação
+- `{{ .Token }}` - Token/código de confirmação ou reautenticação
 - `{{ .TokenHash }}` - Hash do token
 - `{{ .SiteURL }}` - URL do seu site
 
@@ -97,12 +104,13 @@ Os templates são compatíveis com:
 
 ## 🎨 Paleta de Cores
 
-- **Roxo Principal**: #667eea
-- **Roxo Escuro**: #764ba2
-- **Verde Accent**: #a8ff78
-- **Texto Escuro**: #1a202c
+- **Verde Principal**: #4a7c59
+- **Verde Claro**: #7fa85c
+- **Verde Accent (TETRA)**: #a8d08d
+- **Texto Escuro**: #2d3748
 - **Texto Médio**: #4a5568
 - **Texto Claro**: #718096
+- **Background**: #f0f4f0
 
 ## 📄 Licença
 
