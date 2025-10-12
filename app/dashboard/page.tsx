@@ -118,7 +118,14 @@ export default async function DashboardPage() {
                 )}
               </div>
               <p className="text-6xl font-black text-gradient">{referralCount || 0}</p>
-              <p className="text-muted-foreground">Pessoas que você trouxe</p>
+              <div className="space-y-1">
+                <p className="text-muted-foreground">Pessoas que você trouxe</p>
+                {(memberReferralCount || supporterReferralCount) && (
+                  <p className="text-sm font-bold text-accent">
+                    {memberReferralCount || 0} membros + {supporterReferralCount || 0} apoiadores
+                  </p>
+                )}
+              </div>
             </Link>
 
             <div className="glass-strong p-8 rounded-3xl space-y-4 hover:scale-[1.02] transition-transform">
@@ -165,6 +172,15 @@ export default async function DashboardPage() {
                     Compartilhe este link e ganhe <span className="text-accent font-bold">20 pontos</span> por cada
                     membro que se cadastrar
                   </p>
+
+                  {memberReferralCount !== null && memberReferralCount > 0 && (
+                    <div className="glass px-6 py-4 rounded-2xl">
+                      <p className="text-center">
+                        <span className="text-3xl font-black text-gradient">{memberReferralCount}</span>
+                        <span className="text-muted-foreground ml-2">membros convidados</span>
+                      </p>
+                    </div>
+                  )}
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <div className="flex-1 glass px-4 sm:px-6 py-4 rounded-2xl font-mono text-xs sm:text-sm break-all overflow-hidden">
