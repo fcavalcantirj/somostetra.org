@@ -272,7 +272,7 @@ export default function PrivacidadePage() {
                   </p>
                   <div className="space-y-3 text-muted-foreground">
                     <p>
-                      <strong>E-mail:</strong> privacidade@soutetra.com
+                      <strong>E-mail:</strong> privacidade@somostetra.org
                     </p>
                     <div>
                       <p className="font-bold mb-2">Plataforma (domínios oficiais):</p>

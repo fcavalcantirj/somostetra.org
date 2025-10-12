@@ -219,7 +219,7 @@ SomosTetra é uma organização sem fins lucrativos. **Nunca** haverá monetiza�
 
 ## 📞 Contato
 
-- **E-mail**: privacidade@soutetra.com
+- **E-mail**: privacidade@somostetra.org
 - **GitHub**: [@fcavalcantirj](https://github.com/fcavalcantirj)
 - **Instagram**: [@sou.tetra](https://instagram.com/sou.tetra)
 - **LinkedIn**: [SomosTetra](https://linkedin.com/company/sou-tetra)
