@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
+import { trackSignup } from "@/lib/analytics"
 
 export default function SignupPage() {
   const [email, setEmail] = useState("")
@@ -84,6 +85,9 @@ export default function SignupPage() {
       })
 
       if (error) throw error
+
+      trackSignup("member", referralCode || undefined)
+
       router.push("/auth/check-email")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "Erro ao criar conta")

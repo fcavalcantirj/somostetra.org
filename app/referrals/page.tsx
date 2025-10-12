@@ -135,7 +135,7 @@ export default async function ReferralsPage() {
                 <div className="flex-1 glass px-6 py-4 rounded-2xl font-mono text-sm break-all">
                   {memberReferralLink}
                 </div>
-                <CopyButton text={memberReferralLink} />
+                <CopyButton text={memberReferralLink} linkType="member" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -177,7 +177,7 @@ export default async function ReferralsPage() {
                 <div className="flex-1 glass px-6 py-4 rounded-2xl font-mono text-sm break-all">
                   {supporterReferralLink}
                 </div>
-                <CopyButton text={supporterReferralLink} />
+                <CopyButton text={supporterReferralLink} linkType="supporter" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">

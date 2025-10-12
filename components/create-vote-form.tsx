@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { trackVoteCreated } from "@/lib/analytics"
 
 export function CreateVoteForm({ userId }: { userId: string }) {
   const [title, setTitle] = useState("")
@@ -47,6 +48,8 @@ export function CreateVoteForm({ userId }: { userId: string }) {
       console.log("[v0] Vote creation result:", { data, error })
 
       if (error) throw error
+
+      trackVoteCreated(data.id, title, category)
 
       console.log("[v0] Showing success toast...")
       toast({

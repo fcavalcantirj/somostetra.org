@@ -5,8 +5,9 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CheckCircle2 } from "lucide-react"
+import { trackVoteSubmission } from "@/lib/analytics"
 
-export function VoteButton({ voteId, userId }: { voteId: string; userId: string }) {
+export function VoteButton({ voteId, userId, voteTitle }: { voteId: string; userId: string; voteTitle?: string }) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -23,6 +24,8 @@ export function VoteButton({ voteId, userId }: { voteId: string; userId: string 
       })
 
       if (error) throw error
+
+      trackVoteSubmission(voteId, voteTitle || "Unknown Vote")
 
       router.refresh()
     } catch (error: unknown) {

@@ -11,6 +11,7 @@ import Link from "next/link"
 import { Heart, Users, TrendingUp } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { trackSignup } from "@/lib/analytics"
 
 export default function SupporterSignupPage() {
   const [name, setName] = useState("")
@@ -82,6 +83,8 @@ export default function SupporterSignupPage() {
       })
 
       if (signUpError) throw signUpError
+
+      trackSignup("supporter", referralCode || undefined)
 
       router.push("/auth/check-email?type=supporter")
     } catch (err: unknown) {

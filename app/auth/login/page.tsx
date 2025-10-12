@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
+import { trackLogin } from "@/lib/analytics"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -41,6 +42,9 @@ export default function LoginPage() {
         },
       })
       if (error) throw error
+
+      trackLogin()
+
       router.push(redirect || "/dashboard")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "Erro ao fazer login")

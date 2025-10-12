@@ -1,8 +1,16 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { CheckCircle2, Heart } from "lucide-react"
 import Link from "next/link"
+import { useEffect } from "react"
+import { trackEmailConfirmation } from "@/lib/analytics"
 
 export default function SupporterSuccessPage() {
+  useEffect(() => {
+    trackEmailConfirmation("supporter")
+  }, [])
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       <div className="fixed inset-0 -z-10">

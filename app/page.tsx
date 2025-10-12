@@ -1,19 +1,47 @@
+"use client"
+
+import { useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles, Users, Vote, Trophy } from "lucide-react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
+import { useEffect } from "react"
+import { useSearchParams } from "next/navigation"
+import { trackReferralClick } from "@/lib/analytics"
+import { createClient } from "@/lib/supabase/client"
 
-export default async function LandingPage() {
-  const supabase = await createClient()
+export default function LandingPage() {
+  const searchParams = useSearchParams()
+  const [members, setMembers] = useState(0)
+  const [votes, setVotes] = useState(0)
+  const [connections, setConnections] = useState(0)
 
-  const { data: stats } = await supabase
-    .from("platform_statistics")
-    .select("total_members, total_votes, total_connections")
-    .single()
+  useEffect(() => {
+    const ref = searchParams.get("ref")
+    if (ref) {
+      // Determine if it's a member or supporter referral based on the current path
+      const path = window.location.pathname
+      const type = path.includes("supporter") ? "supporter" : "member"
+      trackReferralClick(type)
+    }
+  }, [searchParams])
 
-  const members = stats?.total_members || 0
-  const votes = stats?.total_votes || 0
-  const connections = stats?.total_connections || 0
+  useEffect(() => {
+    const fetchStats = async () => {
+      const supabase = createClient()
+
+      const { data: stats } = await supabase
+        .from("platform_statistics")
+        .select("total_members, total_votes, total_connections")
+        .single()
+
+      setMembers(stats?.total_members || 0)
+      setVotes(stats?.total_votes || 0)
+      setConnections(stats?.total_connections || 0)
+    }
+
+    fetchStats()
+  }, [])
 
   return (
     <div className="min-h-screen relative overflow-hidden">

@@ -3,14 +3,19 @@
 import { Button } from "@/components/ui/button"
 import { Copy, Check } from "lucide-react"
 import { useState } from "react"
+import { trackReferralLinkCopied } from "@/lib/analytics"
 
-export function CopyButton({ text }: { text: string }) {
+export function CopyButton({ text, linkType }: { text: string; linkType?: "member" | "supporter" }) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(text)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+
+    if (linkType) {
+      trackReferralLinkCopied(linkType)
+    }
   }
 
   return (
