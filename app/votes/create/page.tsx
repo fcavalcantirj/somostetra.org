@@ -18,8 +18,6 @@ export default async function CreateVotePage() {
 
   const { data: profile, error } = await supabase.from("profiles").select("is_admin").eq("id", user.id).maybeSingle()
 
-  console.log("[v0] Profile check:", { profile, error, userId: user.id })
-
   const isAdmin = profile?.is_admin === true
 
   if (!isAdmin) {
