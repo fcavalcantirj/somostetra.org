@@ -21,15 +21,20 @@ export default async function AdminUsers() {
     redirect("/dashboard")
   }
 
-  // Fetch all users with their stats
   const { data: users } = await supabase
     .from("profiles")
     .select(`
       *,
       referrals:referrals!referrer_id(count),
-      badges:user_badges(count)
+      user_badges(
+        badge_id,
+        earned_at,
+        badges(id, name, icon, points_required)
+      )
     `)
     .order("created_at", { ascending: false })
+
+  const { data: allBadges } = await supabase.from("badges").select("*").order("points_required", { ascending: true })
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -93,7 +98,18 @@ export default async function AdminUsers() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-white/80">{user.referrals?.[0]?.count || 0}</td>
-                    <td className="px-6 py-4 text-white/80">{user.badges?.[0]?.count || 0}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1">
+                        {user.user_badges?.map((ub: any) => (
+                          <span key={ub.badge_id} className="text-lg" title={ub.badges?.name}>
+                            {ub.badges?.icon}
+                          </span>
+                        ))}
+                        {(!user.user_badges || user.user_badges.length === 0) && (
+                          <span className="text-sm text-white/40">Nenhuma</span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-6 py-4 text-sm text-white/60">
                       {new Date(user.created_at).toLocaleDateString("pt-BR")}
                     </td>
@@ -105,7 +121,12 @@ export default async function AdminUsers() {
                       )}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <UserActions userId={user.id} isAdmin={user.is_admin} />
+                      <UserActions
+                        userId={user.id}
+                        isAdmin={user.is_admin}
+                        userBadges={user.user_badges || []}
+                        allBadges={allBadges || []}
+                      />
                     </td>
                   </tr>
                 ))}

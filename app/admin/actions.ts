@@ -161,3 +161,47 @@ export async function deleteUser(userId: string) {
   revalidatePath("/admin/users")
   return { success: true }
 }
+
+// Badge Assignment and Removal Actions
+export async function assignBadgeToUser(userId: string, badgeId: string) {
+  const { supabase } = await checkAdmin()
+
+  // Check if user already has this badge
+  const { data: existing } = await supabase
+    .from("user_badges")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("badge_id", badgeId)
+    .single()
+
+  if (existing) {
+    return { error: "Usuário já possui esta badge" }
+  }
+
+  const { error } = await supabase.from("user_badges").insert({
+    user_id: userId,
+    badge_id: badgeId,
+  })
+
+  if (error) {
+    console.error("[v0] Error assigning badge:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/users")
+  return { success: true }
+}
+
+export async function removeBadgeFromUser(userId: string, badgeId: string) {
+  const { supabase } = await checkAdmin()
+
+  const { error } = await supabase.from("user_badges").delete().eq("user_id", userId).eq("badge_id", badgeId)
+
+  if (error) {
+    console.error("[v0] Error removing badge:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/users")
+  return { success: true }
+}
