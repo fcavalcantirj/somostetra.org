@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function SignupPage() {
   const [email, setEmail] = useState("")
@@ -18,9 +18,29 @@ export default function SignupPage() {
   const [bio, setBio] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [referrerName, setReferrerName] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const referralCode = searchParams.get("ref")
+
+  useEffect(() => {
+    const fetchReferrerName = async () => {
+      if (!referralCode) return
+
+      const supabase = createClient()
+      const { data: referrer } = await supabase
+        .from("profiles")
+        .select("display_name")
+        .eq("referral_code", referralCode)
+        .single()
+
+      if (referrer?.display_name) {
+        setReferrerName(referrer.display_name)
+      }
+    }
+
+    fetchReferrerName()
+  }, [referralCode])
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -75,7 +95,7 @@ export default function SignupPage() {
           {referralCode && (
             <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
               <p className="text-sm text-emerald-700 dark:text-emerald-300">
-                🎉 Você foi convidado! Código: <strong>{referralCode}</strong>
+                🎉 Você foi convidado{referrerName ? ` por ${referrerName}` : ""}!
               </p>
             </div>
           )}
