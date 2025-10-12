@@ -82,9 +82,9 @@ export default async function LeaderboardPage() {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right pr-2">
                   <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1">Pontos</p>
-                  <p className="text-4xl font-black text-gradient">{userProfile?.points || 0}</p>
+                  <p className="text-4xl font-black text-gradient leading-none">{userProfile?.points || 0}</p>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@ export default async function LeaderboardPage() {
                       </p>
                     </div>
 
-                    <div className="text-right">
+                    <div className="text-right pr-2">
                       <p className="text-4xl font-black text-gradient leading-none">{member.points}</p>
                       <p className="text-sm text-muted-foreground font-bold mt-1">pontos</p>
                     </div>
