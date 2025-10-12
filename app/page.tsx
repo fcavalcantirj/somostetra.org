@@ -104,7 +104,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button asChild size="lg" className="gradient-primary font-bold text-lg h-16 px-10">
-                <Link href="/auth/signup">
+                <Link href="/auth/join">
                   Começar Agora
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
@@ -191,7 +191,7 @@ export default function LandingPage() {
               variant="secondary"
               className="font-bold text-lg h-16 px-10 bg-background text-foreground hover:bg-background/90"
             >
-              <Link href="/auth/signup">
+              <Link href="/auth/join">
                 Cadastrar Agora
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
