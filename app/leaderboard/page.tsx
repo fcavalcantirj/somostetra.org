@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge"
 import { Trophy, Medal, Award, ArrowLeft, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
 
 export default async function LeaderboardPage() {
   const supabase = await createClient()
@@ -12,11 +11,6 @@ export default async function LeaderboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) {
-    redirect("/auth/login")
-  }
-
-  // Fetch leaderboard with referral counts
   const { data: leaderboard } = await supabase
     .from("profiles")
     .select(
@@ -25,6 +19,7 @@ export default async function LeaderboardPage() {
       display_name, 
       points, 
       created_at,
+      user_type,
       member_referrals:referrals!referrer_id(count),
       supporter_referrals:supporters!referred_by(count)
     `,
@@ -32,8 +27,9 @@ export default async function LeaderboardPage() {
     .order("points", { ascending: false })
     .limit(50)
 
-  const userRank = leaderboard?.findIndex((p) => p.id === user.id) ?? -1
-  const userProfile = leaderboard?.find((p) => p.id === user.id)
+  const userRank = user ? (leaderboard?.findIndex((p) => p.id === user.id) ?? -1) : -1
+  const userProfile = user ? leaderboard?.find((p) => p.id === user.id) : null
+  const isUserSupporter = userProfile?.user_type === "supporter"
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -48,12 +44,18 @@ export default async function LeaderboardPage() {
           <Link href="/" className="text-2xl font-bold tracking-tight">
             Somos<span className="text-gradient">Tetra</span>
           </Link>
-          <Button asChild variant="outline" className="glass-strong font-bold bg-transparent">
-            <Link href="/dashboard">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Dashboard
-            </Link>
-          </Button>
+          {user ? (
+            <Button asChild variant="outline" className="glass-strong font-bold bg-transparent">
+              <Link href="/dashboard">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Dashboard
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild className="gradient-accent font-bold">
+              <Link href="/auth/login">Entrar para Competir</Link>
+            </Button>
+          )}
         </div>
       </header>
 
@@ -66,7 +68,7 @@ export default async function LeaderboardPage() {
             <p className="text-xl text-muted-foreground">Os membros mais engajados da SomosTetra</p>
           </div>
 
-          {userRank >= 0 && (
+          {user && userRank >= 0 && (
             <div className="mb-12 glass-strong p-8 rounded-3xl">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-6">
@@ -76,10 +78,12 @@ export default async function LeaderboardPage() {
                   <div>
                     <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1">Sua Posição</p>
                     <p className="text-3xl font-black">{userProfile?.display_name}</p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {(userProfile as any)?.member_referrals?.[0]?.count || 0} membros +{" "}
-                      {(userProfile as any)?.supporter_referrals?.[0]?.count || 0} apoiadores indicados
-                    </p>
+                    {!isUserSupporter && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {(userProfile as any)?.member_referrals?.[0]?.count || 0} membros +{" "}
+                        {(userProfile as any)?.supporter_referrals?.[0]?.count || 0} apoiadores indicados
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="text-right pr-8">
@@ -92,16 +96,23 @@ export default async function LeaderboardPage() {
 
           <div className="space-y-4">
             {leaderboard?.map((member, index) => {
-              const isCurrentUser = member.id === user.id
+              const isCurrentUser = user && member.id === user.id
               const isTop3 = index < 3
               const memberReferrals = (member as any).member_referrals?.[0]?.count || 0
               const supporterReferrals = (member as any).supporter_referrals?.[0]?.count || 0
+              const isSupporter = member.user_type === "supporter"
 
               return (
                 <div
                   key={member.id}
                   className={`glass-strong p-6 rounded-3xl ${
-                    isCurrentUser ? "border-2 border-accent/30" : isTop3 ? "border-2 border-primary/30" : ""
+                    isCurrentUser
+                      ? "border-2 border-accent/30"
+                      : isTop3
+                        ? "border-2 border-primary/30"
+                        : isSupporter
+                          ? "border-2 border-blue/20"
+                          : ""
                   }`}
                 >
                   <div className="flex items-center gap-6">
@@ -131,11 +142,20 @@ export default async function LeaderboardPage() {
                       <div className="flex items-center gap-3 mb-1">
                         <p className="text-xl font-black">{member.display_name}</p>
                         {isCurrentUser && <Badge className="gradient-accent font-bold">Você</Badge>}
-                        {isTop3 && !isCurrentUser && <Badge className="gradient-primary font-bold">Top 3</Badge>}
+                        {isSupporter && !isCurrentUser && (
+                          <Badge variant="outline" className="border-blue/30 text-blue font-bold">
+                            Apoiador
+                          </Badge>
+                        )}
+                        {isTop3 && !isCurrentUser && !isSupporter && (
+                          <Badge className="gradient-primary font-bold">Top 3</Badge>
+                        )}
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {memberReferrals} membros + {supporterReferrals} apoiadores indicados
-                      </p>
+                      {!isSupporter && (
+                        <p className="text-sm text-muted-foreground">
+                          {memberReferrals} membros + {supporterReferrals} apoiadores indicados
+                        </p>
+                      )}
                     </div>
 
                     <div className="text-right pr-6">

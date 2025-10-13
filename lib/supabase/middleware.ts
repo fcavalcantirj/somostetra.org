@@ -33,7 +33,7 @@ export async function updateSession(request: NextRequest) {
     const isAuthPage = request.nextUrl.pathname.startsWith("/auth")
     const isLandingPage = request.nextUrl.pathname === "/"
 
-    const protectedRoutes = ["/dashboard", "/votes", "/referrals", "/badges", "/leaderboard", "/admin"]
+    const protectedRoutes = ["/dashboard", "/votes", "/referrals", "/badges", "/admin"]
     const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
 
     if (!user && isProtectedRoute) {
