@@ -119,8 +119,8 @@ export default async function DashboardPage() {
 
           <div className="grid md:grid-cols-3 gap-6 mb-16">
             <Link
-              href="/referrals"
-              className="glass-strong p-8 rounded-3xl space-y-4 hover:scale-[1.02] transition-transform"
+              href="/dashboard/referrals"
+              className="glass-strong p-8 rounded-3xl space-y-4 hover:scale-[1.02] transition-transform cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Convidados</span>
@@ -136,6 +136,7 @@ export default async function DashboardPage() {
                     {memberReferralCount || 0} membros + {supporterReferralCount || 0} apoiadores
                   </p>
                 )}
+                <p className="text-xs text-muted-foreground mt-2">Clique para ver detalhes →</p>
               </div>
             </Link>
 
@@ -185,12 +186,15 @@ export default async function DashboardPage() {
                   </p>
 
                   {memberReferralCount !== null && memberReferralCount > 0 && (
-                    <div className="glass px-6 py-4 rounded-2xl">
-                      <p className="text-center">
-                        <span className="text-3xl font-black text-gradient">{memberReferralCount}</span>
-                        <span className="text-muted-foreground ml-2">membros convidados</span>
-                      </p>
-                    </div>
+                    <Link href="/dashboard/referrals" className="block">
+                      <div className="glass px-6 py-4 rounded-2xl hover:scale-[1.02] transition-transform cursor-pointer">
+                        <p className="text-center">
+                          <span className="text-3xl font-black text-gradient">{memberReferralCount}</span>
+                          <span className="text-muted-foreground ml-2">membros convidados</span>
+                        </p>
+                        <p className="text-xs text-center text-muted-foreground mt-2">Clique para ver quem →</p>
+                      </div>
+                    </Link>
                   )}
 
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -240,12 +244,15 @@ export default async function DashboardPage() {
                   </p>
 
                   {supporterCount && supporterCount > 0 && (
-                    <div className="glass px-6 py-4 rounded-2xl">
-                      <p className="text-center">
-                        <span className="text-3xl font-black text-gradient">{supporterCount}</span>
-                        <span className="text-muted-foreground ml-2">apoiadores convidados</span>
-                      </p>
-                    </div>
+                    <Link href="/dashboard/referrals" className="block">
+                      <div className="glass px-6 py-4 rounded-2xl hover:scale-[1.02] transition-transform cursor-pointer">
+                        <p className="text-center">
+                          <span className="text-3xl font-black text-gradient">{supporterCount}</span>
+                          <span className="text-muted-foreground ml-2">apoiadores convidados</span>
+                        </p>
+                        <p className="text-xs text-center text-muted-foreground mt-2">Clique para ver quem →</p>
+                      </div>
+                    </Link>
                   )}
 
                   <div className="flex flex-col sm:flex-row gap-4">
