@@ -2,6 +2,8 @@ import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { ArrowLeft, Users, Mail, Calendar } from "lucide-react"
 import Link from "next/link"
+import { ConvertSupporterButton } from "./convert-supporter-button"
+import { DeleteSupporterButton } from "./delete-supporter-button"
 
 export default async function AdminSupporters() {
   const supabase = await createServerClient()
@@ -70,6 +72,7 @@ export default async function AdminSupporters() {
                 <th className="px-6 py-4 text-left text-sm font-semibold">Email</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold">Indicado por</th>
                 <th className="px-6 py-4 text-left text-sm font-semibold">Data</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -96,6 +99,16 @@ export default async function AdminSupporters() {
                     <div className="flex items-center gap-2 text-sm text-white/60">
                       <Calendar className="h-4 w-4" />
                       {new Date(supporter.created_at).toLocaleDateString("pt-BR")}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <ConvertSupporterButton
+                        supporterId={supporter.id}
+                        supporterName={supporter.name}
+                        hasAuthUser={!!supporter.auth_user_id}
+                      />
+                      <DeleteSupporterButton supporterId={supporter.id} supporterName={supporter.name} />
                     </div>
                   </td>
                 </tr>
