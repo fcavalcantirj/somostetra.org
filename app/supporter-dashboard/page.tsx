@@ -26,6 +26,8 @@ export default async function SupporterDashboardPage() {
     redirect("/dashboard")
   }
 
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle()
+
   // Fetch referrer info if exists
   let referrerInfo = null
   if (supporter.referred_by) {
@@ -37,11 +39,16 @@ export default async function SupporterDashboardPage() {
     referrerInfo = referrer
   }
 
-  // Fetch active votes count
-  const { count: activeVotesCount } = await supabase
+  const { data: activeVotes } = await supabase
     .from("votes")
-    .select("*", { count: "exact", head: true })
+    .select("*")
     .eq("status", "active")
+    .order("created_at", { ascending: false })
+
+  const { count: votesCount } = await supabase
+    .from("user_votes")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", user.id)
 
   // Fetch total members count
   const { count: membersCount } = await supabase.from("profiles").select("*", { count: "exact", head: true })
@@ -107,10 +114,66 @@ export default async function SupporterDashboardPage() {
                 <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Votações</span>
                 <Badge className="gradient-accent font-bold">Ativas</Badge>
               </div>
-              <p className="text-6xl font-black text-gradient">{activeVotesCount || 0}</p>
-              <p className="text-muted-foreground">Em andamento</p>
+              <p className="text-6xl font-black text-gradient">{activeVotes?.length || 0}</p>
+              <p className="text-muted-foreground">
+                {votesCount !== null && votesCount > 0 ? `Você votou ${votesCount}x` : "Participe agora"}
+              </p>
             </div>
           </div>
+
+          {/* Active Votes Section */}
+          {profile && activeVotes && activeVotes.length > 0 && (
+            <div className="space-y-6 mb-16">
+              <div className="flex items-center justify-between">
+                <h2 className="text-4xl font-black">Votações Ativas</h2>
+                <Button variant="ghost" className="font-bold uppercase tracking-wider" asChild>
+                  <Link href="/votes">Ver Todas →</Link>
+                </Button>
+              </div>
+
+              <div className="space-y-6">
+                {activeVotes.map((vote) => (
+                  <div
+                    key={vote.id}
+                    className="glass-strong p-8 rounded-3xl space-y-6 hover:scale-[1.01] transition-transform"
+                  >
+                    <div className="space-y-4">
+                      <Badge className="gradient-accent font-bold">Ativa</Badge>
+                      <h3 className="text-2xl lg:text-3xl font-black leading-tight">{vote.title}</h3>
+                      <p className="text-lg text-muted-foreground leading-relaxed">{vote.description}</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                      <p className="text-sm text-muted-foreground font-bold">
+                        <Users className="w-4 h-4 inline mr-1" />
+                        {vote.vote_count} votos
+                      </p>
+                      <Button size="lg" className="gradient-primary font-bold h-12 px-8" asChild>
+                        <Link href={`/votes/${vote.id}`}>Votar Agora</Link>
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!profile && (
+            <div className="glass-strong p-10 rounded-3xl mb-16 space-y-4 border-2 border-yellow-500/30">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-yellow-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">Configuração Pendente</h3>
+                  <p className="text-muted-foreground">
+                    Sua conta está sendo configurada para permitir votações. Por favor, entre em contato com o suporte
+                    se isso não for resolvido em breve.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Referrer Info */}
           {referrerInfo && (
