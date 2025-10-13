@@ -26,9 +26,12 @@ export default function SupporterSignupPage() {
   const searchParams = useSearchParams()
   const referralCode = searchParams.get("ref")
 
+  console.log("[v0] Referral code from URL:", referralCode)
+
   useEffect(() => {
     async function fetchReferrer() {
       if (referralCode) {
+        console.log("[v0] Looking up referrer with code:", referralCode)
         const supabase = createClient()
         const { data: referrer } = await supabase
           .from("profiles")
@@ -36,6 +39,7 @@ export default function SupporterSignupPage() {
           .eq("referral_code", referralCode)
           .maybeSingle()
 
+        console.log("[v0] Referrer lookup result:", referrer)
         setReferrerName(referrer?.display_name || null)
       }
     }
@@ -52,6 +56,7 @@ export default function SupporterSignupPage() {
     try {
       let referrerId = null
       if (referralCode) {
+        console.log("[v0] Signup: Looking up referrer ID with code:", referralCode)
         const { data: referrer } = await supabase
           .from("profiles")
           .select("id")
@@ -59,6 +64,7 @@ export default function SupporterSignupPage() {
           .maybeSingle()
 
         referrerId = referrer?.id
+        console.log("[v0] Signup: Referrer ID found:", referrerId)
       }
 
       const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost"
@@ -67,6 +73,13 @@ export default function SupporterSignupPage() {
         : process.env.NEXT_PUBLIC_SITE_URL
           ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/supporter-success`
           : `${window.location.origin}/auth/supporter-success`
+
+      console.log("[v0] Signup metadata:", {
+        user_type: "supporter",
+        display_name: name,
+        phone: phone || null,
+        referred_by: referrerId,
+      })
 
       const { error: signUpError } = await supabase.auth.signUp({
         email,

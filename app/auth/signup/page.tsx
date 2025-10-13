@@ -24,17 +24,21 @@ export default function SignupPage() {
   const searchParams = useSearchParams()
   const referralCode = searchParams.get("ref")
 
+  console.log("[v0] Member signup - Referral code from URL:", referralCode)
+
   useEffect(() => {
     const fetchReferrerName = async () => {
       if (!referralCode) return
 
+      console.log("[v0] Member signup - Looking up referrer with code:", referralCode)
       const supabase = createClient()
       const { data: referrer } = await supabase
         .from("profiles")
         .select("display_name")
         .eq("referral_code", referralCode)
-        .single()
+        .maybeSingle()
 
+      console.log("[v0] Member signup - Referrer lookup result:", referrer)
       if (referrer?.display_name) {
         setReferrerName(referrer.display_name)
       }
@@ -50,18 +54,17 @@ export default function SignupPage() {
     setError(null)
 
     try {
-      // First, check if referral code is valid
       let referrerId = null
       if (referralCode) {
+        console.log("[v0] Member signup - Looking up referrer ID with code:", referralCode)
         const { data: referrer } = await supabase
           .from("profiles")
           .select("id")
           .eq("referral_code", referralCode)
-          .single()
+          .maybeSingle()
 
-        if (referrer) {
-          referrerId = referrer.id
-        }
+        referrerId = referrer?.id
+        console.log("[v0] Member signup - Referrer ID found:", referrerId)
       }
 
       const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost"
@@ -70,6 +73,12 @@ export default function SignupPage() {
         : process.env.NEXT_PUBLIC_SITE_URL
           ? `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`
           : `${window.location.origin}/dashboard`
+
+      console.log("[v0] Member signup metadata:", {
+        display_name: displayName,
+        bio: bio || null,
+        referred_by: referrerId,
+      })
 
       const { error } = await supabase.auth.signUp({
         email,
@@ -90,6 +99,7 @@ export default function SignupPage() {
 
       router.push("/auth/check-email")
     } catch (error: unknown) {
+      console.error("[v0] Member signup - Error creating account:", error)
       setError(error instanceof Error ? error.message : "Erro ao criar conta")
     } finally {
       setIsLoading(false)
