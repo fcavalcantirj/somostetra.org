@@ -5,9 +5,19 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CheckCircle2 } from "lucide-react"
-import { trackVoteSubmission } from "@/lib/analytics"
+import { trackVoteSubmission, trackVoteError } from "@/lib/analytics"
 
-export function VoteButton({ voteId, userId, voteTitle }: { voteId: string; userId: string; voteTitle?: string }) {
+export function VoteButton({
+  voteId,
+  userId,
+  voteTitle,
+  userType,
+}: {
+  voteId: string
+  userId: string
+  voteTitle?: string
+  userType: "member" | "supporter"
+}) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -25,11 +35,13 @@ export function VoteButton({ voteId, userId, voteTitle }: { voteId: string; user
 
       if (error) throw error
 
-      trackVoteSubmission(voteId, voteTitle || "Unknown Vote")
+      trackVoteSubmission(voteId, voteTitle || "Unknown Vote", userType)
 
       router.refresh()
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Erro ao votar")
+      const errorMessage = error instanceof Error ? error.message : "Erro ao votar"
+      setError(errorMessage)
+      trackVoteError(voteId, voteTitle || "Unknown Vote", userType, errorMessage)
     } finally {
       setIsLoading(false)
     }

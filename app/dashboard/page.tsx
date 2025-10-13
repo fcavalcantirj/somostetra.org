@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { LogoutButton } from "@/components/logout-button"
 import { CopyButton } from "@/components/copy-button"
+import { trackDashboardView } from "@/lib/analytics"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -78,6 +79,16 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== 'undefined') {
+              ${trackDashboardView.toString()}
+              trackDashboardView('member');
+            }
+          `,
+        }}
+      />
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px] animate-pulse" />
         <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue/15 rounded-full blur-[140px] animate-pulse [animation-delay:1s]" />
@@ -255,7 +266,7 @@ export default async function DashboardPage() {
                         WhatsApp
                       </a>
                     </Button>
-                    <Button asChild variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent">
+                    <Button variant="outline" size="lg" className="glass-strong font-bold h-14 bg-transparent" asChild>
                       <a
                         href={`mailto:?subject=Apoie a SomosTetra&body=${encodeURIComponent(`Olá! Convido você a apoiar a comunidade SomosTetra e ajudar a fazer a diferença: ${supporterLink}`)}`}
                       >

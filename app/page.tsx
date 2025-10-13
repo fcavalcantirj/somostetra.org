@@ -15,6 +15,7 @@ export default function LandingPage() {
   const [members, setMembers] = useState(0)
   const [supporters, setSupporters] = useState(0)
   const [votes, setVotes] = useState(0)
+  const [votesCast, setVotesCast] = useState(0)
   const [connections, setConnections] = useState(0)
 
   useEffect(() => {
@@ -33,12 +34,13 @@ export default function LandingPage() {
 
       const { data: stats } = await supabase
         .from("platform_statistics")
-        .select("total_members, total_supporters, total_votes, total_connections")
+        .select("total_members, total_supporters, total_votes, total_votes_cast, total_connections")
         .single()
 
       setMembers(stats?.total_members || 0)
       setSupporters(stats?.total_supporters || 0)
       setVotes(stats?.total_votes || 0)
+      setVotesCast(stats?.total_votes_cast || 0)
       setConnections(stats?.total_connections || 0)
     }
 
@@ -345,7 +347,7 @@ export default function LandingPage() {
       <section id="comunidade" className="py-32 px-6 lg:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="glass-strong p-16 rounded-3xl">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 text-center">
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{members}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Membros</p>
@@ -357,6 +359,10 @@ export default function LandingPage() {
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{votes}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Votações</p>
+              </div>
+              <div className="space-y-4">
+                <p className="text-7xl md:text-8xl font-black text-gradient">{votesCast}</p>
+                <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Votos</p>
               </div>
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{connections}</p>

@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { LogoutButton } from "@/components/logout-button"
 import { CopyButton } from "@/components/copy-button"
+import { trackDashboardView } from "@/lib/analytics"
 
 export default async function SupporterDashboardPage() {
   const supabase = await createClient()
@@ -62,6 +63,16 @@ export default async function SupporterDashboardPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== 'undefined') {
+              ${trackDashboardView.toString()}
+              trackDashboardView('supporter');
+            }
+          `,
+        }}
+      />
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px] animate-pulse" />
         <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-accent/15 rounded-full blur-[140px] animate-pulse [animation-delay:1s]" />

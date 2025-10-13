@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { LogOut } from "lucide-react"
+import { trackLogout } from "@/lib/analytics"
 
 export function LogoutButton() {
   const router = useRouter()
 
   const handleLogout = async () => {
+    trackLogout()
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push("/")

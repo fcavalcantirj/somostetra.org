@@ -5,6 +5,7 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { VoteButton } from "@/components/vote-button"
+import { trackVoteDetailView } from "@/lib/analytics"
 
 export default async function VoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -20,6 +21,12 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
   } = await supabase.auth.getUser()
 
   if (!user) {
+    redirect("/auth/login")
+  }
+
+  const { data: profile } = await supabase.from("profiles").select("user_type").eq("id", user.id).single()
+
+  if (!profile) {
     redirect("/auth/login")
   }
 
@@ -42,6 +49,16 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== 'undefined') {
+              ${trackVoteDetailView.toString()}
+              trackVoteDetailView('${vote.id}', '${vote.title.replace(/'/g, "\\'")}');
+            }
+          `,
+        }}
+      />
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px] animate-pulse" />
         <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-blue/15 rounded-full blur-[140px] animate-pulse [animation-delay:1s]" />
@@ -111,7 +128,7 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
                   </p>
                 </div>
 
-                <VoteButton voteId={vote.id} userId={user.id} />
+                <VoteButton voteId={vote.id} userId={user.id} voteTitle={vote.title} userType={profile.user_type} />
               </div>
             )}
           </div>

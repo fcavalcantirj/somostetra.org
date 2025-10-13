@@ -63,11 +63,19 @@ export const trackEmailConfirmation = (userType: "member" | "supporter") => {
   })
 }
 
-export const trackVoteSubmission = (voteId: string, voteTitle: string) => {
+export const trackVoteSubmission = (voteId: string, voteTitle: string, userType: "member" | "supporter") => {
   event({
     action: "vote_submitted",
     category: "Engagement",
-    label: voteTitle,
+    label: `${userType}: ${voteTitle}`,
+  })
+}
+
+export const trackVoteError = (voteId: string, voteTitle: string, userType: "member" | "supporter", error: string) => {
+  event({
+    action: "vote_error",
+    category: "Error",
+    label: `${userType}: ${voteTitle} - ${error}`,
   })
 }
 
@@ -150,6 +158,59 @@ export const trackPasswordReset = (email: string) => {
     action: "password_reset_requested",
     category: "Auth",
     label: email,
+  })
+}
+
+export const trackReferralSuccess = (
+  referrerType: "member" | "supporter",
+  newUserType: "member" | "supporter",
+  points: number,
+) => {
+  event({
+    action: "referral_success",
+    category: "Referral",
+    label: `${referrerType}_referred_${newUserType}`,
+    value: points,
+  })
+}
+
+export const trackDashboardView = (userType: "member" | "supporter") => {
+  event({
+    action: "dashboard_viewed",
+    category: "Engagement",
+    label: userType,
+  })
+}
+
+export const trackProfileUpdate = (field: string) => {
+  event({
+    action: "profile_updated",
+    category: "User",
+    label: field,
+  })
+}
+
+export const trackVoteDetailView = (voteId: string, voteTitle: string) => {
+  event({
+    action: "vote_detail_viewed",
+    category: "Engagement",
+    label: voteTitle,
+  })
+}
+
+export const trackPageView = (pageName: string, source?: string) => {
+  event({
+    action: "page_viewed",
+    category: "Navigation",
+    label: pageName,
+    value: source ? 1 : 0,
+  })
+}
+
+export const trackLogout = () => {
+  event({
+    action: "logout",
+    category: "User",
   })
 }
 
