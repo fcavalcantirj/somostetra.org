@@ -17,11 +17,11 @@ export default function LandingPage() {
   const [votes, setVotes] = useState(0)
   const [votesCast, setVotesCast] = useState(0)
   const [connections, setConnections] = useState(0)
+  const [badges, setBadges] = useState(0)
 
   useEffect(() => {
     const ref = searchParams.get("ref")
     if (ref) {
-      // Determine if it's a member or supporter referral based on the current path
       const path = window.location.pathname
       const type = path.includes("supporter") ? "supporter" : "member"
       trackReferralClick(type)
@@ -34,7 +34,9 @@ export default function LandingPage() {
 
       const { data: stats } = await supabase
         .from("platform_statistics")
-        .select("total_members, total_supporters, total_votes, total_votes_cast, total_connections")
+        .select(
+          "total_members, total_supporters, total_votes, total_votes_cast, total_connections, total_badges_earned",
+        )
         .single()
 
       setMembers(stats?.total_members || 0)
@@ -42,6 +44,7 @@ export default function LandingPage() {
       setVotes(stats?.total_votes || 0)
       setVotesCast(stats?.total_votes_cast || 0)
       setConnections(stats?.total_connections || 0)
+      setBadges(stats?.total_badges_earned || 0)
     }
 
     fetchStats()
@@ -347,7 +350,7 @@ export default function LandingPage() {
       <section id="comunidade" className="py-32 px-6 lg:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="glass-strong p-16 rounded-3xl">
-            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 text-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 text-center">
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{members}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Membros</p>
@@ -363,6 +366,10 @@ export default function LandingPage() {
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{votesCast}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Votos</p>
+              </div>
+              <div className="space-y-4">
+                <p className="text-7xl md:text-8xl font-black text-gradient">{badges}</p>
+                <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Badges</p>
               </div>
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{connections}</p>
