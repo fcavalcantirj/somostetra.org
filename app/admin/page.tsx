@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { Users, Vote, Award } from "lucide-react"
+import { Users, Vote, Award, Database } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminDashboard() {
@@ -154,6 +154,15 @@ export default async function AdminDashboard() {
             <Award className="mb-4 h-10 w-10 text-yellow-400" />
             <h3 className="mb-2 text-lg font-semibold">Gerenciar Badges</h3>
             <p className="text-sm text-white/60">Crie e atribua badges aos membros</p>
+          </Link>
+
+          <Link
+            href="/admin/diagnostics"
+            className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/10"
+          >
+            <Database className="mb-4 h-10 w-10 text-red-400" />
+            <h3 className="mb-2 text-lg font-semibold">Diagnóstico do Sistema</h3>
+            <p className="text-sm text-white/60">Verifique a saúde do banco de dados</p>
           </Link>
         </div>
 

@@ -133,7 +133,7 @@ export default async function SupporterDashboardPage() {
           </div>
 
           {/* Active Votes Section */}
-          {profile && activeVotes && activeVotes.length > 0 && (
+          {activeVotes && activeVotes.length > 0 && (
             <div className="space-y-6 mb-16">
               <div className="flex items-center justify-between">
                 <h2 className="text-4xl font-black">Votações Ativas</h2>
@@ -165,23 +165,6 @@ export default async function SupporterDashboardPage() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {!profile && (
-            <div className="glass-strong p-10 rounded-3xl mb-16 space-y-4 border-2 border-yellow-500/30">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-yellow-500" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Configuração Pendente</h3>
-                  <p className="text-muted-foreground">
-                    Sua conta está sendo configurada para permitir votações. Por favor, entre em contato com o suporte
-                    se isso não for resolvido em breve.
-                  </p>
-                </div>
               </div>
             </div>
           )}
