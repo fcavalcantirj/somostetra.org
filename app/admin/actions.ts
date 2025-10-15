@@ -130,7 +130,7 @@ export async function toggleUserAdmin(userId: string, isAdmin: boolean) {
     return { error: error.message }
   }
 
-  revalidatePath("/admin/users")
+  revalidatePath("/admin/members")
   return { success: true }
 }
 
@@ -144,7 +144,7 @@ export async function updateUserPoints(userId: string, points: number) {
     return { error: error.message }
   }
 
-  revalidatePath("/admin/users")
+  revalidatePath("/admin/members")
   return { success: true }
 }
 
@@ -158,7 +158,7 @@ export async function deleteUser(userId: string) {
     return { error: error.message }
   }
 
-  revalidatePath("/admin/users")
+  revalidatePath("/admin/members")
   return { success: true }
 }
 
@@ -270,7 +270,7 @@ export async function convertSupporterToMember(supporterId: string) {
   console.log("[v0] Supporter record deleted successfully")
 
   revalidatePath("/admin/supporters")
-  revalidatePath("/admin/users")
+  revalidatePath("/admin/members")
   return { success: true }
 }
 
@@ -299,7 +299,7 @@ export async function assignBadgeToUser(userId: string, badgeId: string) {
     return { error: error.message }
   }
 
-  revalidatePath("/admin/users")
+  revalidatePath("/admin/members")
   return { success: true }
 }
 
@@ -313,7 +313,7 @@ export async function removeBadgeFromUser(userId: string, badgeId: string) {
     return { error: error.message }
   }
 
-  revalidatePath("/admin/users")
+  revalidatePath("/admin/members")
   return { success: true }
 }
 

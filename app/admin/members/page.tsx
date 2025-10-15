@@ -32,6 +32,7 @@ export default async function AdminUsers() {
         badges(id, name, icon, points_required)
       )
     `)
+    .eq("user_type", "member")
     .order("created_at", { ascending: false })
 
   const { data: allBadges } = await supabase.from("badges").select("*").order("points_required", { ascending: true })
@@ -48,8 +49,8 @@ export default async function AdminUsers() {
               <ArrowLeft className="h-5 w-5" />
             </Link>
             <div>
-              <h1 className="text-2xl font-bold">Gerenciar Usuários</h1>
-              <p className="text-sm text-white/60">{users?.length || 0} usuários cadastrados</p>
+              <h1 className="text-2xl font-bold">Gerenciar Membros</h1>
+              <p className="text-sm text-white/60">{users?.length || 0} membros tetraplégicos cadastrados</p>
             </div>
           </div>
         </div>
@@ -62,7 +63,7 @@ export default async function AdminUsers() {
             <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40" />
             <input
               type="text"
-              placeholder="Buscar usuários..."
+              placeholder="Buscar membros..."
               className="w-full rounded-lg border border-white/10 bg-white/5 py-2 pl-10 pr-4 backdrop-blur-sm transition-colors focus:border-white/20 focus:outline-none"
             />
           </div>

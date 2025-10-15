@@ -45,7 +45,7 @@ export default async function AdminDashboard() {
       title: "Membros (Tetraplégicos)",
       value: totalUsers || 0,
       icon: Users,
-      href: "/admin/users",
+      href: "/admin/members",
       color: "from-blue-500 to-cyan-500",
     },
     {
@@ -121,7 +121,7 @@ export default async function AdminDashboard() {
         {/* Quick Actions */}
         <div className="mb-8 grid gap-6 lg:grid-cols-4">
           <Link
-            href="/admin/users"
+            href="/admin/members"
             className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/10"
           >
             <Users className="mb-4 h-10 w-10 text-blue-400" />
