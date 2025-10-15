@@ -1,10 +1,11 @@
-import { createServerClient } from "@/lib/supabase/server"
+import { createServerClient, createServiceRoleClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, AlertTriangle, CheckCircle, XCircle, Database, Shield } from "lucide-react"
 
 export default async function AdminDiagnostics() {
   const supabase = await createServerClient()
+  const serviceClient = createServiceRoleClient()
 
   const {
     data: { user },
@@ -19,6 +20,9 @@ export default async function AdminDiagnostics() {
   if (!profile?.is_admin) {
     redirect("/dashboard")
   }
+
+  // Get all auth users to check for broken accounts
+  const { data: { users: authUsers } } = await serviceClient.auth.admin.listUsers()
 
   const [
     { data: allSupporters },
@@ -51,6 +55,28 @@ export default async function AdminDiagnostics() {
 
   const supportersWithoutAuthId = (allSupporters || []).filter((supporter) => !supporter.auth_user_id)
 
+  // CRITICAL CHECK: Auth users without profiles (the bug we just fixed!)
+  const brokenUsers = (authUsers?.users || []).filter(
+    (authUser) => !allProfiles?.find((p) => p.id === authUser.id)
+  ).map((authUser) => ({
+    id: authUser.id,
+    email: authUser.email,
+    created_at: authUser.created_at,
+    user_type: authUser.user_metadata?.user_type || 'unknown',
+  }))
+
+  // Check supporters missing their supporter records (profiles with user_type='supporter' but no entry in supporters table)
+  const supportersWithoutSupporterRecord = (allProfiles || []).filter(
+    (profile) => {
+      // Check if this profile has user_type = 'supporter'
+      const isSupporterProfile = (profile as any).user_type === 'supporter'
+      // Check if there's a corresponding supporter record
+      const hasSupporterRecord = allSupporters?.find((s) => s.auth_user_id === profile.id)
+      // Return true if it's a supporter profile WITHOUT a supporter record
+      return isSupporterProfile && !hasSupporterRecord
+    }
+  )
+
   // Find duplicate referral codes
   const referralCodeCounts = new Map<string, number>()
   allProfiles?.forEach((profile) => {
@@ -80,18 +106,20 @@ export default async function AdminDiagnostics() {
 
   const issues = [
     {
-      title: "Apoiadores sem Perfil",
-      description: "Apoiadores que não podem votar porque não têm perfil",
-      count: supportersWithoutProfiles.length,
-      severity: "high" as const,
-      data: supportersWithoutProfiles.slice(0, 10),
+      title: "🚨 CRÍTICO: Usuários sem Perfil",
+      description: "Contas criadas mas sem perfil (não podem fazer login/votar)",
+      count: brokenUsers.length,
+      severity: "critical" as const,
+      data: brokenUsers.slice(0, 10),
+      action: "/admin/fix-users",
+      actionLabel: "Corrigir Agora",
     },
     {
-      title: "Apoiadores sem Auth",
-      description: "Apoiadores sem conta de autenticação (cadastros antigos)",
-      count: supportersWithoutAuthId.length,
-      severity: "low" as const,
-      data: supportersWithoutAuthId.slice(0, 10),
+      title: "Apoiadores sem Registro",
+      description: "Perfis de apoiador sem entrada na tabela supporters",
+      count: supportersWithoutSupporterRecord.length,
+      severity: "high" as const,
+      data: supportersWithoutSupporterRecord.slice(0, 10),
     },
     {
       title: "Códigos de Indicação Duplicados",
@@ -106,6 +134,13 @@ export default async function AdminDiagnostics() {
       count: orphanedReferrals.length,
       severity: "medium" as const,
       data: orphanedReferrals.slice(0, 10),
+    },
+    {
+      title: "Apoiadores sem Auth ID",
+      description: "Registros antigos de apoiadores sem autenticação",
+      count: supportersWithoutAuthId.length,
+      severity: "low" as const,
+      data: supportersWithoutAuthId.slice(0, 10),
     },
   ]
 
@@ -203,11 +238,13 @@ export default async function AdminDiagnostics() {
               className={`rounded-2xl border p-6 backdrop-blur-sm ${
                 issue.count === 0
                   ? "border-green-500/20 bg-green-500/5"
-                  : issue.severity === "high"
-                    ? "border-red-500/20 bg-red-500/5"
-                    : issue.severity === "medium"
-                      ? "border-yellow-500/20 bg-yellow-500/5"
-                      : "border-blue-500/20 bg-blue-500/5"
+                  : issue.severity === "critical"
+                    ? "border-red-600/30 bg-red-600/10 animate-pulse"
+                    : issue.severity === "high"
+                      ? "border-red-500/20 bg-red-500/5"
+                      : issue.severity === "medium"
+                        ? "border-yellow-500/20 bg-yellow-500/5"
+                        : "border-blue-500/20 bg-blue-500/5"
               }`}
             >
               <div className="flex items-start justify-between mb-4">
@@ -228,16 +265,29 @@ export default async function AdminDiagnostics() {
                   className={`rounded-full px-3 py-1 text-sm font-medium ${
                     issue.count === 0
                       ? "bg-green-500/20 text-green-400"
-                      : issue.severity === "high"
-                        ? "bg-red-500/20 text-red-400"
-                        : issue.severity === "medium"
-                          ? "bg-yellow-500/20 text-yellow-400"
-                          : "bg-blue-500/20 text-blue-400"
+                      : issue.severity === "critical"
+                        ? "bg-red-600/30 text-red-300 font-bold"
+                        : issue.severity === "high"
+                          ? "bg-red-500/20 text-red-400"
+                          : issue.severity === "medium"
+                            ? "bg-yellow-500/20 text-yellow-400"
+                            : "bg-blue-500/20 text-blue-400"
                   }`}
                 >
                   {issue.count}
                 </div>
               </div>
+
+              {issue.count > 0 && 'action' in issue && issue.action && (
+                <div className="mb-4">
+                  <Link
+                    href={issue.action}
+                    className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
+                  >
+                    {issue.actionLabel || 'Corrigir'}
+                  </Link>
+                </div>
+              )}
 
               {issue.count > 0 && issue.data && issue.data.length > 0 && (
                 <div className="mt-4 rounded-lg border border-white/10 bg-black/20 p-4">
