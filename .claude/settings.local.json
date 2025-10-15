@@ -4,7 +4,8 @@
       "Bash(find:*)",
       "Bash(cat:*)",
       "Bash(awk:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

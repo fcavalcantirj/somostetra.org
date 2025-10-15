@@ -9,7 +9,10 @@ async function getBrokenUsers() {
   const {
     data: { users },
     error: usersError,
-  } = await serviceClient.auth.admin.listUsers()
+  } = await serviceClient.auth.admin.listUsers({
+    page: 1,
+    perPage: 1000, // Fetch all users, not just first 50
+  })
 
   if (usersError) {
     console.error("[v0] Error fetching users:", usersError)

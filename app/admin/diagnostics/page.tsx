@@ -21,8 +21,11 @@ export default async function AdminDiagnostics() {
     redirect("/dashboard")
   }
 
-  // Get all auth users to check for broken accounts
-  const { data: { users: authUsers } } = await serviceClient.auth.admin.listUsers()
+  // Get all auth users to check for broken accounts (fetch ALL users, not just first page)
+  const { data: { users: authUsers } } = await serviceClient.auth.admin.listUsers({
+    page: 1,
+    perPage: 1000, // Increased from default 50 to ensure we get all users
+  })
 
   const [
     { data: allSupporters },
