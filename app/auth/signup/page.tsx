@@ -75,6 +75,7 @@ export default function SignupPage() {
           : `${window.location.origin}/dashboard`
 
       console.log("[v0] Member signup metadata:", {
+        user_type: "member",
         display_name: displayName,
         bio: bio || null,
         referred_by: referrerId,
@@ -86,6 +87,7 @@ export default function SignupPage() {
         options: {
           emailRedirectTo: redirectUrl,
           data: {
+            user_type: "member",
             display_name: displayName,
             bio: bio || null,
             referred_by: referrerId,

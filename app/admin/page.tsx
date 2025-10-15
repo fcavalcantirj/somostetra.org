@@ -164,6 +164,15 @@ export default async function AdminDashboard() {
             <h3 className="mb-2 text-lg font-semibold">Diagnóstico do Sistema</h3>
             <p className="text-sm text-white/60">Verifique a saúde do banco de dados</p>
           </Link>
+
+          <Link
+            href="/admin/fix-users"
+            className="rounded-2xl border border-red-500/30 bg-red-500/10 p-6 backdrop-blur-sm transition-all hover:border-red-500/50 hover:bg-red-500/20"
+          >
+            <Users className="mb-4 h-10 w-10 text-red-400" />
+            <h3 className="mb-2 text-lg font-semibold">Corrigir Contas Quebradas</h3>
+            <p className="text-sm text-white/60">Usuários sem perfis (trigger falhou)</p>
+          </Link>
         </div>
 
         {/* Recent Users */}
