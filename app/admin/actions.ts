@@ -149,14 +149,24 @@ export async function updateUserPoints(userId: string, points: number) {
 }
 
 export async function deleteUser(userId: string) {
-  const { supabase } = await checkAdmin()
+  await checkAdmin()
 
-  const { error } = await supabase.from("profiles").delete().eq("id", userId)
+  console.log("[v0] Deleting user:", userId)
 
-  if (error) {
-    console.error("[v0] Error deleting user:", error)
-    return { error: error.message }
+  const serviceRoleClient = createServiceRoleClient()
+
+  // Delete user from auth (this will cascade to profiles via trigger)
+  const { error: authError } = await serviceRoleClient.auth.admin.deleteUser(userId)
+
+  if (authError) {
+    console.error("[v0] Error deleting auth user:", {
+      message: authError.message,
+      status: authError.status,
+    })
+    return { error: `Erro ao deletar usuário: ${authError.message}` }
   }
+
+  console.log("[v0] User deleted successfully")
 
   revalidatePath("/admin/members")
   return { success: true }
