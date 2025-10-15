@@ -22,7 +22,7 @@ DO $$
 DECLARE
   user_record RECORD;
   new_referral_code TEXT;
-  user_type_value TEXT;
+  user_type_value user_type; -- Changed from TEXT to user_type enum
   referrer_id_value UUID;
   display_name_value TEXT;
   rows_inserted INTEGER := 0;
@@ -41,8 +41,9 @@ BEGIN
     LEFT JOIN public.profiles p ON p.id = au.id
     WHERE p.id IS NULL
   LOOP
+    -- Cast text to user_type enum
     -- Determine user type (supporter or member)
-    user_type_value := COALESCE(user_record.metadata_user_type, 'member');
+    user_type_value := COALESCE(user_record.metadata_user_type, 'member')::user_type;
     referrer_id_value := user_record.referred_by;
     display_name_value := COALESCE(user_record.display_name, split_part(user_record.email, '@', 1));
     
@@ -86,8 +87,9 @@ BEGIN
     IF rows_inserted > 0 THEN
       RAISE NOTICE '[FIX] ✓ Profile created for %', user_record.email;
       
+      -- Cast enum to text for comparison
       -- If supporter, create supporter record
-      IF user_type_value = 'supporter' THEN
+      IF user_type_value::text = 'supporter' THEN
         INSERT INTO public.supporters (
           auth_user_id,
           email,
@@ -111,10 +113,11 @@ BEGIN
         END IF;
       END IF;
       
+      -- Cast enum to text for comparison
       -- Award points to referrer if exists
       IF referrer_id_value IS NOT NULL THEN
         UPDATE public.profiles 
-        SET points = points + CASE WHEN user_type_value = 'supporter' THEN 10 ELSE 20 END
+        SET points = points + CASE WHEN user_type_value::text = 'supporter' THEN 10 ELSE 20 END
         WHERE id = referrer_id_value AND TRUE;
         
         RAISE NOTICE '[FIX] ✓ Awarded points to referrer for %', user_record.email;
@@ -124,11 +127,13 @@ BEGIN
       INSERT INTO public.activities (
         user_id,
         activity_type,
+        points,
         description,
         created_at
       ) VALUES (
         user_record.id,
         'signup',
+        10,
         'Usuário cadastrado (recuperado automaticamente)',
         user_record.created_at
       )
