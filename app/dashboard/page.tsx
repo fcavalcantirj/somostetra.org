@@ -97,7 +97,7 @@ export default async function DashboardPage() {
 
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between max-w-full">
-          <Link href="/" className="text-2xl font-bold tracking-tight">
+          <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
           <LogoutButton />

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, TrendingUp, Share2, Sparkles } from "lucide-react"
+import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -80,7 +80,7 @@ export default async function SupporterDashboardPage() {
 
       <header className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between max-w-full">
-          <Link href="/" className="text-2xl font-bold tracking-tight">
+          <Link href="/supporter-dashboard" className="text-2xl font-bold tracking-tight">
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
           <LogoutButton />
@@ -255,6 +255,29 @@ export default async function SupporterDashboardPage() {
                   objetivos.
                 </p>
               </div>
+            </div>
+
+            {/* Leaderboard Link */}
+            <div className="glass-strong p-10 rounded-3xl border-2 border-primary/30 space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
+                  <Trophy className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Ranking da Comunidade</h3>
+                  <p className="text-muted-foreground">Veja os membros mais engajados</p>
+                </div>
+              </div>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Descubra quem são os membros mais ativos da comunidade, quantos pontos conquistaram e quais badges
+                desbloquearam. Inspire-se com os líderes comunitários!
+              </p>
+              <Button asChild size="lg" className="gradient-primary font-bold h-14 w-full sm:w-auto">
+                <Link href="/leaderboard">
+                  Ver Ranking Completo
+                  <Trophy className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
