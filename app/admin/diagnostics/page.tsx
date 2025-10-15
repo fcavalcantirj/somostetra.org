@@ -56,7 +56,7 @@ export default async function AdminDiagnostics() {
   const supportersWithoutAuthId = (allSupporters || []).filter((supporter) => !supporter.auth_user_id)
 
   // CRITICAL CHECK: Auth users without profiles (the bug we just fixed!)
-  const brokenUsers = (authUsers?.users || []).filter(
+  const brokenUsers = (authUsers || []).filter(
     (authUser) => !allProfiles?.find((p) => p.id === authUser.id)
   ).map((authUser) => ({
     id: authUser.id,
@@ -106,7 +106,7 @@ export default async function AdminDiagnostics() {
   const supportersWithoutRecordDetails = (allProfiles || []).filter(
     (profile) => (profile as any).user_type === 'supporter' && !allSupporters?.find((s) => s.auth_user_id === profile.id)
   ).map((profile) => {
-    const authUser = authUsers?.users.find((u) => u.id === profile.id)
+    const authUser = authUsers?.find((u) => u.id === profile.id)
     return {
       id: profile.id,
       display_name: profile.display_name,
@@ -118,7 +118,7 @@ export default async function AdminDiagnostics() {
   // Recently created users (last 7 days) - useful for catching new issues
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-  const recentUsers = (authUsers?.users || []).filter(
+  const recentUsers = (authUsers || []).filter(
     (user) => new Date(user.created_at) >= sevenDaysAgo
   )
   const recentBrokenUsers = recentUsers.filter(
@@ -126,7 +126,7 @@ export default async function AdminDiagnostics() {
   )
 
   // Auth vs Profile count mismatch
-  const totalAuthUsers = authUsers?.users?.length || 0
+  const totalAuthUsers = authUsers?.length || 0
   const totalProfiles = profilesCount || 0
   const authProfileMismatch = totalAuthUsers !== totalProfiles
 
