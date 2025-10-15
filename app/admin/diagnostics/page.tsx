@@ -37,7 +37,7 @@ export default async function AdminDiagnostics() {
     { count: activitiesCount },
   ] = await Promise.all([
     supabase.from("supporters").select("id, name, email, auth_user_id, created_at, referred_by"),
-    supabase.from("profiles").select("id, display_name, referral_code, referred_by, created_at"),
+    supabase.from("profiles").select("id, display_name, referral_code, referred_by, created_at, user_type"),
     supabase.from("profiles").select("*", { count: "exact", head: true }),
     supabase.from("supporters").select("*", { count: "exact", head: true }),
     supabase.from("votes").select("*", { count: "exact", head: true }),
@@ -93,6 +93,43 @@ export default async function AdminDiagnostics() {
     (profile) => profile.referred_by && !allProfiles?.find((p) => p.id === profile.referred_by),
   )
 
+  // Calculate supporter integrity metrics
+  const supporterProfilesWithRecords = (allProfiles || []).filter(
+    (profile) => (profile as any).user_type === 'supporter' && allSupporters?.find((s) => s.auth_user_id === profile.id)
+  ).length
+
+  const supporterProfilesWithoutRecords = (allProfiles || []).filter(
+    (profile) => (profile as any).user_type === 'supporter' && !allSupporters?.find((s) => s.auth_user_id === profile.id)
+  ).length
+
+  // Get detailed list of supporters missing records (for display in issues)
+  const supportersWithoutRecordDetails = (allProfiles || []).filter(
+    (profile) => (profile as any).user_type === 'supporter' && !allSupporters?.find((s) => s.auth_user_id === profile.id)
+  ).map((profile) => {
+    const authUser = authUsers?.users.find((u) => u.id === profile.id)
+    return {
+      id: profile.id,
+      display_name: profile.display_name,
+      email: authUser?.email || 'unknown',
+      created_at: profile.created_at,
+    }
+  })
+
+  // Recently created users (last 7 days) - useful for catching new issues
+  const sevenDaysAgo = new Date()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+  const recentUsers = (authUsers?.users || []).filter(
+    (user) => new Date(user.created_at) >= sevenDaysAgo
+  )
+  const recentBrokenUsers = recentUsers.filter(
+    (user) => !allProfiles?.find((p) => p.id === user.id)
+  )
+
+  // Auth vs Profile count mismatch
+  const totalAuthUsers = authUsers?.users?.length || 0
+  const totalProfiles = profilesCount || 0
+  const authProfileMismatch = totalAuthUsers !== totalProfiles
+
   const tableCounts = {
     profiles: profilesCount || 0,
     supporters: supportersCount || 0,
@@ -102,6 +139,12 @@ export default async function AdminDiagnostics() {
     user_badges: userBadgesCount || 0,
     referrals: referralsCount || 0,
     activities: activitiesCount || 0,
+    // Verification metrics
+    auth_users: totalAuthUsers,
+    supporters_complete: supporterProfilesWithRecords,
+    supporters_incomplete: supporterProfilesWithoutRecords,
+    recent_signups: recentUsers.length,
+    recent_broken: recentBrokenUsers.length,
   }
 
   const issues = [
@@ -117,9 +160,21 @@ export default async function AdminDiagnostics() {
     {
       title: "Apoiadores sem Registro",
       description: "Perfis de apoiador sem entrada na tabela supporters",
-      count: supportersWithoutSupporterRecord.length,
+      count: supportersWithoutRecordDetails.length,
       severity: "high" as const,
-      data: supportersWithoutSupporterRecord.slice(0, 10),
+      data: supportersWithoutRecordDetails.slice(0, 10),
+    },
+    {
+      title: "⚠️ Cadastros Recentes Quebrados (7 dias)",
+      description: "Usuários cadastrados nos últimos 7 dias sem perfil",
+      count: recentBrokenUsers.length,
+      severity: recentBrokenUsers.length > 0 ? "critical" as const : "low" as const,
+      data: recentBrokenUsers.slice(0, 10).map((user) => ({
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at,
+        user_type: user.user_metadata?.user_type || 'unknown',
+      })),
     },
     {
       title: "Códigos de Indicação Duplicados",
@@ -188,9 +243,36 @@ export default async function AdminDiagnostics() {
             </div>
           </div>
 
+          {/* Critical Auth vs Profile Check */}
+          {authProfileMismatch && (
+            <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="h-5 w-5 text-red-400" />
+                <div className="font-semibold text-red-300">Divergência Detectada</div>
+              </div>
+              <div className="text-sm text-white/80">
+                <span className="font-mono">{tableCounts.auth_users}</span> usuários auth vs{" "}
+                <span className="font-mono">{tableCounts.profiles}</span> perfis
+                {" "}= <span className="font-bold text-red-300">{tableCounts.auth_users - tableCounts.profiles}</span> usuários sem perfil
+              </div>
+            </div>
+          )}
+
           {/* Table Counts */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+            <div className={`rounded-lg border p-4 ${
+              authProfileMismatch
+                ? "border-red-500/20 bg-red-500/5"
+                : "border-white/10 bg-white/5"
+            }`}>
+              <div className="text-2xl font-bold">{tableCounts.auth_users}</div>
+              <div className="text-sm text-white/60">Usuários Auth</div>
+            </div>
+            <div className={`rounded-lg border p-4 ${
+              authProfileMismatch
+                ? "border-red-500/20 bg-red-500/5"
+                : "border-white/10 bg-white/5"
+            }`}>
               <div className="text-2xl font-bold">{tableCounts.profiles}</div>
               <div className="text-sm text-white/60">Perfis</div>
             </div>
@@ -221,6 +303,72 @@ export default async function AdminDiagnostics() {
             <div className="rounded-lg border border-white/10 bg-white/5 p-4">
               <div className="text-2xl font-bold">{tableCounts.activities}</div>
               <div className="text-sm text-white/60">Atividades</div>
+            </div>
+          </div>
+
+          {/* Recent Signups Section */}
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h3 className="text-lg font-semibold mb-3">Cadastros Recentes (7 dias)</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+                <div className="text-2xl font-bold text-blue-400">{tableCounts.recent_signups}</div>
+                <div className="text-sm text-white/60">Total de novos usuários</div>
+              </div>
+              <div className={`rounded-lg border p-4 ${
+                tableCounts.recent_broken > 0
+                  ? "border-red-500/20 bg-red-500/5"
+                  : "border-green-500/20 bg-green-500/5"
+              }`}>
+                <div className={`text-2xl font-bold ${
+                  tableCounts.recent_broken > 0 ? "text-red-400" : "text-green-400"
+                }`}>
+                  {tableCounts.recent_broken}
+                </div>
+                <div className="text-sm text-white/60">
+                  {tableCounts.recent_broken > 0 ? "Com problemas 🚨" : "Todos OK ✅"}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Supporter Integrity Verification */}
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <CheckCircle className="h-6 w-6" />
+            Verificação de Integridade dos Apoiadores
+          </h2>
+          <p className="text-sm text-white/60 mb-4">
+            Todos os apoiadores devem ter tanto um perfil (profiles) quanto um registro (supporters)
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={`rounded-lg border p-4 ${
+              tableCounts.supporters_complete > 0
+                ? "border-green-500/20 bg-green-500/5"
+                : "border-white/10 bg-white/5"
+            }`}>
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="h-5 w-5 text-green-400" />
+                <div className="text-lg font-semibold">Apoiadores Completos</div>
+              </div>
+              <div className="text-3xl font-bold text-green-400">{tableCounts.supporters_complete}</div>
+              <div className="text-sm text-white/60 mt-1">Com perfil + registro</div>
+            </div>
+            <div className={`rounded-lg border p-4 ${
+              tableCounts.supporters_incomplete > 0
+                ? "border-red-500/20 bg-red-500/5"
+                : "border-white/10 bg-white/5"
+            }`}>
+              <div className="flex items-center gap-2 mb-2">
+                <XCircle className="h-5 w-5 text-red-400" />
+                <div className="text-lg font-semibold">Apoiadores Incompletos</div>
+              </div>
+              <div className={`text-3xl font-bold ${
+                tableCounts.supporters_incomplete > 0 ? "text-red-400" : "text-white/60"
+              }`}>
+                {tableCounts.supporters_incomplete}
+              </div>
+              <div className="text-sm text-white/60 mt-1">Apenas com perfil</div>
             </div>
           </div>
         </div>
