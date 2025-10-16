@@ -258,11 +258,11 @@ export default function LandingPage() {
                     Acompanhe sua evolução e conquiste badges conforme acumula pontos:
                   </p>
                   <div className="space-y-4">
-                    {/* Primeiro Passo - 0 pontos */}
+                    {/* Primeiro Passo - 1 ponto */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <span className="font-bold text-foreground">🎯 Primeiro Passo</span>
-                        <span className="text-muted-foreground">0 pts</span>
+                        <span className="text-muted-foreground">1 pts</span>
                       </div>
                       <div className="h-2 glass rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-primary to-accent w-full" />

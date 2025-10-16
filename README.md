@@ -45,7 +45,7 @@ Quanto mais você participa, mais você evolui:
 
 | Badge | Nome | Como Conquistar |
 |-------|------|-----------------|
-| 🎯 | **Primeiro Passo** | Completou o cadastro (0 pontos) |
+| 🎯 | **Primeiro Passo** | Completou o cadastro (1 ponto) |
 | ⭐ | **Engajado** | Alcançou 50 pontos de participação |
 | 🌟 | **Influenciador** | Indicou 5 pessoas (100 pontos) |
 | 🗳️ | **Ativista** | Votou em 10 pautas (150 pontos) |
