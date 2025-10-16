@@ -1,241 +1,204 @@
+<div align="center">
+
 # 🌱 SomosTetra
 
-**Plataforma comunitária de engajamento democrático e participação cidadã**
+### Sua voz importa. Sua participação faz a diferença.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/flowcoders/v0-somos-tetra-mvp-plan)
-[![Open Source](https://img.shields.io/badge/Open-Source-green?style=for-the-badge)](https://github.com/fcavalcantirj/somostetra.org)
-[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+**Plataforma comunitária onde pessoas com tetraplegia constroem uma comunidade forte, votam em causas importantes e conquistam reconhecimento por seu engajamento.**
 
----
-
-## 🎯 Sobre o Projeto
-
-**SomosTetra** é uma plataforma open-source desenvolvida para fortalecer a participação democrática e o engajamento comunitário. Como uma **ONG sem fins lucrativos**, nossa missão é criar ferramentas digitais que empoderem comunidades a se organizarem, votarem em causas importantes e construírem redes de apoio mútuo.
-
-### 🌐 Acesse a Plataforma
-
-- **Principal**: [somostetra.org](https://somostetra.org)
-
-*Domínios alternativos (soutetra.com, soutetra.org) redirecionam automaticamente para somostetra.org*
+[🌐 Acesse a Plataforma](https://somostetra.org) • [💡 Veja Como Funciona](#-como-funciona) • [🤝 Participe](#-participe)
 
 ---
 
-## ✨ Funcionalidades
+</div>
 
-### 🗳️ Sistema de Votação
-- Criação e participação em votações comunitárias
-- Categorias: Saúde, Educação, Meio Ambiente, Infraestrutura, Cultura
-- Votações ativas e históricas
-- Painel administrativo para gestão de votações
+## 💡 Por Que Existimos
 
-### 🏆 Gamificação e Conquistas
-- Sistema de pontos por participação
-- 5 badges progressivas (Primeiro Passo, Engajado, Influenciador, Líder Comunitário, Guardião da Comunidade)
-- Ranking da comunidade
-- Reconhecimento por contribuições
+Pessoas com tetraplegia enfrentam desafios únicos e precisam de uma **voz coletiva forte** para influenciar políticas públicas, compartilhar experiências e construir uma rede de apoio.
 
-### 🤝 Sistema de Indicações
-- Links personalizados de convite
-- Compartilhamento via WhatsApp e e-mail
-- Pontos por membros e apoiadores indicados
-- Rastreamento de conexões comunitárias
+**SomosTetra** é essa voz. Uma plataforma 100% gratuita, sem fins lucrativos e transparente, onde você pode:
 
-### 📊 Dashboard Personalizado
-- Estatísticas de participação
-- Progresso de conquistas
-- Histórico de atividades
-- Gestão de perfil
+- 🗳️ **Votar** em causas que realmente importam para a comunidade
+- 🤝 **Conectar-se** com outras pessoas que entendem seus desafios
+- 🏆 **Ser reconhecido** por suas contribuições e engajamento
+- 📊 **Influenciar** decisões sobre saúde, acessibilidade, educação e direitos
 
----
+### 🌐 Acesse Agora
 
-## 🛠️ Tecnologias
+👉 **[somostetra.org](https://somostetra.org)**
 
-### Frontend
-- **[Next.js 15](https://nextjs.org)** - Framework React com App Router
-- **[React 19](https://react.dev)** - Biblioteca UI
-- **[TypeScript](https://www.typescriptlang.org)** - Tipagem estática
-- **[Tailwind CSS v4](https://tailwindcss.com)** - Estilização
-- **[shadcn/ui](https://ui.shadcn.com)** - Componentes UI
+## 🚀 Como Funciona
 
-### Backend & Database
-- **[Supabase](https://supabase.com)** - Backend as a Service
-- **PostgreSQL** - Banco de dados relacional
-- **Row Level Security (RLS)** - Segurança de dados
-- **Database Triggers** - Automação de estatísticas
+### 1️⃣ **Cadastre-se Gratuitamente**
+Crie sua conta em segundos. É 100% gratuito e você já ganha seus primeiros pontos!
 
-### Infraestrutura
-- **[Vercel](https://vercel.com)** - Hospedagem e deploy
-- **GitHub** - Controle de versão
-- **Vercel Analytics** - Monitoramento
+### 2️⃣ **Participe das Votações**
+Vote em causas sobre **saúde, acessibilidade, educação, direitos** e muito mais. Cada voto conta e fortalece a voz da comunidade.
+
+### 3️⃣ **Convide Outras Pessoas**
+Compartilhe seu link de convite e ajude a comunidade a crescer. Quanto mais pessoas, mais forte nossa voz!
+
+### 4️⃣ **Conquiste Badges e Reconhecimento**
+Quanto mais você participa, mais você evolui:
+
+| Badge | Nome | Como Conquistar |
+|-------|------|-----------------|
+| 🌱 | **Primeiro Passo** | Cadastro + 1 voto |
+| 🔥 | **Engajado** | 25 pontos de participação |
+| 📢 | **Influenciador** | 100 pontos + ajude a comunidade crescer |
+| 👑 | **Líder Comunitário** | 250 pontos + liderança ativa |
+| 🛡️ | **Guardião da Comunidade** | 500 pontos + engajamento máximo |
+
+### 5️⃣ **Acompanhe Seu Impacto**
+Veja suas estatísticas, badges conquistadas e posição no ranking. Sua participação é visível e valorizada!
 
 ---
 
-## 🚀 Começando
+## 🎯 Como Você Ganha Pontos
 
-### Pré-requisitos
+- ✅ **+10 pontos** - Cadastro inicial
+- 🗳️ **+5 pontos** - Cada voto em causas importantes
+- 👥 **+20 pontos** - Cada membro (pessoa com tetraplegia) que você convidar
+- 🤝 **+10 pontos** - Cada apoiador que você trouxer para a causa
 
-- Node.js 18+ 
-- npm ou yarn
-- Conta Supabase (gratuita)
+**Quanto mais você participa, mais sua voz é amplificada!**
 
-### Instalação
+## 🛡️ Segurança e Privacidade
 
-1. **Clone o repositório**
-\`\`\`bash
-git clone https://github.com/fcavalcantirj/somostetra.org.git
-cd somostetra.org
-\`\`\`
+**Seus dados são seus.** Nós levamos privacidade a sério:
 
-2. **Instale as dependências**
-\`\`\`bash
-npm install
-\`\`\`
+- 🔒 **Sem venda de dados** - Nunca venderemos suas informações
+- 🚫 **Zero anúncios** - Plataforma 100% livre de publicidade
+- 👁️ **Transparente** - Código aberto e auditável por qualquer pessoa
+- 🔐 **Seguro** - Proteção de dados em todas as camadas
+- 📋 **Política clara** - Leia nossa [política de privacidade](https://somostetra.org/privacidade)
 
-3. **Configure as variáveis de ambiente**
-
-Crie um arquivo `.env.local` com as seguintes variáveis:
-
-\`\`\`env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=sua_url_supabase
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anonima
-SUPABASE_SERVICE_ROLE_KEY=sua_chave_service_role
-
-# Site
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000
-\`\`\`
-
-4. **Execute os scripts SQL**
-
-No painel do Supabase, execute os scripts na pasta `scripts/` em ordem:
-- `001_create_tables.sql` - Cria as tabelas
-- `002_seed_badges.sql` - Popula badges
-- `003_create_rls_policies.sql` - Configura segurança
-- `004_add_admin_flag.sql` - Adiciona funcionalidade admin
-- `005_add_vote_categories.sql` - Adiciona categorias
-- `006_add_vote_constraints.sql` - Adiciona índices
-- `007_restrict_vote_creation_to_admins.sql` - Restringe criação de votos
-- `008_create_supporters_table.sql` - Cria tabela de apoiadores
-- `009_add_increment_points_function.sql` - Função de pontos
-- `010_create_statistics_table_and_triggers.sql` - Estatísticas automáticas
-- `011_add_comprehensive_indexes.sql` - Índices de performance
-- `012_add_duplicate_protection.sql` - Proteção contra duplicatas
-
-5. **Inicie o servidor de desenvolvimento**
-\`\`\`bash
-npm run dev
-\`\`\`
-
-Acesse [http://localhost:3000](http://localhost:3000) no navegador.
+**Sua privacidade não é negociável.**
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📊 O Poder da Comunidade Unida
 
-\`\`\`
-somostetra.org/
-├── app/                      # App Router do Next.js
-│   ├── admin/               # Painel administrativo
-│   ├── auth/                # Autenticação (login, signup)
-│   ├── badges/              # Página de conquistas
-│   ├── dashboard/           # Dashboard do usuário
-│   ├── leaderboard/         # Ranking da comunidade
-│   ├── referrals/           # Sistema de indicações
-│   ├── votes/               # Sistema de votação
-│   ├── privacidade/         # Política de privacidade
-│   └── page.tsx             # Landing page
-├── components/              # Componentes React
-│   ├── ui/                  # Componentes shadcn/ui
-│   └── ...                  # Componentes customizados
-├── lib/                     # Utilitários e configurações
-├── scripts/                 # Scripts SQL do banco de dados
-└── public/                  # Arquivos estáticos
-\`\`\`
+### Por Que Números Importam
 
----
+Quando somos muitos, nossa voz **não pode ser ignorada**:
 
-## 🤝 Como Contribuir
+- 📈 **100 pessoas**: Começo de uma comunidade
+- 🎯 **1.000 pessoas**: Força para dialogar com autoridades
+- 🚀 **10.000 pessoas**: Poder real de influência em políticas públicas
+- 💪 **100.000+ pessoas**: Voz impossível de ser ignorada
 
-Adoramos contribuições da comunidade! Aqui está como você pode ajudar:
+**Quanto maior a comunidade, maior o impacto de cada votação.**
 
-### 1. Reporte Bugs
-Encontrou um problema? [Abra uma issue](https://github.com/fcavalcantirj/somostetra.org/issues) descrevendo:
-- O que aconteceu
-- O que você esperava que acontecesse
-- Passos para reproduzir o problema
+### 🏆 Gamificação e Engajamento
 
-### 2. Sugira Funcionalidades
-Tem uma ideia? [Abra uma issue](https://github.com/fcavalcantirj/somostetra.org/issues) com a tag `enhancement` explicando:
-- Qual problema a funcionalidade resolve
-- Como você imagina que funcionaria
-- Por que seria útil para a comunidade
+Participar é **divertido e gratificante**:
 
-### 3. Contribua com Código
+- 🎮 **Sistema de Pontos** - Cada ação conta e é recompensada
+- 🏅 **5 Níveis de Badges** - Mostre seu compromisso com a causa
+- 📊 **[Ranking da Comunidade](https://somostetra.org/leaderboard)** - Veja os membros mais engajados
+- 📈 **Dashboard Personalizado** - Acompanhe seu crescimento e impacto
+- 🎯 **Metas e Conquistas** - Desafios para manter você motivado
 
-\`\`\`bash
-# 1. Fork o projeto
-# 2. Crie uma branch para sua feature
-git checkout -b feature/minha-feature
+**Participação social nunca foi tão envolvente!**
 
-# 3. Commit suas mudanças
-git commit -m 'feat: adiciona minha feature'
+### 🌐 Múltiplos Domínios, Uma Comunidade
 
-# 4. Push para a branch
-git push origin feature/minha-feature
+Acesse a plataforma de qualquer lugar:
 
-# 5. Abra um Pull Request
-\`\`\`
+- **[somostetra.org](https://somostetra.org)** ⭐ Principal
+- **[soutetra.org](https://soutetra.org)** 🔄 Redireciona automaticamente
+- **[soutetra.com](https://soutetra.com)** 🔄 Redireciona automaticamente
 
-### Padrões de Commit
-Seguimos o [Conventional Commits](https://www.conventionalcommits.org/):
-- `feat:` - Nova funcionalidade
-- `fix:` - Correção de bug
-- `docs:` - Documentação
-- `style:` - Formatação
-- `refactor:` - Refatoração de código
-- `test:` - Testes
-- `chore:` - Manutenção
+*Todos os domínios levam você para o mesmo lugar: nossa comunidade unida.*
 
 ---
 
-## 📄 Licença
+## 🤝 Como Você Pode Ajudar
 
-Este projeto é **100% open-source** e está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+### 👥 **Como Membro da Comunidade**
+
+1. **[Cadastre-se](https://somostetra.org)** e faça parte da comunidade
+2. **Vote** nas causas que importam para você
+3. **Convide amigos** e ajude a comunidade a crescer
+4. **Compartilhe** nas redes sociais
+
+### 💻 **Como Desenvolvedor**
+
+Quer melhorar a plataforma? Adoramos contribuições!
+
+- 🐛 **[Reporte bugs](https://github.com/fcavalcantirj/somostetra.org/issues)** - Encontrou algo errado?
+- 💡 **[Sugira melhorias](https://github.com/fcavalcantirj/somostetra.org/issues)** - Tem ideias?
+- 🔧 **[Contribua com código](https://github.com/fcavalcantirj/somostetra.org)** - Fork e envie um PR!
+
+**Tecnologias**: Next.js 15, React 19, TypeScript, Supabase, Tailwind CSS v4
+
+### 🎨 **Como Designer/UX**
+
+- Sugira melhorias de interface
+- Ajude a tornar a plataforma mais acessível
+- Crie materiais visuais para redes sociais
+
+### 📢 **Como Apoiador**
+
+- Compartilhe a plataforma nas redes sociais
+- Fale sobre SomosTetra com amigos e familiares
+- Ajude a amplificar as causas da comunidade
 
 ---
 
-## 🌟 Transparência
+## 🌟 100% Transparente e Open Source
 
-### Open Source
-Todo o código desta plataforma é aberto e auditável. Acreditamos em transparência total e convidamos a comunidade a revisar, contribuir e melhorar o projeto.
+### Por Que Open Source?
 
-**Repositório**: [github.com/fcavalcantirj/somostetra.org](https://github.com/fcavalcantirj/somostetra.org)
+**Transparência total.** Todo o código desta plataforma está aberto para qualquer pessoa ver, revisar e auditar:
+
+- 👁️ **Você pode ver exatamente como seus dados são tratados**
+- 🔍 **Qualquer pessoa pode auditar a segurança**
+- 🤝 **Desenvolvedores podem contribuir e melhorar**
+- 💡 **Outras comunidades podem usar e adaptar**
+
+👉 **[Ver código no GitHub](https://github.com/fcavalcantirj/somostetra.org)**
 
 ### ONG Sem Fins Lucrativos
-SomosTetra é uma organização sem fins lucrativos. **Nunca** haverá monetização, anúncios ou venda de dados. Nossa missão é servir a comunidade, não lucrar com ela.
+
+**Nossa promessa:** SomosTetra **NUNCA** terá:
+- ❌ Anúncios
+- ❌ Venda de dados
+- ❌ Mensalidades ou taxas
+- ❌ Interesses comerciais
+
+**✅ 100% gratuito. 100% da comunidade. Para sempre.**
 
 ---
 
-## 📞 Contato
+## 📞 Fale Conosco
 
-- **E-mail**: privacidade@somostetra.org
-- **GitHub**: [@fcavalcantirj](https://github.com/fcavalcantirj)
-- **Instagram**: [@sou.tetra](https://instagram.com/sou.tetra)
-- **LinkedIn**: [SomosTetra](https://linkedin.com/company/sou-tetra)
-
----
-
-## 🙏 Agradecimentos
-
-Agradecemos a todos os contribuidores, apoiadores e membros da comunidade que tornam este projeto possível. Juntos, estamos construindo uma plataforma mais democrática e participativa.
+- 📧 **E-mail**: fcavalcanti@somostetra.org.br
+- 💻 **GitHub**: [@fcavalcantirj](https://github.com/fcavalcantirj)
+- 📱 **Instagram**: [@sou.tetra](https://instagram.com/sou.tetra)
+- 💼 **LinkedIn**: [SomosTetra](https://linkedin.com/company/sou-tetra)
 
 ---
 
 <div align="center">
 
-**Feito com ❤️ pela comunidade SomosTetra**
+## 🚀 Pronto Para Fazer a Diferença?
 
-[⭐ Star no GitHub](https://github.com/fcavalcantirj/somostetra.org) • [🐛 Reportar Bug](https://github.com/fcavalcantirj/somostetra.org/issues) • [💡 Sugerir Feature](https://github.com/fcavalcantirj/somostetra.org/issues)
+**Sua voz importa. Junte-se a nós.**
+
+### [🌐 Acesse a Plataforma Agora](https://somostetra.org)
+
+---
+
+**Feito com ❤️ pela e para a comunidade**
+
+[⭐ Star no GitHub](https://github.com/fcavalcantirj/somostetra.org) • [🐛 Reportar Bug](https://github.com/fcavalcantirj/somostetra.org/issues) • [💡 Sugerir Melhoria](https://github.com/fcavalcantirj/somostetra.org/issues) • [📊 Ver Ranking](https://somostetra.org/leaderboard)
+
+---
+
+[![Open Source](https://img.shields.io/badge/100%25-Open%20Source-green?style=for-the-badge)](https://github.com/fcavalcantirj/somostetra.org)
+[![Non Profit](https://img.shields.io/badge/ONG-Sem%20Fins%20Lucrativos-blue?style=for-the-badge)](#)
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js%2015-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
 
 </div>
