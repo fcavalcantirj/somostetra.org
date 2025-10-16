@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy } from "lucide-react"
+import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -27,7 +27,8 @@ export default async function SupporterDashboardPage() {
     redirect("/dashboard")
   }
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle()
+  // Fetch supporter's profile - must exist since supporter record exists
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
 
   // Fetch referrer info if exists
   let referrerInfo = null
@@ -57,9 +58,20 @@ export default async function SupporterDashboardPage() {
   // Fetch total supporters count
   const { count: supportersCount } = await supabase.from("supporters").select("*", { count: "exact", head: true })
 
-  const supporterLink = referrerInfo
-    ? `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/supporter-signup?ref=${referrerInfo.referral_code}`
+  // Fetch supporter's own referrals (supporters they invited)
+  const { data: myReferrals } = await supabase
+    .from("supporters")
+    .select("id, name, created_at")
+    .eq("referred_by", user.id)
+    .order("created_at", { ascending: false })
+
+  // FIXED: Use supporter's OWN referral code, not their referrer's code!
+  const supporterLink = profile?.referral_code
+    ? `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/supporter-signup?ref=${profile.referral_code}`
     : `${process.env.NEXT_PUBLIC_SITE_URL || "https://sou.tetra"}/auth/supporter-signup`
+
+  const myReferralsCount = myReferrals?.length || 0
+  const pointsFromReferrals = myReferralsCount * 10
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -191,20 +203,71 @@ export default async function SupporterDashboardPage() {
           <div className="space-y-8">
             <h2 className="text-4xl font-black">Amplifique Nosso Impacto</h2>
 
+            {/* How to Earn Points Section */}
+            {profile && (
+              <div className="glass-strong p-10 rounded-3xl space-y-6 border-2 border-blue-500/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">Como Você Ganha Pontos</h3>
+                    <p className="text-muted-foreground">Suas contribuições são reconhecidas!</p>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="glass p-6 rounded-2xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Votações</span>
+                      <Badge className="gradient-accent font-bold">+5 pts</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Cada voto em causas importantes</p>
+                  </div>
+
+                  <div className="glass p-6 rounded-2xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Indicações</span>
+                      <Badge className="gradient-accent font-bold">+10 pts</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Cada apoiador que você trouxer</p>
+                  </div>
+                </div>
+
+                <div className="glass p-6 rounded-2xl border-2 border-accent/30">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Seus Pontos</p>
+                      <p className="text-4xl font-black text-gradient">{profile.points || 0}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Suas Indicações</p>
+                      <p className="text-4xl font-black text-gradient">{myReferralsCount}</p>
+                    </div>
+                  </div>
+                  {myReferralsCount > 0 && (
+                    <p className="text-sm text-muted-foreground">
+                      Você ganhou <span className="text-accent font-bold">{pointsFromReferrals} pontos</span> por suas indicações!
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="glass-strong p-10 rounded-3xl space-y-6 border-2 border-accent/30">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl gradient-accent flex items-center justify-center">
                   <Heart className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold">Convide Mais Apoiadores</h3>
-                  <p className="text-muted-foreground">Quanto mais somos, mais forte é nossa voz</p>
+                  <h3 className="text-2xl font-bold">Compartilhe SEU Link Único</h3>
+                  <p className="text-muted-foreground">Ganhe +10 pontos por cada apoiador!</p>
                 </div>
               </div>
 
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Compartilhe este link com amigos e familiares que também querem apoiar a causa. Juntos, podemos
-                pressionar autoridades e conquistar direitos para a comunidade tetraplégica!
+                Este é o <span className="text-accent font-bold">seu link pessoal</span>. Compartilhe com amigos e familiares que também querem apoiar a causa.
+                Você ganha pontos por cada pessoa que se cadastrar usando seu link!
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">

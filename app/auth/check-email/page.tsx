@@ -1,12 +1,13 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export default function CheckEmailPage({
+export default async function CheckEmailPage({
   searchParams,
 }: {
-  searchParams: { type?: string }
+  searchParams: Promise<{ type?: string }>
 }) {
-  const isSupporter = searchParams.type === "supporter"
+  const params = await searchParams
+  const isSupporter = params.type === "supporter"
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6">

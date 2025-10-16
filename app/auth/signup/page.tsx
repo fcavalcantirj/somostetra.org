@@ -76,7 +76,7 @@ export default function SignupPage() {
 
       console.log("[v0] Member signup metadata:", {
         user_type: "member",
-        display_name: displayName,
+        full_name: displayName,
         bio: bio || null,
         referred_by: referrerId,
       })
@@ -88,7 +88,7 @@ export default function SignupPage() {
           emailRedirectTo: redirectUrl,
           data: {
             user_type: "member",
-            display_name: displayName,
+            full_name: displayName,  // FIXED: Changed from display_name to full_name to match trigger
             bio: bio || null,
             referred_by: referrerId,
           },

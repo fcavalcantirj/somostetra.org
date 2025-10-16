@@ -111,11 +111,10 @@ export default async function VoteDetailPage({ params }: { params: Promise<{ id:
               <div className="glass p-8 rounded-2xl space-y-4 border-2 border-primary/20">
                 <div className="flex items-center gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary" />
-                  <h3 className="text-2xl font-black">Você já votou nesta pauta!</h3>
+                  <h3 className="text-2xl font-black">Obrigado por votar!</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Obrigado por participar. Você ganhou <span className="text-accent font-bold">5 pontos</span> por este
-                  voto.
+                  Seu voto foi registrado com sucesso. Você ganhou <span className="text-accent font-bold">5 pontos</span> por participar desta votação.
                 </p>
               </div>
             ) : (

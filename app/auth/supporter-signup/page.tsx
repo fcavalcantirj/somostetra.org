@@ -76,7 +76,7 @@ export default function SupporterSignupPage() {
 
       console.log("[v0] Signup metadata:", {
         user_type: "supporter",
-        display_name: name,
+        full_name: name,
         phone: phone || null,
         referred_by: referrerId,
       })
@@ -88,20 +88,24 @@ export default function SupporterSignupPage() {
           emailRedirectTo: redirectUrl,
           data: {
             user_type: "supporter",
-            display_name: name,
+            full_name: name,  // FIXED: Changed from display_name to full_name to match trigger
             phone: phone || null,
             referred_by: referrerId,
           },
         },
       })
 
-      if (signUpError) throw signUpError
+      if (signUpError) {
+        console.error("[v0] SignUp Error Object:", JSON.stringify(signUpError, null, 2))
+        throw signUpError
+      }
 
       trackSignup("supporter", referralCode || undefined)
 
       router.push("/auth/check-email?type=supporter")
     } catch (err: unknown) {
       console.error("[v0] Error creating supporter:", err)
+      console.error("[v0] Error stringified:", JSON.stringify(err, null, 2))
       setError(err instanceof Error ? err.message : "Erro ao criar conta de apoiador")
     } finally {
       setIsLoading(false)
