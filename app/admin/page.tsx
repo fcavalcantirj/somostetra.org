@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { Users, Vote, Award, Database } from "lucide-react"
+import { Users, Vote, Award, Database, TrendingUp } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminDashboard() {
@@ -172,6 +172,15 @@ export default async function AdminDashboard() {
             <Users className="mb-4 h-10 w-10 text-red-400" />
             <h3 className="mb-2 text-lg font-semibold">Corrigir Contas Quebradas</h3>
             <p className="text-sm text-white/60">Usuários sem perfis (trigger falhou)</p>
+          </Link>
+
+          <Link
+            href="/admin/points-audit"
+            className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/10"
+          >
+            <TrendingUp className="mb-4 h-10 w-10 text-cyan-400" />
+            <h3 className="mb-2 text-lg font-semibold">Auditoria de Pontos</h3>
+            <p className="text-sm text-white/60">Verificar pontos reais vs. calculados</p>
           </Link>
         </div>
 
