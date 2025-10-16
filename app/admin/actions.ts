@@ -155,21 +155,52 @@ export async function deleteUser(userId: string) {
 
   const serviceRoleClient = createServiceRoleClient()
 
-  // Delete user from auth (this will cascade to profiles via trigger)
-  const { error: authError } = await serviceRoleClient.auth.admin.deleteUser(userId)
+  try {
+    // Step 1: Delete related records that might not cascade properly
+    // Delete user_badges
+    await serviceRoleClient.from("user_badges").delete().eq("user_id", userId)
 
-  if (authError) {
-    console.error("[v0] Error deleting auth user:", {
-      message: authError.message,
-      status: authError.status,
-    })
-    return { error: `Erro ao deletar usuário: ${authError.message}` }
+    // Delete user_votes
+    await serviceRoleClient.from("user_votes").delete().eq("user_id", userId)
+
+    // Delete activities
+    await serviceRoleClient.from("activities").delete().eq("user_id", userId)
+
+    // Delete referrals where user is referrer or referred
+    await serviceRoleClient.from("referrals").delete().eq("referrer_id", userId)
+    await serviceRoleClient.from("referrals").delete().eq("referred_id", userId)
+
+    // Update other profiles that were referred by this user (set to null)
+    await serviceRoleClient.from("profiles").update({ referred_by: null }).eq("referred_by", userId)
+
+    // Delete votes created by this user (will cascade to user_votes)
+    await serviceRoleClient.from("votes").delete().eq("created_by", userId)
+
+    // Step 2: Delete profile
+    const { error: profileError } = await serviceRoleClient.from("profiles").delete().eq("id", userId)
+
+    if (profileError) {
+      console.error("[v0] Error deleting profile:", profileError)
+      return { error: `Erro ao deletar perfil: ${profileError.message}` }
+    }
+
+    // Step 3: Delete auth user
+    const { error: authError } = await serviceRoleClient.auth.admin.deleteUser(userId)
+
+    if (authError) {
+      console.error("[v0] Error deleting auth user:", authError)
+      // Profile already deleted, so warn but don't fail
+      return { error: `Perfil deletado, mas erro ao deletar autenticação: ${authError.message}` }
+    }
+
+    console.log("[v0] User deleted successfully")
+
+    revalidatePath("/admin/members")
+    return { success: true }
+  } catch (error: any) {
+    console.error("[v0] Unexpected error deleting user:", error)
+    return { error: `Erro inesperado: ${error.message || error}` }
   }
-
-  console.log("[v0] User deleted successfully")
-
-  revalidatePath("/admin/members")
-  return { success: true }
 }
 
 export async function convertSupporterToMember(supporterId: string) {
@@ -335,39 +366,65 @@ export async function deleteSupporter(supporterId: string) {
 
   const serviceRoleClient = createServiceRoleClient()
 
-  // Check if supporter has a profile (converted member)
-  const { data: supporter } = await serviceRoleClient
-    .from("supporters")
-    .select("auth_user_id, name")
-    .eq("id", supporterId)
-    .single()
+  try {
+    // Get supporter data to check for auth_user_id
+    const { data: supporter } = await serviceRoleClient
+      .from("supporters")
+      .select("auth_user_id, name, email")
+      .eq("id", supporterId)
+      .single()
 
-  if (supporter?.auth_user_id) {
-    const { data: profile } = await serviceRoleClient
-      .from("profiles")
-      .select("id")
-      .eq("id", supporter.auth_user_id)
-      .maybeSingle()
-
-    if (profile) {
-      console.log("[v0] Supporter has a profile, deleting phantom record")
+    if (!supporter) {
+      return { error: "Apoiador não encontrado" }
     }
+
+    // Step 1: Delete supporter record from supporters table
+    const { error: deleteError } = await serviceRoleClient.from("supporters").delete().eq("id", supporterId)
+
+    if (deleteError) {
+      console.error("[v0] Error deleting supporter record:", deleteError)
+      return { error: `Erro ao deletar registro de apoiador: ${deleteError.message}` }
+    }
+
+    console.log("[v0] Supporter record deleted")
+
+    // Step 2: If supporter has auth user, delete it too
+    if (supporter.auth_user_id) {
+      console.log("[v0] Supporter has auth user, deleting:", supporter.auth_user_id)
+
+      // Check if they have a profile (converted to member)
+      const { data: profile } = await serviceRoleClient
+        .from("profiles")
+        .select("id, user_type")
+        .eq("id", supporter.auth_user_id)
+        .maybeSingle()
+
+      if (profile) {
+        console.log("[v0] WARNING: Supporter has a profile with user_type:", profile.user_type)
+        return {
+          error: `Este apoiador foi convertido em ${profile.user_type}. Use a página de ${profile.user_type === "member" ? "membros" : "apoiadores"} para deletar.`,
+        }
+      }
+
+      // Delete the auth user (no profile exists)
+      const { error: authError } = await serviceRoleClient.auth.admin.deleteUser(supporter.auth_user_id)
+
+      if (authError) {
+        console.error("[v0] Error deleting auth user:", authError)
+        return {
+          error: `Registro de apoiador deletado, mas erro ao deletar autenticação: ${authError.message}`,
+        }
+      }
+
+      console.log("[v0] Auth user deleted successfully")
+    }
+
+    console.log("[v0] Supporter deleted completely")
+
+    revalidatePath("/admin/supporters")
+    return { success: true }
+  } catch (error: any) {
+    console.error("[v0] Unexpected error deleting supporter:", error)
+    return { error: `Erro inesperado: ${error.message || error}` }
   }
-
-  const { error: deleteError } = await serviceRoleClient.from("supporters").delete().eq("id", supporterId)
-
-  if (deleteError) {
-    console.error("[v0] Error deleting supporter:", {
-      message: deleteError.message,
-      details: deleteError.details,
-      hint: deleteError.hint,
-      code: deleteError.code,
-    })
-    return { error: `Erro ao deletar apoiador: ${deleteError.message}` }
-  }
-
-  console.log("[v0] Supporter deleted successfully")
-
-  revalidatePath("/admin/supporters")
-  return { success: true }
 }

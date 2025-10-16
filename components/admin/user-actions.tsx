@@ -57,10 +57,18 @@ export function UserActions({
     if (!confirm("Tem certeza que deseja deletar este usuário? Esta ação não pode ser desfeita.")) return
 
     setLoading(true)
-    const result = await deleteUser(userId)
+    try {
+      const result = await deleteUser(userId)
 
-    if (result.error) {
-      alert(result.error)
+      if (result.error) {
+        alert(`Erro: ${result.error}`)
+      } else if (result.success) {
+        alert("Usuário deletado com sucesso!")
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error("Delete error:", error)
+      alert(`Erro inesperado: ${error}`)
     }
 
     setLoading(false)

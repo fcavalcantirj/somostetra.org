@@ -5,7 +5,17 @@
       "Bash(cat:*)",
       "Bash(awk:*)",
       "Bash(xargs:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(for var in \"NEXT_PUBLIC_SUPABASE_URL\" \"NEXT_PUBLIC_SUPABASE_ANON_KEY\" \"SUPABASE_SERVICE_ROLE_KEY\" \"NEXT_PUBLIC_SITE_URL\" \"NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL\")",
+      "Bash(do echo \"=== $var ===\")",
+      "Bash(done)",
+      "Bash(if [ -f \"/Users/fcavalcanti/dev/somostetra.org/.env.example\" ])",
+      "Bash(then cat /Users/fcavalcanti/dev/somostetra.org/.env.example)",
+      "Bash(else echo \"No .env.example found\")",
+      "Bash(fi)",
+      "Bash(if [ -f \"/Users/fcavalcanti/dev/somostetra.org/.env.local\" ])",
+      "Bash(then echo \"=== NEXT_PUBLIC_SUPABASE_URL ===\")",
+      "Bash(else echo \"File .env.local does not exist\")"
     ],
     "deny": [],
     "ask": []
