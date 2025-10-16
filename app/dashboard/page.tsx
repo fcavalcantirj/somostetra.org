@@ -391,17 +391,17 @@ export default async function DashboardPage() {
                           }`}
                         >
                           <div
-                            className={`w-10 h-10 rounded-xl ${index === 0 ? "bg-background/20" : "bg-muted-foreground/20"} flex items-center justify-center font-black text-lg`}
+                            className={`w-10 h-10 rounded-xl ${index === 0 ? "bg-background/20" : "bg-muted-foreground/20"} flex items-center justify-center font-black text-lg ${index === 0 ? "text-white" : ""}`}
                           >
                             {index + 1}
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold">{member.display_name}</p>
-                            <p className={`text-sm ${index === 0 ? "opacity-80" : "text-muted-foreground"}`}>
+                            <p className={`font-bold ${index === 0 ? "text-white" : ""}`}>{member.display_name}</p>
+                            <p className={`text-sm ${index === 0 ? "text-white/80" : "text-muted-foreground"}`}>
                               {member.points} pts
                             </p>
                           </div>
-                          {index === 0 && <Trophy className="w-5 h-5" />}
+                          {index === 0 && <Trophy className="w-5 h-5 text-white" />}
                         </div>
                       ))}
 

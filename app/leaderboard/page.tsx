@@ -128,11 +128,11 @@ export default async function LeaderboardPage() {
                       }`}
                     >
                       {index === 0 ? (
-                        <Trophy className="w-8 h-8" />
+                        <Trophy className="w-8 h-8 text-white" />
                       ) : index === 1 ? (
-                        <Medal className="w-8 h-8" />
+                        <Medal className="w-8 h-8 text-white" />
                       ) : index === 2 ? (
-                        <Award className="w-8 h-8" />
+                        <Award className="w-8 h-8 text-white" />
                       ) : (
                         <span className="text-2xl font-black">{index + 1}</span>
                       )}
