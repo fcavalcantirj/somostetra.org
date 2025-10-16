@@ -265,7 +265,7 @@ export default function LandingPage() {
                         <span className="text-muted-foreground">1 pts</span>
                       </div>
                       <div className="h-2 glass rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-primary to-accent w-full" />
+                        <div className="h-full bg-gradient-to-r from-primary to-accent w-[2%]" />
                       </div>
                     </div>
 
