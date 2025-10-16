@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🌱 SomosTetra
+<img src="public/logo_somos_tetra.jpeg" alt="SomosTetra Logo" width="150"/>
+
+# SomosTetra
 
 ### Sua voz importa. Sua participação faz a diferença.
 
