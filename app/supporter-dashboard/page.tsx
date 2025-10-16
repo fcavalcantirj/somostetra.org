@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { LogoutButton } from "@/components/logout-button"
 import { CopyButton } from "@/components/copy-button"
 import { trackDashboardView } from "@/lib/analytics"
+import { BadgeProgressBar } from "@/components/badge-progress-bar"
 
 export default async function SupporterDashboardPage() {
   const supabase = await createClient()
@@ -72,6 +73,12 @@ export default async function SupporterDashboardPage() {
 
   const myReferralsCount = myReferrals?.length || 0
   const pointsFromReferrals = myReferralsCount * 10
+
+  // Fetch all available badges for progress calculation
+  const { data: allBadges } = await supabase
+    .from("badges")
+    .select("name, icon, points_required")
+    .order("points_required", { ascending: true })
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -143,6 +150,65 @@ export default async function SupporterDashboardPage() {
               </p>
             </div>
           </div>
+
+          {/* How to Earn Points Section - High Priority */}
+          {profile && allBadges && allBadges.length > 0 && (
+            <div className="mb-16">
+              <h2 className="text-4xl font-black mb-6">Amplifique Nosso Impacto</h2>
+              <div className="glass-strong p-10 rounded-3xl space-y-6 border-2 border-blue-500/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">Seu Progresso</h3>
+                    <p className="text-muted-foreground">Suas contribuições são reconhecidas!</p>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="glass p-6 rounded-2xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Votações</span>
+                      <Badge className="gradient-accent font-bold">+5 pts</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Cada voto em causas importantes</p>
+                  </div>
+
+                  <div className="glass p-6 rounded-2xl space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Indicações</span>
+                      <Badge className="gradient-accent font-bold">+10 pts</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Cada apoiador que você trouxer</p>
+                  </div>
+                </div>
+
+                <div className="glass p-6 rounded-2xl border-2 border-accent/30 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Seus Pontos</p>
+                      <p className="text-4xl font-black text-gradient">{profile.points || 0}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Suas Indicações</p>
+                      <p className="text-4xl font-black text-gradient">{myReferralsCount}</p>
+                    </div>
+                  </div>
+                  {myReferralsCount > 0 && (
+                    <p className="text-sm text-muted-foreground">
+                      Você ganhou <span className="text-accent font-bold">{pointsFromReferrals} pontos</span> por suas indicações!
+                    </p>
+                  )}
+
+                  {/* Progress Bar */}
+                  <div className="pt-4 border-t border-border/50">
+                    <BadgeProgressBar currentPoints={profile.points || 0} badges={allBadges} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Active Votes Section */}
           {activeVotes && activeVotes.length > 0 && (
@@ -234,8 +300,8 @@ export default async function SupporterDashboardPage() {
                   </div>
                 </div>
 
-                <div className="glass p-6 rounded-2xl border-2 border-accent/30">
-                  <div className="flex items-center justify-between mb-4">
+                <div className="glass p-6 rounded-2xl border-2 border-accent/30 space-y-4">
+                  <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Seus Pontos</p>
                       <p className="text-4xl font-black text-gradient">{profile.points || 0}</p>
@@ -249,6 +315,13 @@ export default async function SupporterDashboardPage() {
                     <p className="text-sm text-muted-foreground">
                       Você ganhou <span className="text-accent font-bold">{pointsFromReferrals} pontos</span> por suas indicações!
                     </p>
+                  )}
+
+                  {/* Progress Bar */}
+                  {allBadges && allBadges.length > 0 && (
+                    <div className="pt-4 border-t border-border/50">
+                      <BadgeProgressBar currentPoints={profile.points || 0} badges={allBadges} />
+                    </div>
                   )}
                 </div>
               </div>

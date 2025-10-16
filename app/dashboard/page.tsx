@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { LogoutButton } from "@/components/logout-button"
 import { CopyButton } from "@/components/copy-button"
 import { trackDashboardView } from "@/lib/analytics"
+import { BadgeProgressBar } from "@/components/badge-progress-bar"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -59,6 +60,12 @@ export default async function DashboardPage() {
 
   // Fetch user badges
   const { data: userBadges } = await supabase.from("user_badges").select("*, badges(*)").eq("user_id", user.id).limit(3)
+
+  // Fetch all available badges for progress calculation
+  const { data: allBadges } = await supabase
+    .from("badges")
+    .select("name, icon, points_required")
+    .order("points_required", { ascending: true })
 
   // Fetch leaderboard
   const { data: leaderboard } = await supabase
@@ -160,6 +167,16 @@ export default async function DashboardPage() {
               <p className="text-muted-foreground">Participações totais</p>
             </div>
           </div>
+
+          {/* Progress Section - High Priority */}
+          {allBadges && allBadges.length > 0 && (
+            <div className="mb-16">
+              <h2 className="text-4xl font-black mb-6">Seu Progresso</h2>
+              <div className="glass-strong p-8 rounded-3xl">
+                <BadgeProgressBar currentPoints={profile?.points || 0} badges={allBadges} />
+              </div>
+            </div>
+          )}
 
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Main Content */}

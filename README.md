@@ -45,11 +45,11 @@ Quanto mais você participa, mais você evolui:
 
 | Badge | Nome | Como Conquistar |
 |-------|------|-----------------|
-| 🌱 | **Primeiro Passo** | Cadastro + 1 voto |
-| 🔥 | **Engajado** | 25 pontos de participação |
-| 📢 | **Influenciador** | 100 pontos + ajude a comunidade crescer |
-| 👑 | **Líder Comunitário** | 250 pontos + liderança ativa |
-| 🛡️ | **Guardião da Comunidade** | 500 pontos + engajamento máximo |
+| 🎯 | **Primeiro Passo** | Completou o cadastro (0 pontos) |
+| ⭐ | **Engajado** | Alcançou 50 pontos de participação |
+| 🌟 | **Influenciador** | Indicou 5 pessoas (100 pontos) |
+| 🗳️ | **Ativista** | Votou em 10 pautas (150 pontos) |
+| 👑 | **Líder Comunitário** | Alcançou 500 pontos e liderança ativa |
 
 ### 5️⃣ **Acompanhe Seu Impacto**
 Veja suas estatísticas, badges conquistadas e posição no ranking. Sua participação é visível e valorizada!

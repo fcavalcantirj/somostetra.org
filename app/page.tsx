@@ -127,7 +127,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              A primeira plataforma que une, fortalece e dá voz à comunidade tetraplégica do Brasil
+              A primeira plataforma que une, fortalece e dá voz à comunidade tetraplégica do Brasil. Juntos, construímos mudanças reais.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -154,7 +154,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-3xl font-black">Conecte-se</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Convide amigos e cresça nossa comunidade. Ganhe pontos e badges por cada conexão.
+                Cada nova conexão fortalece nossa voz. Juntos, somos ouvidos.
               </p>
             </div>
 
@@ -164,7 +164,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-3xl font-black">Vote</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Participe de votações e petições. Sua voz molda políticas e ações coletivas.
+                Sua opinião importa. Cada voto molda o futuro que queremos ver.
               </p>
             </div>
 
@@ -174,7 +174,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-3xl font-black">Conquiste</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Ganhe reconhecimento por suas contribuições. Desbloqueie badges e suba no ranking.
+                Seu engajamento é reconhecido e celebrado. Faça parte dos líderes que transformam.
               </p>
             </div>
           </div>
@@ -255,38 +255,62 @@ export default function LandingPage() {
                 <div className="space-y-4">
                   <h3 className="text-2xl font-black">Desbloqueie Badges</h3>
                   <p className="text-lg text-muted-foreground leading-relaxed">
-                    Conquiste badges automáticos conforme acumula pontos:
+                    Acompanhe sua evolução e conquiste badges conforme acumula pontos:
                   </p>
-                  <div className="space-y-3 pl-4 border-l-2 border-primary/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      <span className="text-muted-foreground">
-                        <span className="font-bold text-foreground">Primeiro Passo</span> - Ao se cadastrar
-                      </span>
+                  <div className="space-y-4">
+                    {/* Primeiro Passo - 0 pontos */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-bold text-foreground">🎯 Primeiro Passo</span>
+                        <span className="text-muted-foreground">0 pts</span>
+                      </div>
+                      <div className="h-2 glass rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-accent w-full" />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      <span className="text-muted-foreground">
-                        <span className="font-bold text-foreground">Engajado</span> - 50 pontos
-                      </span>
+
+                    {/* Engajado - 50 pontos */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-bold text-foreground">⭐ Engajado</span>
+                        <span className="text-muted-foreground">50 pts</span>
+                      </div>
+                      <div className="h-2 glass rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-accent w-[30%]" />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      <span className="text-muted-foreground">
-                        <span className="font-bold text-foreground">Influenciador</span> - 100 pontos
-                      </span>
+
+                    {/* Influenciador - 100 pontos */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-bold text-foreground">🌟 Influenciador</span>
+                        <span className="text-muted-foreground">100 pts</span>
+                      </div>
+                      <div className="h-2 glass rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-accent w-[50%]" />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      <span className="text-muted-foreground">
-                        <span className="font-bold text-foreground">Ativista</span> - 150 pontos
-                      </span>
+
+                    {/* Ativista - 150 pontos */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-bold text-foreground">🗳️ Ativista</span>
+                        <span className="text-muted-foreground">150 pts</span>
+                      </div>
+                      <div className="h-2 glass rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-accent w-[70%]" />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-accent" />
-                      <span className="text-muted-foreground">
-                        <span className="font-bold text-accent">Líder Comunitário</span> - 500 pontos
-                      </span>
+
+                    {/* Líder Comunitário - 500 pontos */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-bold text-accent">👑 Líder Comunitário</span>
+                        <span className="text-accent font-bold">500 pts</span>
+                      </div>
+                      <div className="h-2 glass rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-accent to-primary w-full animate-pulse" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -323,8 +347,7 @@ export default function LandingPage() {
                 <div className="space-y-3">
                   <h3 className="text-2xl font-black">Impacto Real</h3>
                   <p className="text-lg text-muted-foreground leading-relaxed">
-                    Seus pontos não são apenas números - representam sua contribuição real para fortalecer nossa voz
-                    coletiva e criar mudanças concretas.
+                    Seus pontos não são apenas números - são a medida do quanto você ajuda a transformar nossa comunidade. Cada ação conta. Cada voz importa.
                   </p>
                 </div>
               </div>
@@ -389,7 +412,7 @@ export default function LandingPage() {
               FAZER PARTE?
             </h2>
             <p className="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">
-              Junte-se a centenas de brasileiros construindo uma comunidade mais forte
+              Sua voz pode mudar vidas. Junte-se a nós e faça parte de algo maior.
             </p>
             <Button
               asChild
