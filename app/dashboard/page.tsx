@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Users, Trophy, Share2, TrendingUp, Sparkles, Plus, Heart } from "lucide-react"
+import { Users, Trophy, Share2, TrendingUp, Sparkles, Plus, Heart, UserCircle, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -70,7 +70,7 @@ export default async function DashboardPage() {
   // Fetch leaderboard
   const { data: leaderboard } = await supabase
     .from("profiles")
-    .select("id, display_name, points")
+    .select("id, display_name, points, username, profile_public")
     .order("points", { ascending: false })
     .limit(10)
 
@@ -107,7 +107,12 @@ export default async function DashboardPage() {
           <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
-          <LogoutButton />
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard/profile" className="hover:opacity-80 transition-opacity" title="Editar Perfil">
+              <UserCircle className="w-6 h-6" />
+            </Link>
+            <LogoutButton />
+          </div>
         </div>
       </header>
 
@@ -123,6 +128,31 @@ export default async function DashboardPage() {
             </h1>
             <p className="text-xl text-muted-foreground">Bem-vinda de volta à sua comunidade</p>
           </div>
+
+          {/* Complete Profile CTA */}
+          {!profile?.profile_completed && (
+            <div className="mb-12">
+              <Link href="/dashboard/profile" className="block">
+                <div className="glass-strong p-6 sm:p-8 rounded-3xl border-2 border-accent/50 hover:border-accent transition-colors hover:scale-[1.01] transition-transform">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl gradient-accent flex items-center justify-center flex-shrink-0">
+                      <UserCircle className="w-8 h-8" />
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl sm:text-2xl font-black">Complete seu perfil</h3>
+                        <Badge className="gradient-primary font-bold">+50 pontos</Badge>
+                      </div>
+                      <p className="text-muted-foreground">
+                        Preencha suas informações para ganhar pontos e criar sua página pública para receber doações via PIX
+                      </p>
+                    </div>
+                    <ArrowRight className="w-6 h-6 text-accent hidden sm:block" />
+                  </div>
+                </div>
+              </Link>
+            </div>
+          )}
 
           <div className="grid md:grid-cols-3 gap-6 mb-16">
             <Link
@@ -396,7 +426,16 @@ export default async function DashboardPage() {
                             {index + 1}
                           </div>
                           <div className="flex-1">
-                            <p className={`font-bold ${index === 0 ? "text-white" : ""}`}>{member.display_name}</p>
+                            {member.profile_public && member.username ? (
+                              <Link
+                                href={`/p/${member.username}`}
+                                className={`font-bold hover:underline ${index === 0 ? "text-white" : ""}`}
+                              >
+                                {member.display_name}
+                              </Link>
+                            ) : (
+                              <p className={`font-bold ${index === 0 ? "text-white" : ""}`}>{member.display_name}</p>
+                            )}
                             <p className={`text-sm ${index === 0 ? "text-white/80" : "text-muted-foreground"}`}>
                               {member.points} pts
                             </p>

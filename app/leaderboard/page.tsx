@@ -15,11 +15,13 @@ export default async function LeaderboardPage() {
     .from("profiles")
     .select(
       `
-      id, 
-      display_name, 
-      points, 
+      id,
+      display_name,
+      points,
       created_at,
       user_type,
+      username,
+      profile_public,
       member_referrals:referrals!referrer_id(count),
       supporter_referrals:supporters!referred_by(count)
     `,
@@ -140,7 +142,16 @@ export default async function LeaderboardPage() {
 
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1">
-                        <p className="text-xl font-black">{member.display_name}</p>
+                        {member.profile_public && member.username ? (
+                          <Link
+                            href={`/p/${member.username}`}
+                            className="text-xl font-black hover:text-primary transition-colors"
+                          >
+                            {member.display_name}
+                          </Link>
+                        ) : (
+                          <p className="text-xl font-black">{member.display_name}</p>
+                        )}
                         {isCurrentUser && <Badge className="gradient-accent font-bold">Você</Badge>}
                         {isSupporter && !isCurrentUser && (
                           <Badge variant="outline" className="border-blue/30 text-blue font-bold">

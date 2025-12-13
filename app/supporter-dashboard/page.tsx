@@ -36,7 +36,7 @@ export default async function SupporterDashboardPage() {
   if (supporter.referred_by) {
     const { data: referrer } = await supabase
       .from("profiles")
-      .select("display_name, referral_code")
+      .select("display_name, referral_code, username, profile_public")
       .eq("id", supporter.referred_by)
       .single()
     referrerInfo = referrer
@@ -256,7 +256,16 @@ export default async function SupporterDashboardPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold">Convidado por</h3>
-                  <p className="text-2xl font-black text-gradient">{referrerInfo.display_name}</p>
+                  {referrerInfo.profile_public && referrerInfo.username ? (
+                    <Link
+                      href={`/p/${referrerInfo.username}`}
+                      className="text-2xl font-black text-gradient hover:opacity-80 transition-opacity"
+                    >
+                      {referrerInfo.display_name}
+                    </Link>
+                  ) : (
+                    <p className="text-2xl font-black text-gradient">{referrerInfo.display_name}</p>
+                  )}
                 </div>
               </div>
               <p className="text-muted-foreground">

@@ -23,7 +23,7 @@ export default async function ReferralsPage() {
   // Fetch all referred members with details
   const { data: referredMembers } = await supabase
     .from("profiles")
-    .select("id, display_name, created_at, points, user_type")
+    .select("id, display_name, created_at, points, user_type, username, profile_public")
     .eq("referred_by", user.id)
     .order("created_at", { ascending: false })
 
@@ -127,7 +127,16 @@ export default async function ReferralsPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
-                          <h3 className="text-xl font-bold">{member.display_name}</h3>
+                          {member.profile_public && member.username ? (
+                            <Link
+                              href={`/p/${member.username}`}
+                              className="text-xl font-bold hover:text-primary transition-colors"
+                            >
+                              {member.display_name}
+                            </Link>
+                          ) : (
+                            <h3 className="text-xl font-bold">{member.display_name}</h3>
+                          )}
                           <Badge variant="outline" className="font-bold">
                             Membro
                           </Badge>

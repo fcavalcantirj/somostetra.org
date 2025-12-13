@@ -15,7 +15,13 @@
       "Bash(fi)",
       "Bash(if [ -f \"/Users/fcavalcanti/dev/somostetra.org/.env.local\" ])",
       "Bash(then echo \"=== NEXT_PUBLIC_SUPABASE_URL ===\")",
-      "Bash(else echo \"File .env.local does not exist\")"
+      "Bash(else echo \"File .env.local does not exist\")",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(npx tsc:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)"
     ],
     "deny": [],
     "ask": []
