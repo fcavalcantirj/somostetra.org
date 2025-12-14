@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Users, Trophy, Share2, TrendingUp, Sparkles, Plus, Heart, UserCircle, ArrowRight } from "lucide-react"
+import { Users, Trophy, Share2, TrendingUp, Sparkles, Plus, Heart, UserCircle, ArrowRight, Star, Microscope } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -108,6 +108,9 @@ export default async function DashboardPage() {
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/dashboard/clinical-trials" className="hover:opacity-80 transition-opacity" title="Estudos Clínicos">
+              <Microscope className="w-6 h-6 text-teal-400" />
+            </Link>
             <Link href="/dashboard/profile" className="hover:opacity-80 transition-opacity" title="Editar Perfil">
               <UserCircle className="w-6 h-6" />
             </Link>
@@ -148,6 +151,31 @@ export default async function DashboardPage() {
                       </p>
                     </div>
                     <ArrowRight className="w-6 h-6 text-accent hidden sm:block" />
+                  </div>
+                </div>
+              </Link>
+            </div>
+          )}
+
+          {/* Wishes CTA - Only show if profile is completed */}
+          {profile?.profile_completed && (
+            <div className="mb-12">
+              <Link href="/dashboard/wishes" className="block">
+                <div className="glass-strong p-6 sm:p-8 rounded-3xl border-2 border-primary/50 hover:border-primary transition-colors hover:scale-[1.01] transition-transform">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                      <Star className="w-8 h-8" />
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl sm:text-2xl font-black">Seus Desejos</h3>
+                        <Badge className="gradient-accent font-bold">Novo!</Badge>
+                      </div>
+                      <p className="text-muted-foreground">
+                        Compartilhe o que você precisa e deixe a comunidade ajudar. Sua necessidade pode ser realizada!
+                      </p>
+                    </div>
+                    <ArrowRight className="w-6 h-6 text-primary hidden sm:block" />
                   </div>
                 </div>
               </Link>

@@ -21,7 +21,9 @@
       "Bash(wc:*)",
       "Bash(npx tsc:*)",
       "Bash(curl:*)",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(npx next lint:*)",
+      "Bash(npx next build:*)"
     ],
     "deny": [],
     "ask": []

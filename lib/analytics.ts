@@ -215,3 +215,32 @@ export const trackLogout = () => {
 }
 
 export const trackEvent = event
+
+// Homepage section view tracking (scroll-based)
+export const trackSectionView = (sectionId: string) => {
+  event({
+    action: "section_viewed",
+    category: "Homepage",
+    label: sectionId,
+  })
+}
+
+// Homepage CTA click tracking with identifiers
+export const trackHomepageCTA = (ctaId: string, destination: string) => {
+  event({
+    action: "homepage_cta_clicked",
+    category: "Homepage",
+    label: `${ctaId}_to_${destination}`,
+  })
+}
+
+// Track which signup path users choose
+export const trackSignupPathChosen = (
+  path: "member" | "supporter" | "clinical_trials" | "wishes" | "public_profile"
+) => {
+  event({
+    action: "signup_path_chosen",
+    category: "Onboarding",
+    label: path,
+  })
+}

@@ -2,17 +2,20 @@
 -- SOMOSTETRA.ORG - GOLDEN SCHEMA
 -- ============================================================================
 -- Consolidated database schema extracted from production on 2024-12-12
+-- Updated 2024-12-14: Added wishes system (migration 055)
 -- This file is the single source of truth for the database structure.
 --
 -- Contents:
 --   1. Extensions
 --   2. Enums
---   3. Tables (9 total)
+--   3. Tables (11 total: profiles, supporters, votes, user_votes, referrals,
+--              badges, user_badges, activities, platform_statistics,
+--              wish_categories, wishes)
 --   4. Indexes
---   5. Functions (22 total)
---   6. Triggers (25 total)
---   7. RLS Policies (33 total)
---   8. Seed Data (badges)
+--   5. Functions (25 total)
+--   6. Triggers (28 total)
+--   7. RLS Policies (41 total)
+--   8. Seed Data (badges, wish_categories)
 -- ============================================================================
 
 -- ============================================================================
@@ -27,6 +30,7 @@ CREATE TYPE user_type AS ENUM ('member', 'supporter');
 CREATE TYPE gender_type AS ENUM ('feminino', 'masculino', 'nao_binario', 'prefiro_nao_informar');
 CREATE TYPE communication_preference AS ENUM ('email', 'whatsapp', 'sms', 'telefone');
 CREATE TYPE asia_scale AS ENUM ('A', 'B', 'C', 'D', 'nao_sei');
+CREATE TYPE wish_status AS ENUM ('pending', 'approved', 'fulfilled', 'rejected');
 
 -- ============================================================================
 -- 3. TABLES
@@ -71,6 +75,7 @@ CREATE TABLE profiles (
   profile_picture_url TEXT,
   profile_completed BOOLEAN DEFAULT FALSE,
   profile_public BOOLEAN DEFAULT FALSE,
+  bio_public BOOLEAN DEFAULT FALSE,
 
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -159,6 +164,8 @@ CREATE TABLE platform_statistics (
   total_votes_cast INTEGER DEFAULT 0,
   total_connections INTEGER NOT NULL DEFAULT 0,
   total_badges_earned INTEGER DEFAULT 0,
+  total_wishes INTEGER DEFAULT 0,
+  total_wishes_fulfilled INTEGER DEFAULT 0,
   last_updated TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -168,6 +175,79 @@ CREATE UNIQUE INDEX platform_statistics_singleton_idx ON platform_statistics ((T
 -- Insert initial statistics row
 INSERT INTO platform_statistics (total_members, total_supporters, total_votes, total_connections)
 VALUES (0, 0, 0, 0);
+
+-- wish_categories: Admin-managed wish categories for statistics
+CREATE TABLE wish_categories (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL UNIQUE,
+  icon TEXT NOT NULL DEFAULT '📦',
+  description TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- wishes: Member wishes/needs that can be fulfilled by community
+CREATE TABLE wishes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  content TEXT NOT NULL CHECK (length(TRIM(content)) > 0),
+  status wish_status DEFAULT 'pending',
+  -- Category assigned by admin when approving (for statistics)
+  category_id UUID REFERENCES wish_categories(id) ON DELETE SET NULL,
+  -- Fulfiller tracking
+  fulfilled_at TIMESTAMPTZ,
+  fulfiller_user_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  fulfiller_name TEXT,
+  fulfiller_email TEXT,
+  fulfiller_is_member BOOLEAN,
+  fulfiller_points_awarded INTEGER DEFAULT 0,
+  fulfilled_notes TEXT,
+  -- Admin fields
+  admin_notes TEXT,
+  approved_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  approved_at TIMESTAMPTZ,
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- wish_help_requests table (supporters expressing interest in helping)
+CREATE TABLE wish_help_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  wish_id UUID NOT NULL REFERENCES wishes(id) ON DELETE CASCADE,
+  helper_name TEXT NOT NULL,
+  helper_email TEXT NOT NULL,
+  helper_phone TEXT,
+  message TEXT,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'completed', 'declined')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- clinical_trial_notifications table (track notifications sent to members)
+CREATE TABLE clinical_trial_notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nct_id TEXT NOT NULL,
+  trial_title TEXT NOT NULL,
+  member_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  notified_by UUID NOT NULL REFERENCES profiles(id),  -- Admin who sent
+  custom_message TEXT,
+  sent_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(nct_id, member_id)  -- Prevent duplicate notifications
+);
+
+-- clinical_trial_searches table (track search queries for analytics/study)
+CREATE TABLE clinical_trial_searches (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  query_conditions TEXT[] NOT NULL,          -- array of condition keywords searched
+  query_status TEXT[],                       -- status filters applied (RECRUITING, etc.)
+  query_phase TEXT[],                        -- phase filters applied
+  query_location_state TEXT,                 -- Brazilian state if selected
+  query_distance INTEGER,                    -- distance in miles if location search
+  brazil_only BOOLEAN DEFAULT FALSE,         -- if "Apenas Brasil" filter was active
+  results_count INTEGER,                     -- number of results returned
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 -- ============================================================================
 -- 4. INDEXES
@@ -219,6 +299,37 @@ CREATE INDEX idx_activities_user_id ON activities (user_id);
 CREATE INDEX idx_activities_activity_type ON activities (activity_type);
 CREATE INDEX idx_activities_created_at ON activities (created_at DESC);
 CREATE INDEX idx_activities_user_type ON activities (user_id, activity_type);
+
+-- wishes indexes
+CREATE INDEX idx_wishes_user_id ON wishes (user_id);
+CREATE INDEX idx_wishes_status ON wishes (status);
+CREATE INDEX idx_wishes_status_created_at ON wishes (status, created_at DESC);
+CREATE INDEX idx_wishes_category_id ON wishes (category_id);
+CREATE INDEX idx_wishes_fulfiller_user_id ON wishes (fulfiller_user_id);
+
+-- CONSTRAINT: Only ONE active wish per member (pending or approved)
+CREATE UNIQUE INDEX idx_wishes_one_active_per_user
+  ON wishes (user_id)
+  WHERE status IN ('pending', 'approved');
+
+-- CONSTRAINT: Prevent exact duplicate content per user
+CREATE UNIQUE INDEX idx_wishes_unique_content_per_user
+  ON wishes (user_id, md5(content))
+  WHERE status != 'rejected';
+
+-- wish_help_requests indexes
+CREATE INDEX idx_wish_help_requests_wish_id ON wish_help_requests(wish_id);
+CREATE INDEX idx_wish_help_requests_status ON wish_help_requests(status);
+CREATE INDEX idx_wish_help_requests_created_at ON wish_help_requests(created_at DESC);
+
+-- clinical_trial_notifications indexes
+CREATE INDEX idx_ctn_member_id ON clinical_trial_notifications(member_id);
+CREATE INDEX idx_ctn_nct_id ON clinical_trial_notifications(nct_id);
+CREATE INDEX idx_ctn_sent_at ON clinical_trial_notifications(sent_at DESC);
+
+-- clinical_trial_searches indexes
+CREATE INDEX idx_clinical_searches_user ON clinical_trial_searches(user_id);
+CREATE INDEX idx_clinical_searches_date ON clinical_trial_searches(created_at DESC);
 
 -- ============================================================================
 -- 5. FUNCTIONS
@@ -556,6 +667,44 @@ BEGIN
 END;
 $$;
 
+-- Wishes statistics functions
+CREATE OR REPLACE FUNCTION increment_wishes()
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE plpgsql AS $$
+BEGIN
+  UPDATE platform_statistics SET total_wishes = total_wishes + 1, last_updated = NOW() WHERE TRUE;
+  RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION decrement_wishes()
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE plpgsql AS $$
+BEGIN
+  UPDATE platform_statistics SET total_wishes = GREATEST(0, total_wishes - 1), last_updated = NOW() WHERE TRUE;
+  RETURN OLD;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION update_wishes_fulfilled()
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE plpgsql AS $$
+BEGIN
+  IF NEW.status = 'fulfilled' AND (OLD.status IS NULL OR OLD.status != 'fulfilled') THEN
+    UPDATE platform_statistics SET total_wishes_fulfilled = total_wishes_fulfilled + 1, last_updated = NOW() WHERE TRUE;
+  ELSIF OLD.status = 'fulfilled' AND NEW.status != 'fulfilled' THEN
+    UPDATE platform_statistics SET total_wishes_fulfilled = GREATEST(0, total_wishes_fulfilled - 1), last_updated = NOW() WHERE TRUE;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
 -- ============================================================================
 -- 6. TRIGGERS
 -- ============================================================================
@@ -647,6 +796,19 @@ CREATE TRIGGER decrement_badges_count_trigger
   AFTER DELETE ON user_badges
   FOR EACH ROW EXECUTE FUNCTION decrement_badges_count();
 
+-- Wishes triggers
+CREATE TRIGGER on_wish_insert
+  AFTER INSERT ON wishes
+  FOR EACH ROW EXECUTE FUNCTION increment_wishes();
+
+CREATE TRIGGER on_wish_delete
+  AFTER DELETE ON wishes
+  FOR EACH ROW EXECUTE FUNCTION decrement_wishes();
+
+CREATE TRIGGER on_wish_status_change
+  AFTER UPDATE ON wishes
+  FOR EACH ROW EXECUTE FUNCTION update_wishes_fulfilled();
+
 -- ============================================================================
 -- 7. ROW LEVEL SECURITY (RLS)
 -- ============================================================================
@@ -661,6 +823,10 @@ ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_badges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE activities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE platform_statistics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE wish_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE wishes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE wish_help_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE clinical_trial_notifications ENABLE ROW LEVEL SECURITY;
 
 -- profiles policies
 CREATE POLICY "Users can view all profiles" ON profiles FOR SELECT USING (TRUE);
@@ -718,6 +884,48 @@ CREATE POLICY "Users can insert own activities" ON activities FOR INSERT WITH CH
 -- platform_statistics policies
 CREATE POLICY "Anyone can view statistics" ON platform_statistics FOR SELECT USING (TRUE);
 
+-- wish_categories policies
+CREATE POLICY "Anyone can view active categories" ON wish_categories FOR SELECT
+  USING (is_active = TRUE);
+CREATE POLICY "Admins can manage categories" ON wish_categories FOR ALL
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = TRUE));
+
+-- wishes policies
+CREATE POLICY "Anyone can view approved/fulfilled wishes" ON wishes FOR SELECT
+  USING (status IN ('approved', 'fulfilled'));
+CREATE POLICY "Users can view own wishes" ON wishes FOR SELECT
+  USING (auth.uid() = user_id);
+CREATE POLICY "Users can create own wishes" ON wishes FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own pending wishes" ON wishes FOR UPDATE
+  USING (auth.uid() = user_id AND status = 'pending')
+  WITH CHECK (auth.uid() = user_id AND status = 'pending');
+CREATE POLICY "Users can delete own pending wishes" ON wishes FOR DELETE
+  USING (auth.uid() = user_id AND status = 'pending');
+CREATE POLICY "Admins can manage all wishes" ON wishes FOR ALL
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = TRUE));
+
+-- wish_help_requests policies
+CREATE POLICY "Anyone can submit help requests" ON wish_help_requests FOR INSERT
+  WITH CHECK (TRUE);
+CREATE POLICY "Admins can manage help requests" ON wish_help_requests FOR ALL
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = TRUE));
+
+-- clinical_trial_notifications policies
+CREATE POLICY "Admins can manage trial notifications" ON clinical_trial_notifications FOR ALL
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = TRUE));
+CREATE POLICY "Members can view own notifications" ON clinical_trial_notifications FOR SELECT
+  USING (auth.uid() = member_id);
+
+-- clinical_trial_searches policies
+ALTER TABLE clinical_trial_searches ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can insert own searches" ON clinical_trial_searches FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can view own searches" ON clinical_trial_searches FOR SELECT
+  USING (auth.uid() = user_id);
+CREATE POLICY "Admins can view all searches" ON clinical_trial_searches FOR SELECT
+  USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = TRUE));
+
 -- ============================================================================
 -- 8. SEED DATA
 -- ============================================================================
@@ -729,6 +937,15 @@ INSERT INTO badges (name, description, icon, points_required) VALUES
   ('Influenciador', 'Indicou 5 ou mais pessoas', '🌟', 100),
   ('Ativista', 'Votou em 10 ou mais pautas', '🗳️', 150),
   ('Líder Comunitário', 'Alcançou 500 pontos e é muito ativo', '👑', 500)
+ON CONFLICT (name) DO NOTHING;
+
+-- Insert default wish categories
+INSERT INTO wish_categories (name, icon, description) VALUES
+  ('Cadeira de Rodas', '🦽', 'Cadeiras de rodas manuais ou motorizadas'),
+  ('Medicamento', '💊', 'Medicamentos e remédios'),
+  ('Cateter', '🏥', 'Cateteres e materiais de sondagem'),
+  ('Equipamento', '🔧', 'Equipamentos e adaptações'),
+  ('Outro', '📦', 'Outros itens não categorizados')
 ON CONFLICT (name) DO NOTHING;
 
 -- ============================================================================

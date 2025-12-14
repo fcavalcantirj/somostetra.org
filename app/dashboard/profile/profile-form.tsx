@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { ProfilePictureUpload } from "@/components/profile-picture-upload"
 import {
   saveProfile,
@@ -24,13 +25,14 @@ const BRAZILIAN_STATES = [
   "RO", "RR", "RS", "SC", "SE", "SP", "TO"
 ] as const
 import {
-  User, Phone, MapPin, Calendar, Heart, Banknote, Globe, Loader2, Check, X, Sparkles
+  User, Phone, MapPin, Calendar, Heart, Globe, Loader2, Check, X, Sparkles, FileText
 } from "lucide-react"
 
 interface Profile {
   id: string
   display_name: string
   bio: string | null
+  bio_public: boolean | null
   user_type: string
   username: string | null
   phone: string | null
@@ -97,6 +99,8 @@ export function ProfileForm({ profile, userEmail, isMember }: ProfileFormProps) 
     pix_key: profile.pix_key || "",
     profile_picture_url: profile.profile_picture_url || "",
     profile_public: profile.profile_public || false,
+    bio: profile.bio || "",
+    bio_public: profile.bio_public || false,
   })
 
   const [usernameStatus, setUsernameStatus] = useState<{
@@ -386,6 +390,52 @@ export function ProfileForm({ profile, userEmail, isMember }: ProfileFormProps) 
         </div>
       </section>
 
+      {/* Bio Section */}
+      <section className="glass-strong p-6 sm:p-8 rounded-3xl">
+        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <FileText className="h-5 w-5" />
+          Sobre Você
+        </h2>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Textarea
+              id="bio"
+              value={formData.bio}
+              onChange={(e) => updateField("bio", e.target.value)}
+              placeholder="Conte um pouco sobre você..."
+              rows={4}
+            />
+            <p className="text-xs text-muted-foreground">
+              Uma breve descrição sobre você que pode ser exibida no perfil público
+            </p>
+          </div>
+
+          {/* Bio Public Toggle */}
+          <div className="flex items-center justify-between p-4 rounded-lg glass">
+            <div>
+              <Label>Exibir bio no perfil público</Label>
+              <p className="text-xs text-muted-foreground mt-1">
+                Sua bio será visível para todos que visitarem seu perfil
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => updateField("bio_public", !formData.bio_public)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                formData.bio_public ? "bg-primary" : "bg-muted"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  formData.bio_public ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Medical Info (Members only) */}
       {isMember && (
         <section className="glass-strong p-6 sm:p-8 rounded-3xl">
@@ -512,24 +562,10 @@ export function ProfileForm({ profile, userEmail, isMember }: ProfileFormProps) 
       {/* Public Profile Settings */}
       <section className="glass-strong p-6 sm:p-8 rounded-3xl">
         <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Banknote className="h-5 w-5" />
-          Perfil Público & PIX
+          <Globe className="h-5 w-5" />
+          Perfil Público
         </h2>
         <div className="space-y-6">
-          {/* PIX Key */}
-          <div className="space-y-2">
-            <Label htmlFor="pix_key">Chave PIX</Label>
-            <Input
-              id="pix_key"
-              value={formData.pix_key}
-              onChange={(e) => updateField("pix_key", e.target.value)}
-              placeholder="CPF, e-mail, telefone ou chave aleatória"
-            />
-            <p className="text-xs text-muted-foreground">
-              Sua chave PIX será exibida no perfil público para receber doações
-            </p>
-          </div>
-
           {/* Public Profile Toggle */}
           <div className="flex items-center justify-between p-4 rounded-lg glass">
             <div>

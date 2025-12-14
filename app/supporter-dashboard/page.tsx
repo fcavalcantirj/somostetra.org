@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award } from "lucide-react"
+import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award, Microscope } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -102,7 +102,12 @@ export default async function SupporterDashboardPage() {
           <Link href="/supporter-dashboard" className="text-2xl font-bold tracking-tight">
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
-          <LogoutButton />
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard/clinical-trials" className="hover:opacity-80 transition-opacity" title="Estudos Clínicos">
+              <Microscope className="w-6 h-6 text-teal-400" />
+            </Link>
+            <LogoutButton />
+          </div>
         </div>
       </header>
 

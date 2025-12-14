@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { User, Calendar, MapPin, Award, Heart, ExternalLink, Sparkles } from "lucide-react"
+import { User, Calendar, MapPin, Award, Heart, ExternalLink, Sparkles, Star } from "lucide-react"
 import { Metadata } from "next"
-import { PixCopyButton } from "./pix-copy-button"
 import { Button } from "@/components/ui/button"
+import { HelpWishButton } from "@/components/help-wish-button"
 
 interface PageProps {
   params: Promise<{ username: string }>
@@ -44,12 +44,12 @@ export default async function PublicProfilePage({ params }: PageProps) {
       id,
       display_name,
       bio,
+      bio_public,
       user_type,
       username,
       city,
       state,
       profile_picture_url,
-      pix_key,
       profile_public,
       created_at
     `)
@@ -67,6 +67,18 @@ export default async function PublicProfilePage({ params }: PageProps) {
     .select("*, badges(*)")
     .eq("user_id", profile.id)
     .order("earned_at", { ascending: false })
+
+  // Fetch approved wishes for this member
+  const { data: wishes } = await supabase
+    .from("wishes")
+    .select(`
+      id,
+      content,
+      wish_categories(icon, name)
+    `)
+    .eq("user_id", profile.id)
+    .eq("status", "approved")
+    .order("approved_at", { ascending: false })
 
   const memberSince = new Date(profile.created_at).toLocaleDateString("pt-BR", {
     month: "long",
@@ -143,8 +155,8 @@ export default async function PublicProfilePage({ params }: PageProps) {
                   </div>
                 </div>
 
-                {/* Bio */}
-                {profile.bio && (
+                {/* Bio - only show if bio_public is true */}
+                {profile.bio && profile.bio_public && (
                   <p className="text-lg text-muted-foreground max-w-xl mb-6">{profile.bio}</p>
                 )}
 
@@ -181,25 +193,41 @@ export default async function PublicProfilePage({ params }: PageProps) {
             </div>
           )}
 
-          {/* PIX Donation */}
-          {profile.pix_key && (
-            <div className="glass-strong p-8 sm:p-10 rounded-3xl border-2 border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-transparent">
-              <h2 className="text-2xl font-black mb-2 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center">
-                  <Heart className="h-5 w-5" />
-                </div>
-                Apoie {profile.display_name.split(" ")[0]}
+          {/* Wishes */}
+          {wishes && wishes.length > 0 && (
+            <div className="glass-strong p-8 rounded-3xl mb-8">
+              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
+                <Star className="h-6 w-6 text-accent" />
+                Desejos
               </h2>
-              <p className="text-muted-foreground mb-8 text-lg">
-                Faça uma doação via PIX para ajudar diretamente esta pessoa.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                <div className="flex-1 p-5 rounded-2xl glass border border-border/50">
-                  <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider font-bold">Chave PIX</p>
-                  <p className="font-mono text-lg break-all">{profile.pix_key}</p>
-                </div>
-                <PixCopyButton pixKey={profile.pix_key} />
+              <div className="space-y-4">
+                {wishes.map((wish) => {
+                  const category = wish.wish_categories as { icon: string; name: string }[] | null
+                  return (
+                    <div
+                      key={wish.id}
+                      className="p-5 rounded-2xl glass border border-border/50"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
+                          <span className="text-xl">{category?.[0]?.icon || "🙏"}</span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-lg leading-relaxed">{wish.content}</p>
+                          <div className="flex items-center justify-between mt-3">
+                            {category?.[0]?.name && (
+                              <p className="text-sm text-muted-foreground">{category[0].name}</p>
+                            )}
+                            <HelpWishButton
+                              wishId={wish.id}
+                              memberName={profile.display_name}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}

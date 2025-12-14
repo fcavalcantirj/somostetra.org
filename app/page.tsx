@@ -3,11 +3,37 @@
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Sparkles, Users, Vote, Trophy, Gift, Zap, Target } from "lucide-react"
+import {
+  ArrowRight,
+  Sparkles,
+  Users,
+  Vote,
+  Trophy,
+  Gift,
+  Zap,
+  Target,
+  Heart,
+  Star,
+  Microscope,
+  Globe,
+  Bell,
+  Search,
+  MapPin,
+  Link as LinkIcon,
+  User,
+} from "lucide-react"
 import Link from "next/link"
+import { HelpWishButton } from "@/components/help-wish-button"
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { trackReferralClick, trackLeaderboardView, trackHowItWorksInteraction } from "@/lib/analytics"
+import {
+  trackReferralClick,
+  trackLeaderboardView,
+  trackHowItWorksInteraction,
+  trackSectionView,
+  trackHomepageCTA,
+  trackSignupPathChosen,
+} from "@/lib/analytics"
 import { createClient } from "@/lib/supabase/client"
 
 export default function LandingPage() {
@@ -18,6 +44,13 @@ export default function LandingPage() {
   const [votesCast, setVotesCast] = useState(0)
   const [connections, setConnections] = useState(0)
   const [badges, setBadges] = useState(0)
+  const [wishesFulfilled, setWishesFulfilled] = useState(0)
+  const [wishes, setWishes] = useState<{
+    id: string
+    content: string
+    profiles: { display_name: string; username: string | null }[] | null
+    wish_categories: { icon: string }[] | null
+  }[]>([])
 
   useEffect(() => {
     const ref = searchParams.get("ref")
@@ -35,7 +68,7 @@ export default function LandingPage() {
       const { data: stats } = await supabase
         .from("platform_statistics")
         .select(
-          "total_members, total_supporters, total_votes, total_votes_cast, total_connections, total_badges_earned",
+          "total_members, total_supporters, total_votes, total_votes_cast, total_connections, total_badges_earned, total_wishes_fulfilled",
         )
         .single()
 
@@ -45,30 +78,58 @@ export default function LandingPage() {
       setVotesCast(stats?.total_votes_cast || 0)
       setConnections(stats?.total_connections || 0)
       setBadges(stats?.total_badges_earned || 0)
+      setWishesFulfilled(stats?.total_wishes_fulfilled || 0)
+
+      // Fetch approved wishes
+      const { data: wishesData } = await supabase
+        .from("wishes")
+        .select(`
+          id,
+          content,
+          profiles!wishes_user_id_fkey(display_name, username),
+          wish_categories(icon)
+        `)
+        .eq("status", "approved")
+        .order("approved_at", { ascending: false })
+        .limit(6)
+
+      if (wishesData) {
+        setWishes(wishesData as typeof wishes)
+      }
     }
 
     fetchStats()
   }, [])
 
+  // Track all section views for analytics
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            trackHowItWorksInteraction("view")
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.3 },
-    )
+    const sectionIds = ["sobre", "clinical-trials", "desejos", "perfil-publico", "comunidade", "como-funciona"]
+    const observers: IntersectionObserver[] = []
 
-    const section = document.getElementById("como-funciona")
-    if (section) {
-      observer.observe(section)
-    }
+    sectionIds.forEach((id) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              trackSectionView(id)
+              if (id === "como-funciona") {
+                trackHowItWorksInteraction("view")
+              }
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.3 },
+      )
 
-    return () => observer.disconnect()
+      const section = document.getElementById(id)
+      if (section) {
+        observer.observe(section)
+        observers.push(observer)
+      }
+    })
+
+    return () => observers.forEach((o) => o.disconnect())
   }, [])
 
   return (
@@ -127,7 +188,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              A primeira plataforma que une, fortalece e dá voz à comunidade tetraplégica do Brasil. Juntos, construímos mudanças reais.
+              A primeira plataforma que conecta a comunidade tetraplégica do Brasil a estudos clínicos, realiza desejos e amplifica sua voz. Juntos, construímos mudanças reais.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -145,37 +206,160 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* NEW 3 PILLARS - Clinical Trials, Wishes, Public Profile */}
       <section id="sobre" className="py-32 px-6 lg:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="grid md:grid-cols-3 gap-8">
+            {/* Pillar 1: Clinical Trials */}
             <div className="glass-strong p-10 rounded-3xl space-y-6 hover:scale-[1.02] transition-transform">
-              <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center">
-                <Users className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-2xl bg-[#00D5BE] flex items-center justify-center">
+                <Microscope className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-3xl font-black">Conecte-se</h3>
+              <h3 className="text-3xl font-black">Estudos Clínicos</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Cada nova conexão fortalece nossa voz. Juntos, somos ouvidos.
+                Receba notificações de estudos que podem mudar sua vida. Conectamos você a pesquisas relevantes.
               </p>
+              <Button
+                asChild
+                variant="outline"
+                className="border-[#00D5BE]/50 text-[#00D5BE] hover:bg-[#00D5BE]/10"
+                onClick={() => trackHomepageCTA("pillar_clinical_trials", "join")}
+              >
+                <Link href="/auth/join">
+                  Buscar Estudos
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
             </div>
 
+            {/* Pillar 2: Wishes */}
             <div className="glass-strong p-10 rounded-3xl space-y-6 hover:scale-[1.02] transition-transform">
               <div className="w-16 h-16 rounded-2xl gradient-accent flex items-center justify-center">
-                <Vote className="w-8 h-8" />
+                <Star className="w-8 h-8" />
               </div>
-              <h3 className="text-3xl font-black">Vote</h3>
+              <h3 className="text-3xl font-black">Desejos</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Sua opinião importa. Cada voto molda o futuro que queremos ver.
+                A comunidade se une para ajudar você. Compartilhe suas necessidades e receba apoio.
               </p>
+              <Button
+                asChild
+                variant="outline"
+                className="border-accent/50 text-accent hover:bg-accent/10"
+                onClick={() => trackHomepageCTA("pillar_wishes", "join")}
+              >
+                <Link href="/auth/join">
+                  Criar Desejo
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
             </div>
 
+            {/* Pillar 3: Public Profile */}
             <div className="glass-strong p-10 rounded-3xl space-y-6 hover:scale-[1.02] transition-transform">
               <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center">
-                <Trophy className="w-8 h-8" />
+                <Globe className="w-8 h-8" />
               </div>
-              <h3 className="text-3xl font-black">Conquiste</h3>
+              <h3 className="text-3xl font-black">Sua História</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Seu engajamento é reconhecido e celebrado. Faça parte dos líderes que transformam.
+                Seu link pessoal para o mundo. Compartilhe sua jornada e conecte-se com quem importa.
               </p>
+              <Button
+                asChild
+                variant="outline"
+                className="border-primary/50 text-primary hover:bg-primary/10"
+                onClick={() => trackHomepageCTA("pillar_public_profile", "join")}
+              >
+                <Link href="/auth/join">
+                  Criar Meu Perfil
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Clinical Trials Highlight Section */}
+      <section id="clinical-trials" className="py-32 px-6 lg:px-12 bg-gradient-to-b from-[#00D5BE]/10 to-background">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Content */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">
+                <Microscope className="w-4 h-4 text-[#00D5BE]" />
+                <span className="text-sm font-bold uppercase tracking-wider">Estudos Clínicos</span>
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-black leading-tight">
+                Estudos que podem <span className="text-[#00D5BE]">mudar sua vida</span>
+              </h2>
+
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                Conectamos você a pesquisas clínicas relevantes para sua condição. Receba notificações automáticas quando
+                novos estudos surgirem na sua região.
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#00D5BE]/20 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-[#00D5BE]" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">Busca por Localização</h4>
+                    <p className="text-muted-foreground">Encontre estudos próximos a você, em qualquer estado do Brasil</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#00D5BE]/20 flex items-center justify-center flex-shrink-0">
+                    <Bell className="w-5 h-5 text-[#00D5BE]" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">Notificações Personalizadas</h4>
+                    <p className="text-muted-foreground">
+                      Seja avisado quando estudos compatíveis com seu perfil forem publicados
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#00D5BE]/20 flex items-center justify-center flex-shrink-0">
+                    <Search className="w-5 h-5 text-[#00D5BE]" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">Filtros Avançados</h4>
+                    <p className="text-muted-foreground">Filtre por fase, status e condições específicas</p>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                asChild
+                size="lg"
+                className="bg-[#00D5BE] hover:bg-[#00D5BE]/90 text-white font-bold h-14 px-10"
+                onClick={() => {
+                  trackHomepageCTA("clinical_trials_section", "join")
+                  trackSignupPathChosen("clinical_trials")
+                }}
+              >
+                <Link href="/auth/join">
+                  Cadastre-se para ser notificado
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+            </div>
+
+            {/* Right: Visual */}
+            <div className="glass-strong p-8 rounded-3xl">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-[#00D5BE]/20 to-[#00D5BE]/5 flex items-center justify-center">
+                <div className="text-center space-y-6">
+                  <Microscope className="w-24 h-24 text-[#00D5BE] mx-auto" />
+                  <div>
+                    <p className="text-4xl font-black text-[#00D5BE]">ClinicalTrials.gov</p>
+                    <p className="text-muted-foreground">Dados atualizados diretamente da fonte oficial</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -370,10 +554,109 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Public Profile Section */}
+      <section id="perfil-publico" className="py-32 px-6 lg:px-12">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Visual */}
+            <div className="glass-strong p-8 rounded-3xl order-2 lg:order-1">
+              <div className="space-y-6">
+                <div className="glass p-4 rounded-2xl">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Globe className="w-5 h-5 text-primary" />
+                    <span className="text-sm text-muted-foreground">somostetra.org/p/</span>
+                    <span className="font-bold text-primary">seunome</span>
+                  </div>
+                  <div className="h-px bg-border mb-4" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                      <User className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-lg">Seu Nome</p>
+                      <p className="text-sm text-muted-foreground">Sua história, seus desejos, suas conquistas</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="glass p-4 rounded-xl text-center">
+                    <Star className="w-6 h-6 text-accent mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">Desejos</p>
+                  </div>
+                  <div className="glass p-4 rounded-xl text-center">
+                    <Trophy className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">Badges</p>
+                  </div>
+                  <div className="glass p-4 rounded-xl text-center">
+                    <Heart className="w-6 h-6 text-pink-500 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">PIX</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Content */}
+            <div className="space-y-8 order-1 lg:order-2">
+              <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">
+                <Globe className="w-4 h-4 text-primary" />
+                <span className="text-sm font-bold uppercase tracking-wider">Perfil Público</span>
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-black leading-tight">
+                Seu link <span className="text-gradient">pessoal</span> para o mundo
+              </h2>
+
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                Crie sua página pública e compartilhe sua história. Receba apoio via PIX, mostre seus desejos e
+                conecte-se com pessoas que querem ajudar.
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <LinkIcon className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="text-lg">Link único e fácil de compartilhar</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
+                    <Heart className="w-4 h-4 text-pink-500" />
+                  </div>
+                  <span className="text-lg">Receba doações via PIX diretamente</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+                    <Star className="w-4 h-4 text-accent" />
+                  </div>
+                  <span className="text-lg">Mostre seus desejos e conquistas</span>
+                </div>
+              </div>
+
+              <Button
+                asChild
+                size="lg"
+                className="gradient-primary font-bold h-14 px-10 text-lg"
+                onClick={() => {
+                  trackHomepageCTA("public_profile_section", "join")
+                  trackSignupPathChosen("public_profile")
+                }}
+              >
+                <Link href="/auth/join">
+                  Criar Meu Perfil Público
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Community Stats Section */}
       <section id="comunidade" className="py-32 px-6 lg:px-12">
         <div className="container mx-auto max-w-7xl">
           <div className="glass-strong p-16 rounded-3xl">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 text-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{members}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Membros</p>
@@ -383,25 +666,109 @@ export default function LandingPage() {
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Apoiadores</p>
               </div>
               <div className="space-y-4">
-                <p className="text-7xl md:text-8xl font-black text-gradient">{votes}</p>
-                <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Votações</p>
+                <p className="text-7xl md:text-8xl font-black text-gradient">{wishesFulfilled}</p>
+                <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Desejos Realizados</p>
               </div>
               <div className="space-y-4">
                 <p className="text-7xl md:text-8xl font-black text-gradient">{votesCast}</p>
                 <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Votos</p>
               </div>
-              <div className="space-y-4">
-                <p className="text-7xl md:text-8xl font-black text-gradient">{badges}</p>
-                <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Badges</p>
-              </div>
-              <div className="space-y-4">
-                <p className="text-7xl md:text-8xl font-black text-gradient">{connections}</p>
-                <p className="text-xl text-muted-foreground uppercase tracking-wider font-bold">Conexões</p>
-              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Enhanced Wishes Section */}
+      {wishes.length > 0 && (
+        <section id="desejos" className="py-32 px-6 lg:px-12 bg-gradient-to-b from-background/50 to-background">
+          <div className="container mx-auto max-w-7xl">
+            <div className="text-center space-y-6 mb-16">
+              <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">
+                <Star className="w-4 h-4 text-accent" />
+                <span className="text-sm font-bold uppercase tracking-wider">Desejos da Comunidade</span>
+              </div>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight">
+                CONECTAMOS QUEM <span className="text-gradient">PRECISA</span>
+                <br />
+                COM QUEM PODE <span className="text-gradient">AJUDAR</span>
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Nós somos a ponte entre necessidades e solidariedade. A comunidade se une para transformar desejos em
+                realidade.
+              </p>
+
+              {/* Fulfilled Wishes Counter */}
+              {wishesFulfilled > 0 && (
+                <div className="inline-flex items-center gap-3 glass-strong px-8 py-4 rounded-2xl">
+                  <Heart className="w-6 h-6 text-pink-500" />
+                  <span className="text-2xl font-black text-gradient">{wishesFulfilled}</span>
+                  <span className="text-lg text-muted-foreground font-semibold">desejos já realizados</span>
+                </div>
+              )}
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {wishes.map((wish) => (
+                <div
+                  key={wish.id}
+                  className="glass-strong p-6 rounded-2xl space-y-4 hover:scale-[1.02] transition-transform"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
+                      <span className="text-xl">{wish.wish_categories?.[0]?.icon || "🙏"}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-muted-foreground">
+                        {wish.profiles?.[0]?.display_name || "Membro"}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-lg leading-relaxed line-clamp-3">{wish.content}</p>
+                  <div className="flex items-center justify-between pt-2">
+                    <div className="flex items-center gap-2 text-sm text-accent">
+                      <Heart className="w-4 h-4" />
+                      <span>Desejo ativo</span>
+                    </div>
+                    <HelpWishButton wishId={wish.id} memberName={wish.profiles?.[0]?.display_name || "o membro"} />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <p className="text-muted-foreground mb-6">Quer ajudar a realizar um desses desejos ou criar o seu?</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  asChild
+                  size="lg"
+                  className="gradient-accent font-bold text-lg h-14 px-10"
+                  onClick={() => trackHomepageCTA("wishes_help", "join")}
+                >
+                  <Link href="/auth/join">
+                    Quero Ajudar
+                    <Heart className="ml-2 w-5 h-5" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="glass-strong font-bold text-lg h-14 px-10 bg-transparent"
+                  onClick={() => {
+                    trackHomepageCTA("wishes_create", "join")
+                    trackSignupPathChosen("wishes")
+                  }}
+                >
+                  <Link href="/auth/join">
+                    Criar Meu Desejo
+                    <Star className="ml-2 w-5 h-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section id="contato" className="py-32 px-6 lg:px-12">
         <div className="container mx-auto max-w-5xl">

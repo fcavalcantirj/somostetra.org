@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { Users, Vote, Award, Database, TrendingUp } from "lucide-react"
+import { Users, Vote, Award, Database, TrendingUp, Star, FolderOpen, Heart, Microscope } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminDashboard() {
@@ -27,12 +27,16 @@ export default async function AdminDashboard() {
     { count: totalSupporters },
     { count: activeVotes },
     { count: totalBadges },
+    { count: pendingWishes },
+    { count: pendingHelpRequests },
     { data: recentUsers },
   ] = await Promise.all([
     supabase.from("profiles").select("*", { count: "exact", head: true }),
     supabase.from("supporters").select("*", { count: "exact", head: true }),
     supabase.from("votes").select("*", { count: "exact", head: true }).eq("status", "active"),
     supabase.from("user_badges").select("*", { count: "exact", head: true }),
+    supabase.from("wishes").select("*", { count: "exact", head: true }).eq("status", "pending"),
+    supabase.from("wish_help_requests").select("*", { count: "exact", head: true }).eq("status", "pending"),
     supabase
       .from("profiles")
       .select("display_name, points, created_at")
@@ -68,6 +72,20 @@ export default async function AdminDashboard() {
       icon: Award,
       href: "/admin/badges",
       color: "from-yellow-500 to-orange-500",
+    },
+    {
+      title: "Desejos Pendentes",
+      value: pendingWishes || 0,
+      icon: Star,
+      href: "/admin/wishes",
+      color: "from-pink-500 to-rose-500",
+    },
+    {
+      title: "Ofertas de Ajuda",
+      value: pendingHelpRequests || 0,
+      icon: Heart,
+      href: "/admin/wish-help-requests",
+      color: "from-rose-500 to-pink-500",
     },
   ]
 
@@ -181,6 +199,42 @@ export default async function AdminDashboard() {
             <TrendingUp className="mb-4 h-10 w-10 text-cyan-400" />
             <h3 className="mb-2 text-lg font-semibold">Auditoria de Pontos</h3>
             <p className="text-sm text-white/60">Verificar pontos reais vs. calculados</p>
+          </Link>
+
+          <Link
+            href="/admin/wishes"
+            className="rounded-2xl border border-pink-500/30 bg-pink-500/10 p-6 backdrop-blur-sm transition-all hover:border-pink-500/50 hover:bg-pink-500/20"
+          >
+            <Star className="mb-4 h-10 w-10 text-pink-400" />
+            <h3 className="mb-2 text-lg font-semibold">Gerenciar Desejos</h3>
+            <p className="text-sm text-white/60">Aprovar, rejeitar e realizar desejos</p>
+          </Link>
+
+          <Link
+            href="/admin/wish-categories"
+            className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/10"
+          >
+            <FolderOpen className="mb-4 h-10 w-10 text-orange-400" />
+            <h3 className="mb-2 text-lg font-semibold">Categorias de Desejos</h3>
+            <p className="text-sm text-white/60">Gerenciar categorias para estatísticas</p>
+          </Link>
+
+          <Link
+            href="/admin/wish-help-requests"
+            className="rounded-2xl border border-pink-500/30 bg-pink-500/10 p-6 backdrop-blur-sm transition-all hover:border-pink-500/50 hover:bg-pink-500/20"
+          >
+            <Heart className="mb-4 h-10 w-10 text-pink-400" />
+            <h3 className="mb-2 text-lg font-semibold">Ofertas de Ajuda</h3>
+            <p className="text-sm text-white/60">Pessoas querendo ajudar nos desejos</p>
+          </Link>
+
+          <Link
+            href="/admin/clinical-trials"
+            className="rounded-2xl border border-teal-500/30 bg-teal-500/10 p-6 backdrop-blur-sm transition-all hover:border-teal-500/50 hover:bg-teal-500/20"
+          >
+            <Microscope className="mb-4 h-10 w-10 text-teal-400" />
+            <h3 className="mb-2 text-lg font-semibold">Estudos Clínicos</h3>
+            <p className="text-sm text-white/60">Buscar trials e notificar membros</p>
           </Link>
         </div>
 

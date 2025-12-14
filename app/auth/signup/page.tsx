@@ -6,7 +6,6 @@ import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
@@ -16,7 +15,6 @@ export default function SignupPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [displayName, setDisplayName] = useState("")
-  const [bio, setBio] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [referrerName, setReferrerName] = useState<string | null>(null)
@@ -77,7 +75,6 @@ export default function SignupPage() {
       console.log("[v0] Member signup metadata:", {
         user_type: "member",
         full_name: displayName,
-        bio: bio || null,
         referred_by: referrerId,
       })
 
@@ -88,8 +85,7 @@ export default function SignupPage() {
           emailRedirectTo: redirectUrl,
           data: {
             user_type: "member",
-            full_name: displayName,  // FIXED: Changed from display_name to full_name to match trigger
-            bio: bio || null,
+            full_name: displayName,
             referred_by: referrerId,
           },
         },
@@ -160,18 +156,6 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="bio">Bio (opcional)</Label>
-              <Textarea
-                id="bio"
-                placeholder="Conte um pouco sobre você..."
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                className="mt-1"
-                rows={3}
               />
             </div>
 

@@ -428,3 +428,205 @@ export async function deleteSupporter(supporterId: string) {
     return { error: `Erro inesperado: ${error.message || error}` }
   }
 }
+
+// ============================================
+// Wish Category Actions
+// ============================================
+
+export async function createWishCategory(name: string, icon: string, description: string | null) {
+  const { supabase } = await checkAdmin()
+
+  const { data, error } = await supabase
+    .from("wish_categories")
+    .insert({
+      name,
+      icon,
+      description,
+    })
+    .select()
+    .single()
+
+  if (error) {
+    console.error("[v0] Error creating wish category:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/wish-categories")
+  return { success: true, category: data }
+}
+
+export async function updateWishCategory(
+  categoryId: string,
+  name: string,
+  icon: string,
+  description: string | null,
+  isActive?: boolean
+) {
+  const { supabase } = await checkAdmin()
+
+  const updateData: Record<string, unknown> = {
+    name,
+    icon,
+    description,
+  }
+
+  if (isActive !== undefined) {
+    updateData.is_active = isActive
+  }
+
+  const { error } = await supabase
+    .from("wish_categories")
+    .update(updateData)
+    .eq("id", categoryId)
+
+  if (error) {
+    console.error("[v0] Error updating wish category:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/wish-categories")
+  revalidatePath("/admin/wishes")
+  return { success: true }
+}
+
+export async function deleteWishCategory(categoryId: string) {
+  const { supabase } = await checkAdmin()
+
+  // Soft delete - just set is_active to false
+  const { error } = await supabase
+    .from("wish_categories")
+    .update({ is_active: false })
+    .eq("id", categoryId)
+
+  if (error) {
+    console.error("[v0] Error deleting wish category:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/wish-categories")
+  return { success: true }
+}
+
+// ============================================
+// Wish Actions
+// ============================================
+
+export async function approveWish(wishId: string, categoryId: string) {
+  const { supabase, user } = await checkAdmin()
+
+  const { error } = await supabase
+    .from("wishes")
+    .update({
+      status: "approved",
+      category_id: categoryId,
+      approved_by: user.id,
+      approved_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", wishId)
+    .eq("status", "pending")
+
+  if (error) {
+    console.error("[v0] Error approving wish:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/wishes")
+  return { success: true }
+}
+
+export async function rejectWish(wishId: string, reason?: string) {
+  const { supabase, user } = await checkAdmin()
+
+  const { error } = await supabase
+    .from("wishes")
+    .update({
+      status: "rejected",
+      admin_notes: reason || null,
+      approved_by: user.id,
+      approved_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", wishId)
+
+  if (error) {
+    console.error("[v0] Error rejecting wish:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/wishes")
+  return { success: true }
+}
+
+interface FulfillWishData {
+  fulfiller_name: string
+  fulfiller_email?: string
+  fulfiller_user_id?: string
+  fulfiller_is_member: boolean
+  fulfilled_notes?: string
+  points_to_award: number
+}
+
+export async function fulfillWish(wishId: string, data: FulfillWishData) {
+  const { supabase } = await checkAdmin()
+  const serviceRoleClient = createServiceRoleClient()
+
+  // Update wish as fulfilled
+  const { error: wishError } = await supabase
+    .from("wishes")
+    .update({
+      status: "fulfilled",
+      fulfilled_at: new Date().toISOString(),
+      fulfiller_user_id: data.fulfiller_user_id || null,
+      fulfiller_name: data.fulfiller_name,
+      fulfiller_email: data.fulfiller_email || null,
+      fulfiller_is_member: data.fulfiller_is_member,
+      fulfiller_points_awarded: data.points_to_award,
+      fulfilled_notes: data.fulfilled_notes || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", wishId)
+    .eq("status", "approved")
+
+  if (wishError) {
+    console.error("[v0] Error fulfilling wish:", wishError)
+    return { error: wishError.message }
+  }
+
+  // Award points to fulfiller if they are an existing user
+  if (data.fulfiller_user_id && data.points_to_award > 0) {
+    const { error: pointsError } = await serviceRoleClient.rpc("increment_user_points", {
+      user_id: data.fulfiller_user_id,
+      points_to_add: data.points_to_award,
+    })
+
+    if (pointsError) {
+      console.error("[v0] Error awarding points to fulfiller:", pointsError)
+      // Don't fail the fulfillment if points fail
+    } else {
+      console.log("[v0] Points awarded to fulfiller:", data.points_to_award)
+
+      // Check and award badges after points update
+      await serviceRoleClient.rpc("check_and_award_badges", {
+        p_user_id: data.fulfiller_user_id,
+      })
+    }
+  }
+
+  revalidatePath("/admin/wishes")
+  return { success: true }
+}
+
+export async function deleteWishAdmin(wishId: string) {
+  const { supabase } = await checkAdmin()
+
+  const { error } = await supabase.from("wishes").delete().eq("id", wishId)
+
+  if (error) {
+    console.error("[v0] Error deleting wish:", error)
+    return { error: error.message }
+  }
+
+  revalidatePath("/admin/wishes")
+  return { success: true }
+}

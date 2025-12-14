@@ -19,4 +19,6 @@ export interface ProfileFormData {
   pix_key: string
   profile_picture_url: string
   profile_public: boolean
+  bio: string
+  bio_public: boolean
 }

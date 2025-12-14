@@ -140,6 +140,8 @@ export async function saveProfile(formData: ProfileFormData): Promise<{
     pix_key: formData.pix_key || null,
     profile_picture_url: formData.profile_picture_url || null,
     profile_public: formData.profile_public,
+    bio: formData.bio || null,
+    bio_public: formData.bio_public,
     profile_completed: isComplete,
     updated_at: new Date().toISOString(),
   }
