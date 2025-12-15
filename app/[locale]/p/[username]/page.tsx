@@ -6,19 +6,23 @@ import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { HelpWishButton } from "@/components/help-wish-button"
 import { getTranslations } from "next-intl/server"
+import { BASE_URL, SITE_NAME, getCanonicalUrl, generateLanguageAlternates } from "@/lib/seo"
+import { generatePersonSchema } from "@/lib/seo/schema"
+import { Locale, defaultLocale } from "@/lib/i18n/config"
 
 interface PageProps {
   params: Promise<{ username: string; locale: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { username } = await params
+  const { username, locale } = await params
+  const validLocale = (locale as Locale) || defaultLocale
   const supabase = await createClient()
   const t = await getTranslations("publicProfile")
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("display_name, bio")
+    .select("display_name, bio, profile_picture_url, city, state")
     .eq("username", username)
     .eq("profile_public", true)
     .single()
@@ -26,12 +30,51 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!profile) {
     return {
       title: t("notFound"),
+      robots: { index: false, follow: false },
     }
   }
 
+  const title = `${profile.display_name} | ${SITE_NAME}`
+  const description = profile.bio || t("metaDescription", { name: profile.display_name })
+  const path = `/p/${username}`
+  const canonicalUrl = getCanonicalUrl(path, validLocale)
+
+  // Map locale to OpenGraph locale format
+  const ogLocaleMap: Record<Locale, string> = {
+    pt: 'pt_BR',
+    en: 'en_US',
+    es: 'es_ES',
+  }
+
   return {
-    title: `${profile.display_name} | SomosTetra`,
-    description: profile.bio || t("metaDescription", { name: profile.display_name }),
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: generateLanguageAlternates(path),
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      locale: ogLocaleMap[validLocale],
+      type: 'profile',
+      images: profile.profile_picture_url ? [
+        {
+          url: profile.profile_picture_url,
+          width: 400,
+          height: 400,
+          alt: profile.display_name,
+        },
+      ] : undefined,
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+      images: profile.profile_picture_url ? [profile.profile_picture_url] : undefined,
+    },
   }
 }
 

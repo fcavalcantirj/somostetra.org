@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Lock } from "lucide-react"
@@ -5,6 +6,26 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { getTranslations } from "next-intl/server"
+import { generatePageMetadata, seoTranslations } from "@/lib/seo"
+import { Locale } from "@/lib/i18n/config"
+
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const validLocale = (locale as Locale) || 'pt'
+  const translations = seoTranslations[validLocale]
+
+  return generatePageMetadata({
+    title: translations.badges.title,
+    description: translations.badges.description,
+    path: '/badges',
+    locale: validLocale,
+    noIndex: true, // Protected page
+  })
+}
 
 export default async function BadgesPage() {
   const t = await getTranslations("badgesPage")

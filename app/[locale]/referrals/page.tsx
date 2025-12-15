@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Users, Share2, Award, ArrowLeft } from "lucide-react"
@@ -6,8 +7,28 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { CopyButton } from "@/components/copy-button"
 import { getTranslations } from "next-intl/server"
+import { generatePageMetadata, seoTranslations } from "@/lib/seo"
+import { Locale } from "@/lib/i18n/config"
 
-export default async function ReferralsPage({ params }: { params: Promise<{ locale: string }> }) {
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const validLocale = (locale as Locale) || 'pt'
+  const translations = seoTranslations[validLocale]
+
+  return generatePageMetadata({
+    title: translations.referrals.title,
+    description: translations.referrals.description,
+    path: '/referrals',
+    locale: validLocale,
+    noIndex: true, // Protected page
+  })
+}
+
+export default async function ReferralsPage({ params }: PageProps) {
   const { locale } = await params
   const t = await getTranslations("referralsStandalone")
   const supabase = await createClient()

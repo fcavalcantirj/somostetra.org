@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Users, Trophy, Share2, TrendingUp, Sparkles, Plus, Heart, UserCircle, ArrowRight, Star, Microscope } from "lucide-react"
@@ -9,6 +10,19 @@ import { CopyButton } from "@/components/copy-button"
 import { trackDashboardView } from "@/lib/analytics"
 import { BadgeProgressBar } from "@/components/badge-progress-bar"
 import { getTranslations } from "next-intl/server"
+
+// Dashboard pages should not be indexed by search engines
+export const metadata: Metadata = {
+  title: "Dashboard",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+}
 
 export default async function DashboardPage() {
   const t = await getTranslations("dashboard")

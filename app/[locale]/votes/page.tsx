@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Users, ArrowLeft, Plus, AlertCircle } from "lucide-react"
@@ -6,12 +7,33 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { getTranslations } from "next-intl/server"
+import { generatePageMetadata, seoTranslations } from "@/lib/seo"
+import { Locale } from "@/lib/i18n/config"
+
+interface PageProps {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ error?: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const validLocale = (locale as Locale) || 'pt'
+  const translations = seoTranslations[validLocale]
+
+  return generatePageMetadata({
+    title: translations.votes.title,
+    description: translations.votes.description,
+    path: '/votes',
+    locale: validLocale,
+    noIndex: true, // Protected page
+  })
+}
 
 export default async function VotesPage({
-  searchParams,
-}: {
-  searchParams: { error?: string }
-}) {
+  params,
+  searchParams: searchParamsPromise,
+}: PageProps) {
+  const searchParams = await searchParamsPromise
   const t = await getTranslations("votesPage")
   const tCommon = await getTranslations("common")
   const supabase = await createClient()

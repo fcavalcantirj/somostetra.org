@@ -1,6 +1,7 @@
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award, Microscope, ArrowRight, Star } from "lucide-react"
+import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award, Microscope, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -9,6 +10,19 @@ import { CopyButton } from "@/components/copy-button"
 import { trackDashboardView } from "@/lib/analytics"
 import { BadgeProgressBar } from "@/components/badge-progress-bar"
 import { getTranslations } from "next-intl/server"
+
+// Supporter dashboard should not be indexed by search engines
+export const metadata: Metadata = {
+  title: "Supporter Dashboard",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+}
 
 export default async function SupporterDashboardPage() {
   const t = await getTranslations("supporterDashboard")
@@ -108,9 +122,6 @@ export default async function SupporterDashboardPage() {
           <div className="flex items-center gap-4">
             <Link href="/dashboard/clinical-trials" className="hover:opacity-80 transition-opacity" title={tCommon("clinicalTrials")}>
               <Microscope className="w-6 h-6 text-primary" />
-            </Link>
-            <Link href="/dashboard/wishes" className="hover:opacity-80 transition-opacity" title={tCommon("wishes")}>
-              <Star className="w-6 h-6 text-accent" />
             </Link>
             <LogoutButton />
           </div>

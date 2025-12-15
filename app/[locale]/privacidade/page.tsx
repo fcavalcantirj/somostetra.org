@@ -1,7 +1,27 @@
+import { Metadata } from "next"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Shield, Lock, Eye, UserCheck, Database, Mail, Code2, Heart } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import { generatePageMetadata, seoTranslations } from "@/lib/seo"
+import { Locale } from "@/lib/i18n/config"
+
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const validLocale = (locale as Locale) || 'pt'
+  const translations = seoTranslations[validLocale]
+
+  return generatePageMetadata({
+    title: translations.privacy.title,
+    description: translations.privacy.description,
+    path: '/privacidade',
+    locale: validLocale,
+  })
+}
 
 export default async function PrivacidadePage() {
   const t = await getTranslations("privacyPage")

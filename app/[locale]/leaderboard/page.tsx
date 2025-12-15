@@ -1,9 +1,29 @@
+import { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trophy, Medal, Award, ArrowLeft, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { getTranslations } from "next-intl/server"
+import { generatePageMetadata, seoTranslations } from "@/lib/seo"
+import { Locale } from "@/lib/i18n/config"
+
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
+  const validLocale = (locale as Locale) || 'pt'
+  const translations = seoTranslations[validLocale]
+
+  return generatePageMetadata({
+    title: translations.leaderboard.title,
+    description: translations.leaderboard.description,
+    path: '/leaderboard',
+    locale: validLocale,
+  })
+}
 
 export default async function LeaderboardPage() {
   const t = await getTranslations("leaderboardPage")
