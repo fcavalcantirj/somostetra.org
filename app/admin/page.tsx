@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { Users, Vote, Award, Database, TrendingUp, Star, FolderOpen, Heart, Microscope } from "lucide-react"
+import { Users, Vote, Award, Database, TrendingUp, Star, FolderOpen, Heart, Microscope, Search } from "lucide-react"
 import Link from "next/link"
 
 export default async function AdminDashboard() {
@@ -235,6 +235,15 @@ export default async function AdminDashboard() {
             <Microscope className="mb-4 h-10 w-10 text-teal-400" />
             <h3 className="mb-2 text-lg font-semibold">Estudos Clínicos</h3>
             <p className="text-sm text-white/60">Buscar trials e notificar membros</p>
+          </Link>
+
+          <Link
+            href="/admin/clinical-trial-searches"
+            className="rounded-2xl border border-[#00D5BE]/30 bg-[#00D5BE]/10 p-6 backdrop-blur-sm transition-all hover:border-[#00D5BE]/50 hover:bg-[#00D5BE]/20"
+          >
+            <Search className="mb-4 h-10 w-10 text-[#00D5BE]" />
+            <h3 className="mb-2 text-lg font-semibold">Buscas de Estudos</h3>
+            <p className="text-sm text-white/60">Análise de queries dos usuários</p>
           </Link>
         </div>
 
