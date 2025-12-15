@@ -73,7 +73,7 @@ export default async function AdminClinicalTrials() {
             </Link>
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Microscope className="h-6 w-6 text-teal-400" />
+                <Microscope className="h-6 w-6 text-primary" />
                 Estudos Clínicos
               </h1>
               <p className="text-sm text-white/60">

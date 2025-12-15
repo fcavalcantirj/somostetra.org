@@ -29,7 +29,7 @@ export default async function ClinicalTrialsPage() {
       {/* Background Effects */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px] animate-pulse" />
-        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-[#00D5BE]/15 rounded-full blur-[140px] animate-pulse [animation-delay:1s]" />
+        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-primary/15 rounded-full blur-[140px] animate-pulse [animation-delay:1s]" />
       </div>
 
       {/* Header */}
@@ -44,7 +44,7 @@ export default async function ClinicalTrialsPage() {
             </Link>
             <div className="min-w-0">
               <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-                <Microscope className="h-5 w-5 sm:h-6 sm:w-6 text-[#00D5BE] shrink-0" />
+                <Microscope className="h-5 w-5 sm:h-6 sm:w-6 text-primary shrink-0" />
                 <span className="truncate">Estudos Clínicos</span>
               </h1>
               <p className="text-xs sm:text-sm text-muted-foreground truncate">

@@ -216,15 +216,15 @@ export function ClinicalTrialsClient({
           disabled={isLoading}
           className={`p-4 rounded-xl border transition-all text-left ${
             !filterBrazilOnly && !filterStatesWithMembers
-              ? "bg-teal-500/20 border-teal-500/50 ring-2 ring-teal-400/50"
-              : "bg-teal-500/10 border-teal-500/30 hover:bg-teal-500/20"
+              ? "bg-primary/20 border-primary/50 ring-2 ring-primary/50"
+              : "bg-primary/10 border-primary/30 hover:bg-primary/20"
           } ${isLoading ? "opacity-50 cursor-wait" : ""}`}
         >
           <div className="flex items-center gap-2 mb-2">
-            <Search className="h-4 w-4 text-teal-400" />
-            <p className="text-sm text-teal-400/70">Recrutando</p>
+            <Search className="h-4 w-4 text-primary" />
+            <p className="text-sm text-primary/70">Recrutando</p>
           </div>
-          <p className="text-2xl font-bold text-teal-400">{recruitingCount}</p>
+          <p className="text-2xl font-bold text-primary">{recruitingCount}</p>
         </button>
 
         <button
@@ -332,7 +332,7 @@ export function ClinicalTrialsClient({
       <div className="mb-6 p-6 rounded-xl bg-white/5 border border-white/10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Search className="h-5 w-5 text-teal-400" />
+            <Search className="h-5 w-5 text-primary" />
             Buscar Estudos
           </h2>
           <Button
@@ -374,7 +374,7 @@ export function ClinicalTrialsClient({
                       onClick={() => toggleStatus(opt.value)}
                       className={`px-3 py-1 rounded-full text-sm border transition-colors ${
                         status.includes(opt.value)
-                          ? "bg-teal-500/20 border-teal-500/50 text-teal-400"
+                          ? "bg-primary/20 border-primary/50 text-primary"
                           : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10"
                       }`}
                     >
@@ -448,7 +448,7 @@ export function ClinicalTrialsClient({
             <Button
               onClick={handleSearch}
               disabled={isLoading}
-              className="bg-teal-600 hover:bg-teal-700"
+              className="bg-primary hover:bg-primary/90"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -581,7 +581,7 @@ export function ClinicalTrialsClient({
                     variant="ghost"
                     size="sm"
                     onClick={() => setNotifyTrial(trial)}
-                    className="text-teal-400 hover:text-teal-300 hover:bg-teal-500/10"
+                    className="text-primary hover:text-primary/80 hover:bg-primary/10"
                   >
                     <Bell className="h-4 w-4 mr-2" />
                     Notificar Membros

@@ -230,18 +230,18 @@ export default async function AdminDashboard() {
 
           <Link
             href="/admin/clinical-trials"
-            className="rounded-2xl border border-teal-500/30 bg-teal-500/10 p-6 backdrop-blur-sm transition-all hover:border-teal-500/50 hover:bg-teal-500/20"
+            className="rounded-2xl border border-primary/30 bg-primary/10 p-6 backdrop-blur-sm transition-all hover:border-primary/50 hover:bg-primary/20"
           >
-            <Microscope className="mb-4 h-10 w-10 text-teal-400" />
+            <Microscope className="mb-4 h-10 w-10 text-primary" />
             <h3 className="mb-2 text-lg font-semibold">Estudos Clínicos</h3>
             <p className="text-sm text-white/60">Buscar trials e notificar membros</p>
           </Link>
 
           <Link
             href="/admin/clinical-trial-searches"
-            className="rounded-2xl border border-[#00D5BE]/30 bg-[#00D5BE]/10 p-6 backdrop-blur-sm transition-all hover:border-[#00D5BE]/50 hover:bg-[#00D5BE]/20"
+            className="rounded-2xl border border-primary/30 bg-primary/10 p-6 backdrop-blur-sm transition-all hover:border-primary/50 hover:bg-primary/20"
           >
-            <Search className="mb-4 h-10 w-10 text-[#00D5BE]" />
+            <Search className="mb-4 h-10 w-10 text-primary" />
             <h3 className="mb-2 text-lg font-semibold">Buscas de Estudos</h3>
             <p className="text-sm text-white/60">Análise de queries dos usuários</p>
           </Link>

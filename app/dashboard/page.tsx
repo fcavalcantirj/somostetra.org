@@ -109,7 +109,10 @@ export default async function DashboardPage() {
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/dashboard/clinical-trials" className="hover:opacity-80 transition-opacity" title="Estudos Clínicos">
-              <Microscope className="w-6 h-6 text-[#00D5BE]" />
+              <Microscope className="w-6 h-6 text-primary" />
+            </Link>
+            <Link href="/dashboard/wishes" className="hover:opacity-80 transition-opacity" title="Meus Desejos">
+              <Star className="w-6 h-6 text-accent" />
             </Link>
             <Link href="/dashboard/profile" className="hover:opacity-80 transition-opacity" title="Editar Perfil">
               <UserCircle className="w-6 h-6" />
@@ -181,6 +184,29 @@ export default async function DashboardPage() {
               </Link>
             </div>
           )}
+
+          {/* Clinical Trials CTA */}
+          <div className="mb-12">
+            <Link href="/dashboard/clinical-trials" className="block">
+              <div className="glass-strong p-6 sm:p-8 rounded-3xl border-2 border-primary/50 hover:border-primary transition-colors hover:scale-[1.01] transition-transform">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                    <Microscope className="w-8 h-8" />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl sm:text-2xl font-black">Estudos Clínicos</h3>
+                      <Badge className="gradient-accent font-bold">Novo!</Badge>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Encontre estudos clínicos relevantes para você. Receba notificações quando surgirem novas oportunidades.
+                    </p>
+                  </div>
+                  <ArrowRight className="w-6 h-6 text-primary hidden sm:block" />
+                </div>
+              </div>
+            </Link>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-16">
             <Link
@@ -457,7 +483,7 @@ export default async function DashboardPage() {
                             {member.profile_public && member.username ? (
                               <Link
                                 href={`/p/${member.username}`}
-                                className={`font-bold hover:underline ${index === 0 ? "text-white" : ""}`}
+                                className={`font-bold underline decoration-primary/40 hover:decoration-primary transition-colors ${index === 0 ? "text-white decoration-white/40 hover:decoration-white" : "text-primary"}`}
                               >
                                 {member.display_name}
                               </Link>

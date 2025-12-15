@@ -156,7 +156,7 @@ export function NotifyMembersDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-gray-900 border-white/10 text-white">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold">
-            <Users className="inline h-5 w-5 mr-2 text-teal-400" />
+            <Users className="inline h-5 w-5 mr-2 text-primary" />
             Notificar Membros
           </DialogTitle>
           <DialogDescription className="text-white/60">
@@ -166,8 +166,8 @@ export function NotifyMembersDialog({
 
         <div className="space-y-4 mt-4">
           {/* Trial Info */}
-          <div className="p-3 rounded-lg bg-teal-500/10 border border-teal-500/30">
-            <p className="font-medium text-teal-400 text-sm">{trial.nct_id}</p>
+          <div className="p-3 rounded-lg bg-primary/10 border border-primary/30">
+            <p className="font-medium text-primary text-sm">{trial.nct_id}</p>
             <p className="text-white/80 text-sm line-clamp-2">{trial.title}</p>
             {brazilLocations.length > 0 && (
               <p className="text-xs text-white/50 mt-1">
@@ -254,7 +254,7 @@ export function NotifyMembersDialog({
 
             {isLoading ? (
               <div className="p-8 text-center">
-                <Loader2 className="h-6 w-6 animate-spin mx-auto text-teal-400" />
+                <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" />
                 <p className="text-sm text-white/50 mt-2">Carregando membros...</p>
               </div>
             ) : members.length === 0 ? (
@@ -276,7 +276,7 @@ export function NotifyMembersDialog({
                         isNotified
                           ? "opacity-50 cursor-not-allowed"
                           : "cursor-pointer hover:bg-white/5"
-                      } ${isSelected ? "bg-teal-500/10" : ""}`}
+                      } ${isSelected ? "bg-primary/10" : ""}`}
                     >
                       <div className="flex-shrink-0">
                         {isNotified ? (
@@ -284,7 +284,7 @@ export function NotifyMembersDialog({
                             <Check className="h-3 w-3 text-gray-400" />
                           </div>
                         ) : isSelected ? (
-                          <div className="w-5 h-5 rounded bg-teal-500 flex items-center justify-center">
+                          <div className="w-5 h-5 rounded bg-primary flex items-center justify-center">
                             <Check className="h-3 w-3 text-white" />
                           </div>
                         ) : (
@@ -362,7 +362,7 @@ export function NotifyMembersDialog({
             <Button
               onClick={handleSend}
               disabled={isSending || selectedIds.size === 0}
-              className="bg-teal-600 hover:bg-teal-700"
+              className="bg-primary hover:bg-primary/90"
             >
               {isSending ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />

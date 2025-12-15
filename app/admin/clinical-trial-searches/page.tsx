@@ -97,7 +97,7 @@ export default async function ClinicalTrialSearchesPage() {
             </Link>
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Search className="h-6 w-6 text-[#00D5BE]" />
+                <Search className="h-6 w-6 text-primary" />
                 Buscas de Estudos Clínicos
               </h1>
               <p className="text-sm text-white/60">
@@ -113,8 +113,8 @@ export default async function ClinicalTrialSearchesPage() {
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-white/10 bg-white/5 p-4">
             <div className="flex items-center gap-3">
-              <div className="rounded-lg bg-[#00D5BE]/20 p-2">
-                <Search className="h-5 w-5 text-[#00D5BE]" />
+              <div className="rounded-lg bg-primary/20 p-2">
+                <Search className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.totalSearches}</p>
@@ -168,9 +168,9 @@ export default async function ClinicalTrialSearchesPage() {
               {topConditions.map(([condition, count]) => (
                 <span
                   key={condition}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#00D5BE]/10 border border-[#00D5BE]/30 px-3 py-1 text-sm"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/30 px-3 py-1 text-sm"
                 >
-                  <span className="text-[#00D5BE]">{condition}</span>
+                  <span className="text-primary">{condition}</span>
                   <span className="text-white/60">({count})</span>
                 </span>
               ))}

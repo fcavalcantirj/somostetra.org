@@ -145,7 +145,7 @@ export default async function LeaderboardPage() {
                         {member.profile_public && member.username ? (
                           <Link
                             href={`/p/${member.username}`}
-                            className="text-xl font-black hover:text-primary transition-colors"
+                            className="text-xl font-black text-primary underline decoration-primary/40 hover:decoration-primary transition-colors"
                           >
                             {member.display_name}
                           </Link>

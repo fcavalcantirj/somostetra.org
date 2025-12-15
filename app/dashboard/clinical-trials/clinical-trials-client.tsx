@@ -213,7 +213,7 @@ export function ClinicalTrialsClient({
       <div className="glass-strong p-6 rounded-2xl">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Search className="h-5 w-5 text-[#00D5BE]" />
+            <Search className="h-5 w-5 text-primary" />
             Buscar Estudos
           </h2>
           <Button
@@ -262,7 +262,7 @@ export function ClinicalTrialsClient({
                       onClick={() => toggleStatus(opt.value)}
                       className={`px-3 py-1 rounded-full text-sm border transition-colors ${
                         status.includes(opt.value)
-                          ? "bg-[#00D5BE]/10 border-[#00D5BE]/50 text-[#00D5BE]"
+                          ? "bg-primary/10 border-primary/50 text-primary"
                           : "bg-muted border-border text-muted-foreground hover:bg-muted/80"
                       }`}
                     >
@@ -347,7 +347,7 @@ export function ClinicalTrialsClient({
             <Button
               onClick={handleSearch}
               disabled={isLoading}
-              className="bg-[#00D5BE] hover:bg-[#00D5BE]/80 text-white"
+              className="bg-primary hover:bg-primary/90 text-white"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />

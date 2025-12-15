@@ -107,7 +107,7 @@ export function SearchAnalyticsClient({ searches }: SearchAnalyticsClientProps) 
                     {search.query_conditions?.slice(0, 3).map((cond, idx) => (
                       <span
                         key={idx}
-                        className="inline-block rounded bg-[#00D5BE]/10 px-2 py-0.5 text-xs text-[#00D5BE]"
+                        className="inline-block rounded bg-primary/10 px-2 py-0.5 text-xs text-primary"
                       >
                         {cond}
                       </span>

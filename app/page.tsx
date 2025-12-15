@@ -212,7 +212,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Pillar 1: Clinical Trials */}
             <div className="glass-strong p-10 rounded-3xl space-y-6 hover:scale-[1.02] transition-transform">
-              <div className="w-16 h-16 rounded-2xl bg-[#00D5BE] flex items-center justify-center">
+              <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
                 <Microscope className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-3xl font-black">Estudos Clínicos</h3>
@@ -222,7 +222,7 @@ export default function LandingPage() {
               <Button
                 asChild
                 variant="outline"
-                className="border-[#00D5BE]/50 text-[#00D5BE] hover:bg-[#00D5BE]/10"
+                className="border-primary/50 text-primary hover:bg-primary/10"
                 onClick={() => trackHomepageCTA("pillar_clinical_trials", "join")}
               >
                 <Link href="/auth/join">
@@ -280,18 +280,18 @@ export default function LandingPage() {
       </section>
 
       {/* Clinical Trials Highlight Section */}
-      <section id="clinical-trials" className="py-32 px-6 lg:px-12 bg-gradient-to-b from-[#00D5BE]/10 to-background">
+      <section id="clinical-trials" className="py-32 px-6 lg:px-12 bg-gradient-to-b from-primary/10 to-background">
         <div className="container mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left: Content */}
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">
-                <Microscope className="w-4 h-4 text-[#00D5BE]" />
+                <Microscope className="w-4 h-4 text-primary" />
                 <span className="text-sm font-bold uppercase tracking-wider">Estudos Clínicos</span>
               </div>
 
               <h2 className="text-5xl md:text-6xl font-black leading-tight">
-                Estudos que podem <span className="text-[#00D5BE]">mudar sua vida</span>
+                Estudos que podem <span className="text-primary">mudar sua vida</span>
               </h2>
 
               <p className="text-xl text-muted-foreground leading-relaxed">
@@ -301,8 +301,8 @@ export default function LandingPage() {
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#00D5BE]/20 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-[#00D5BE]" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg">Busca por Localização</h4>
@@ -311,8 +311,8 @@ export default function LandingPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#00D5BE]/20 flex items-center justify-center flex-shrink-0">
-                    <Bell className="w-5 h-5 text-[#00D5BE]" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <Bell className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg">Notificações Personalizadas</h4>
@@ -323,8 +323,8 @@ export default function LandingPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#00D5BE]/20 flex items-center justify-center flex-shrink-0">
-                    <Search className="w-5 h-5 text-[#00D5BE]" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <Search className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg">Filtros Avançados</h4>
@@ -336,7 +336,7 @@ export default function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#00D5BE] hover:bg-[#00D5BE]/90 text-white font-bold h-14 px-10"
+                className="bg-primary hover:bg-primary/90 text-white font-bold h-14 px-10"
                 onClick={() => {
                   trackHomepageCTA("clinical_trials_section", "join")
                   trackSignupPathChosen("clinical_trials")
@@ -351,11 +351,11 @@ export default function LandingPage() {
 
             {/* Right: Visual */}
             <div className="glass-strong p-8 rounded-3xl">
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-[#00D5BE]/20 to-[#00D5BE]/5 flex items-center justify-center">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
                 <div className="text-center space-y-6">
-                  <Microscope className="w-24 h-24 text-[#00D5BE] mx-auto" />
+                  <Microscope className="w-24 h-24 text-primary mx-auto" />
                   <div>
-                    <p className="text-4xl font-black text-[#00D5BE]">ClinicalTrials.gov</p>
+                    <p className="text-4xl font-black text-primary">ClinicalTrials.gov</p>
                     <p className="text-muted-foreground">Dados atualizados diretamente da fonte oficial</p>
                   </div>
                 </div>
@@ -589,8 +589,8 @@ export default function LandingPage() {
                     <p className="text-sm text-muted-foreground">Badges</p>
                   </div>
                   <div className="glass p-4 rounded-xl text-center">
-                    <Heart className="w-6 h-6 text-pink-500 mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">PIX</p>
+                    <Microscope className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">Estudos</p>
                   </div>
                 </div>
               </div>
@@ -608,7 +608,7 @@ export default function LandingPage() {
               </h2>
 
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Crie sua página pública e compartilhe sua história. Receba apoio via PIX, mostre seus desejos e
+                Crie sua página pública e compartilhe sua história. Mostre seus desejos, conquistas e
                 conecte-se com pessoas que querem ajudar.
               </p>
 
@@ -620,10 +620,10 @@ export default function LandingPage() {
                   <span className="text-lg">Link único e fácil de compartilhar</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                    <Heart className="w-4 h-4 text-pink-500" />
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Microscope className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="text-lg">Receba doações via PIX diretamente</span>
+                  <span className="text-lg">Acesse estudos clínicos relevantes</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">

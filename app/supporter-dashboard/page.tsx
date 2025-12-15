@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award, Microscope } from "lucide-react"
+import { Heart, Users, TrendingUp, Share2, Sparkles, Trophy, Award, Microscope, ArrowRight, Star } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
@@ -104,7 +104,10 @@ export default async function SupporterDashboardPage() {
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/dashboard/clinical-trials" className="hover:opacity-80 transition-opacity" title="Estudos Clínicos">
-              <Microscope className="w-6 h-6 text-[#00D5BE]" />
+              <Microscope className="w-6 h-6 text-primary" />
+            </Link>
+            <Link href="/dashboard/wishes" className="hover:opacity-80 transition-opacity" title="Desejos">
+              <Star className="w-6 h-6 text-accent" />
             </Link>
             <LogoutButton />
           </div>
@@ -122,6 +125,29 @@ export default async function SupporterDashboardPage() {
               Olá, <span className="text-gradient">{supporter.name}</span>
             </h1>
             <p className="text-xl text-muted-foreground">Obrigado por apoiar a comunidade SomosTetra!</p>
+          </div>
+
+          {/* Clinical Trials CTA */}
+          <div className="mb-12">
+            <Link href="/dashboard/clinical-trials" className="block">
+              <div className="glass-strong p-6 sm:p-8 rounded-3xl border-2 border-primary/50 hover:border-primary transition-colors hover:scale-[1.01] transition-transform">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center flex-shrink-0">
+                    <Microscope className="w-8 h-8" />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl sm:text-2xl font-black">Estudos Clínicos</h3>
+                      <Badge className="gradient-accent font-bold">Novo!</Badge>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Explore estudos clínicos relacionados à comunidade tetraplégica. Ajude a divulgar oportunidades de pesquisa.
+                    </p>
+                  </div>
+                  <ArrowRight className="w-6 h-6 text-primary hidden sm:block" />
+                </div>
+              </div>
+            </Link>
           </div>
 
           {/* Impact Stats */}
@@ -264,7 +290,7 @@ export default async function SupporterDashboardPage() {
                   {referrerInfo.profile_public && referrerInfo.username ? (
                     <Link
                       href={`/p/${referrerInfo.username}`}
-                      className="text-2xl font-black text-gradient hover:opacity-80 transition-opacity"
+                      className="text-2xl font-black text-gradient underline decoration-primary/40 hover:decoration-primary transition-all hover:opacity-90"
                     >
                       {referrerInfo.display_name}
                     </Link>
