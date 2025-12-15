@@ -98,20 +98,20 @@ export default async function SupporterDashboardPage() {
       </div>
 
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between max-w-full">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 flex items-center justify-between max-w-full">
           <Link href="/supporter-dashboard" className="text-2xl font-bold tracking-tight">
             SOMOS<span className="text-gradient">TETRA</span>
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/dashboard/clinical-trials" className="hover:opacity-80 transition-opacity" title="Estudos Clínicos">
-              <Microscope className="w-6 h-6 text-teal-400" />
+              <Microscope className="w-6 h-6 text-[#00D5BE]" />
             </Link>
             <LogoutButton />
           </div>
         </div>
       </header>
 
-      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
+      <main className="pt-24 sm:pt-32 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-5xl">
           <div className="mb-16 space-y-6">
             <div className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full">

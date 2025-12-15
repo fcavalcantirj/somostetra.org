@@ -59,7 +59,7 @@ export default async function WishesPage() {
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between max-w-full">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 flex items-center justify-between max-w-full">
           <Link href="/dashboard" className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-5 w-5" />
             <span className="hidden sm:inline">Voltar ao Dashboard</span>
@@ -72,7 +72,7 @@ export default async function WishesPage() {
       </header>
 
       {/* Main Content */}
-      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
+      <main className="pt-24 sm:pt-32 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-4xl">
           {/* Page Header */}
           <div className="mb-12 space-y-6">

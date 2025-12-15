@@ -47,7 +47,7 @@ export default async function ProfilePage() {
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center gap-4 max-w-full">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 flex items-center gap-4 max-w-full">
           <Link
             href="/dashboard"
             className="glass p-2 rounded-lg hover:scale-105 transition-transform"
@@ -74,7 +74,7 @@ export default async function ProfilePage() {
       </header>
 
       {/* Content */}
-      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
+      <main className="pt-28 sm:pt-32 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-4xl">
         <ProfileForm
           profile={profile}

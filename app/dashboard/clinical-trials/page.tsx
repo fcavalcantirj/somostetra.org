@@ -34,23 +34,23 @@ export default async function ClinicalTrialsPage() {
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 flex items-center justify-between max-w-full">
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 flex items-center justify-between max-w-full">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted p-2 transition-colors hover:bg-muted/80"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted p-2 transition-colors hover:bg-muted/80 shrink-0"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Microscope className="h-6 w-6 text-[#00D5BE]" />
-                Estudos Clínicos
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <Microscope className="h-5 w-5 sm:h-6 sm:w-6 text-[#00D5BE] shrink-0" />
+                <span className="truncate">Estudos Clínicos</span>
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">
                 Encontre estudos clínicos relevantes para você
               </p>
-              <p className="text-xs text-muted-foreground/70 mt-1">
+              <p className="text-xs text-muted-foreground/70 mt-1 hidden sm:block">
                 Dados de{" "}
                 <a
                   href="https://clinicaltrials.gov"
@@ -62,7 +62,7 @@ export default async function ClinicalTrialsPage() {
                 </a>
                 {" "}(U.S. National Library of Medicine)
               </p>
-              <p className="text-xs text-muted-foreground/60">
+              <p className="text-xs text-muted-foreground/60 hidden md:block">
                 Veja também:{" "}
                 <a
                   href="http://www.ensaiosclinicos.gov.br"
@@ -80,7 +80,7 @@ export default async function ClinicalTrialsPage() {
       </header>
 
       {/* Main Content */}
-      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-12">
+      <main className="pt-24 sm:pt-36 md:pt-44 pb-20 px-4 sm:px-6 lg:px-12">
         <div className="container mx-auto max-w-5xl">
           <ClinicalTrialsClient
             initialTrials={initialResult.success ? initialResult.data.trials : []}
