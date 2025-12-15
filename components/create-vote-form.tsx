@@ -13,8 +13,10 @@ import { useState } from "react"
 import { Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { trackVoteCreated } from "@/lib/analytics"
+import { useTranslations } from "next-intl"
 
 export function CreateVoteForm({ userId }: { userId: string }) {
+  const t = useTranslations("createVoteForm")
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState("")
@@ -53,8 +55,8 @@ export function CreateVoteForm({ userId }: { userId: string }) {
 
       console.log("[v0] Showing success toast...")
       toast({
-        title: "Votação criada com sucesso!",
-        description: "Sua votação foi publicada e está disponível para a comunidade.",
+        title: t("successTitle"),
+        description: t("successDescription"),
       })
 
       setIsLoading(false)
@@ -65,8 +67,8 @@ export function CreateVoteForm({ userId }: { userId: string }) {
     } catch (error: unknown) {
       console.log("[v0] Error creating vote:", error)
       toast({
-        title: "Erro ao criar votação",
-        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado. Tente novamente.",
+        title: t("errorTitle"),
+        description: error instanceof Error ? error.message : t("errorDescription"),
         variant: "destructive",
       })
       setIsLoading(false)
@@ -78,12 +80,12 @@ export function CreateVoteForm({ userId }: { userId: string }) {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <Label htmlFor="title" className="text-lg font-bold">
-            Título da Votação
+            {t("titleLabel")}
           </Label>
           <Input
             id="title"
             type="text"
-            placeholder="Ex: Devemos criar um programa de mentoria?"
+            placeholder={t("titlePlaceholder")}
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -94,11 +96,11 @@ export function CreateVoteForm({ userId }: { userId: string }) {
 
         <div>
           <Label htmlFor="description" className="text-lg font-bold">
-            Descrição
+            {t("descriptionLabel")}
           </Label>
           <Textarea
             id="description"
-            placeholder="Explique a proposta em detalhes..."
+            placeholder={t("descriptionPlaceholder")}
             required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -110,30 +112,30 @@ export function CreateVoteForm({ userId }: { userId: string }) {
 
         <div>
           <Label htmlFor="category" className="text-lg font-bold">
-            Categoria
+            {t("categoryLabel")}
           </Label>
           <Select value={category} onValueChange={setCategory} required disabled={isLoading}>
             <SelectTrigger className="mt-2 h-14 text-lg">
-              <SelectValue placeholder="Selecione uma categoria" />
+              <SelectValue placeholder={t("categoryPlaceholder")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Acessibilidade">Acessibilidade</SelectItem>
-              <SelectItem value="Tecnologia">Tecnologia</SelectItem>
-              <SelectItem value="Direitos">Direitos</SelectItem>
-              <SelectItem value="Saúde">Saúde</SelectItem>
-              <SelectItem value="Comunidade">Comunidade</SelectItem>
-              <SelectItem value="Outro">Outro</SelectItem>
+              <SelectItem value="Acessibilidade">{t("categories.accessibility")}</SelectItem>
+              <SelectItem value="Tecnologia">{t("categories.technology")}</SelectItem>
+              <SelectItem value="Direitos">{t("categories.rights")}</SelectItem>
+              <SelectItem value="Saúde">{t("categories.health")}</SelectItem>
+              <SelectItem value="Comunidade">{t("categories.community")}</SelectItem>
+              <SelectItem value="Outro">{t("categories.other")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <Button type="submit" size="lg" className="w-full gradient-primary font-bold h-16 text-lg" disabled={isLoading}>
           {isLoading ? (
-            "Criando..."
+            t("creating")
           ) : (
             <>
               <Plus className="w-6 h-6 mr-2" />
-              Criar Votação
+              {t("createVote")}
             </>
           )}
         </Button>

@@ -4,6 +4,7 @@ import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Upload, X, Loader2, User } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { useTranslations } from "next-intl"
 
 interface ProfilePictureUploadProps {
   currentImageUrl?: string | null
@@ -21,6 +22,7 @@ export function ProfilePictureUpload({
   onUploadComplete,
   onError,
 }: ProfilePictureUploadProps) {
+  const t = useTranslations("profilePicture")
   const [isUploading, setIsUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(currentImageUrl || null)
   const [error, setError] = useState<string | null>(null)
@@ -28,10 +30,10 @@ export function ProfilePictureUpload({
 
   const validateFile = (file: File): string | null => {
     if (!ALLOWED_TYPES.includes(file.type)) {
-      return "Formato inválido. Use JPG, JPEG ou PNG."
+      return t("invalidFormat")
     }
     if (file.size > MAX_FILE_SIZE) {
-      return "Arquivo muito grande. Máximo 2MB."
+      return t("fileTooLarge")
     }
     return null
   }
@@ -86,7 +88,7 @@ export function ProfilePictureUpload({
 
       onUploadComplete(urlData.publicUrl)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao enviar imagem"
+      const errorMessage = err instanceof Error ? err.message : t("uploadError")
       setError(errorMessage)
       onError?.(errorMessage)
       setPreview(currentImageUrl || null)
@@ -112,7 +114,7 @@ export function ProfilePictureUpload({
       setPreview(null)
       onUploadComplete("")
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao remover imagem"
+      const errorMessage = err instanceof Error ? err.message : t("removeError")
       setError(errorMessage)
       onError?.(errorMessage)
     } finally {
@@ -132,7 +134,7 @@ export function ProfilePictureUpload({
           {preview ? (
             <img
               src={preview}
-              alt="Foto de perfil"
+              alt={t("alt")}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -148,7 +150,7 @@ export function ProfilePictureUpload({
           <button
             onClick={handleRemove}
             className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
-            title="Remover foto"
+            title={t("removeTitle")}
           >
             <X className="w-4 h-4 text-white" />
           </button>
@@ -175,19 +177,19 @@ export function ProfilePictureUpload({
         {isUploading ? (
           <>
             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            Enviando...
+            {t("uploading")}
           </>
         ) : (
           <>
             <Upload className="w-4 h-4 mr-2" />
-            {preview ? "Trocar foto" : "Enviar foto"}
+            {preview ? t("changePhoto") : t("uploadPhoto")}
           </>
         )}
       </Button>
 
       {/* Help text */}
       <p className="text-xs text-white/40 text-center">
-        JPG, JPEG ou PNG. Máximo 2MB.
+        {t("helpText")}
       </p>
 
       {/* Error message */}

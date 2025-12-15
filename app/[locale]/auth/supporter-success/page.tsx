@@ -1,0 +1,52 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { CheckCircle2, Heart } from "lucide-react"
+import Link from "next/link"
+import { useEffect } from "react"
+import { trackEmailConfirmation } from "@/lib/analytics"
+import { useTranslations } from "next-intl"
+
+export default function SupporterSuccessPage() {
+  const t = useTranslations("auth.supporterSuccess")
+
+  useEffect(() => {
+    trackEmailConfirmation("supporter")
+  }, [])
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px] animate-pulse" />
+        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-accent/15 rounded-full blur-[140px] animate-pulse [animation-delay:1s]" />
+      </div>
+
+      <div className="w-full max-w-2xl text-center space-y-12">
+        <div className="space-y-6">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full gradient-primary">
+            <CheckCircle2 className="w-12 h-12" />
+          </div>
+
+          <h1 className="text-5xl lg:text-6xl font-black tracking-tighter">
+            {t("title")} <span className="text-gradient">{t("titleHighlight")}</span>
+          </h1>
+
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-xl mx-auto">
+            {t("subtitle")}
+          </p>
+        </div>
+
+        <div className="glass-strong p-10 rounded-3xl space-y-6">
+          <Heart className="w-12 h-12 mx-auto text-accent" />
+          <p className="text-lg">
+            {t("message")}
+          </p>
+        </div>
+
+        <Button size="lg" className="gradient-primary font-bold h-14 px-12" asChild>
+          <Link href="/">{t("backHome")}</Link>
+        </Button>
+      </div>
+    </div>
+  )
+}

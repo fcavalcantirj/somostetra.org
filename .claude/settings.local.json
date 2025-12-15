@@ -23,7 +23,11 @@
       "Bash(curl:*)",
       "Bash(lsof:*)",
       "Bash(npx next lint:*)",
-      "Bash(npx next build:*)"
+      "Bash(npx next build:*)",
+      "Bash(tree:*)",
+      "Bash(for dir in auth badges dashboard leaderboard p privacidade referrals supporter-dashboard votes)",
+      "Bash(do echo '=== $dir ===' ls -la /Users/fcavalcanti/dev/somostetra.org/app/[locale]/$dir/)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []

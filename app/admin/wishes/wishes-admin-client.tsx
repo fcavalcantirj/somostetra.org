@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { WISH_STATUS_LABELS, type WishStatus } from "@/app/dashboard/wishes/types"
+import { WISH_STATUS_LABELS, type WishStatus } from "@/lib/types/wishes"
 import { approveWish, rejectWish, fulfillWish, deleteWishAdmin } from "@/app/admin/actions"
 
 interface WishCategory {

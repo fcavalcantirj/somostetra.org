@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { submitWishHelp } from "@/app/actions/wish-help"
+import { useTranslations } from "next-intl"
 
 interface HelpWishButtonProps {
   wishId: string
@@ -22,6 +23,7 @@ interface HelpWishButtonProps {
 }
 
 export function HelpWishButton({ wishId, memberName }: HelpWishButtonProps) {
+  const t = useTranslations("helpWish")
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -53,7 +55,7 @@ export function HelpWishButton({ wishId, memberName }: HelpWishButtonProps) {
       setPhone("")
       setMessage("")
     } else {
-      setError(result.error || "Erro ao enviar. Tente novamente.")
+      setError(result.error || t("errorDefault"))
     }
 
     setIsSubmitting(false)
@@ -77,14 +79,14 @@ export function HelpWishButton({ wishId, memberName }: HelpWishButtonProps) {
           className="gap-2 border-pink-500/50 text-pink-400 hover:bg-pink-500/10 hover:text-pink-300"
         >
           <Heart className="h-4 w-4" />
-          Quero Ajudar
+          {t("buttonText")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Quero Ajudar</DialogTitle>
+          <DialogTitle>{t("dialogTitle")}</DialogTitle>
           <DialogDescription>
-            Preencha seus dados para ajudar {memberName} a realizar este desejo.
+            {t("dialogDescription", { memberName })}
           </DialogDescription>
         </DialogHeader>
 
@@ -94,59 +96,59 @@ export function HelpWishButton({ wishId, memberName }: HelpWishButtonProps) {
               <Heart className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-emerald-400">Obrigado!</h3>
+              <h3 className="text-lg font-bold text-emerald-400">{t("successTitle")}</h3>
               <p className="text-sm text-muted-foreground mt-2">
-                Sua oferta de ajuda foi registrada. Entraremos em contato em breve para coordenar a doação.
+                {t("successDescription")}
               </p>
             </div>
             <Button onClick={() => setOpen(false)} className="mt-4">
-              Fechar
+              {t("close")}
             </Button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="help-name">Seu Nome *</Label>
+              <Label htmlFor="help-name">{t("nameLabel")}</Label>
               <Input
                 id="help-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Como podemos te chamar?"
+                placeholder={t("namePlaceholder")}
                 required
                 minLength={2}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="help-email">Seu Email *</Label>
+              <Label htmlFor="help-email">{t("emailLabel")}</Label>
               <Input
                 id="help-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu@email.com"
+                placeholder={t("emailPlaceholder")}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="help-phone">Telefone / WhatsApp</Label>
+              <Label htmlFor="help-phone">{t("phoneLabel")}</Label>
               <Input
                 id="help-phone"
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="(11) 99999-9999"
+                placeholder={t("phonePlaceholder")}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="help-message">Mensagem</Label>
+              <Label htmlFor="help-message">{t("messageLabel")}</Label>
               <Textarea
                 id="help-message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Conte como você pode ajudar..."
+                placeholder={t("messagePlaceholder")}
                 rows={3}
               />
             </div>
@@ -164,7 +166,7 @@ export function HelpWishButton({ wishId, memberName }: HelpWishButtonProps) {
                 onClick={() => setOpen(false)}
                 disabled={isSubmitting}
               >
-                Cancelar
+                {t("cancel")}
               </Button>
               <Button
                 type="submit"
@@ -174,12 +176,12 @@ export function HelpWishButton({ wishId, memberName }: HelpWishButtonProps) {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Enviando...
+                    {t("submitting")}
                   </>
                 ) : (
                   <>
                     <Heart className="h-4 w-4 mr-2" />
-                    Enviar
+                    {t("submit")}
                   </>
                 )}
               </Button>

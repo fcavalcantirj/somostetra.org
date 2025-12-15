@@ -1,3 +1,7 @@
+"use client"
+
+import { useTranslations } from "next-intl"
+
 interface Badge {
   name: string
   icon: string
@@ -10,6 +14,8 @@ interface BadgeProgressBarProps {
 }
 
 export function BadgeProgressBar({ currentPoints, badges }: BadgeProgressBarProps) {
+  const t = useTranslations("badgeProgress")
+
   // Sort badges by points_required
   const sortedBadges = [...badges].sort((a, b) => a.points_required - b.points_required)
 
@@ -22,13 +28,13 @@ export function BadgeProgressBar({ currentPoints, badges }: BadgeProgressBarProp
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="font-bold text-accent">👑 Nível Máximo Alcançado!</span>
+          <span className="font-bold text-accent">👑 {t("maxLevelTitle")}</span>
           <span className="text-sm font-bold text-accent">{currentPoints} pts</span>
         </div>
         <div className="h-3 glass rounded-full overflow-hidden">
           <div className="h-full bg-gradient-to-r from-accent to-primary w-full animate-pulse" />
         </div>
-        <p className="text-xs text-muted-foreground text-center">Você conquistou todas as badges disponíveis</p>
+        <p className="text-xs text-muted-foreground text-center">{t("maxLevelDescription")}</p>
       </div>
     )
   }
@@ -44,7 +50,7 @@ export function BadgeProgressBar({ currentPoints, badges }: BadgeProgressBarProp
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <span className="font-bold">
-          Próximo: {nextBadge.icon} {nextBadge.name}
+          {t("nextBadge", { icon: nextBadge.icon, name: nextBadge.name })}
         </span>
         <span className="text-sm text-muted-foreground">
           {currentPoints}/{nextBadge.points_required} pts
@@ -57,7 +63,9 @@ export function BadgeProgressBar({ currentPoints, badges }: BadgeProgressBarProp
         />
       </div>
       <p className="text-xs text-muted-foreground text-center">
-        Faltam <span className="font-bold text-accent">{pointsRemaining} pontos</span> para desbloquear
+        {t.rich("pointsRemaining", {
+          points: pointsRemaining,
+        })}
       </p>
     </div>
   )

@@ -1,8 +1,8 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+export async function updateSession(request: NextRequest, response?: NextResponse) {
+  let supabaseResponse = response || NextResponse.next({
     request,
   })
 
@@ -17,7 +17,7 @@ export async function updateSession(request: NextRequest) {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-            supabaseResponse = NextResponse.next({
+            supabaseResponse = response || NextResponse.next({
               request,
             })
             cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
@@ -30,23 +30,35 @@ export async function updateSession(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser()
 
-    const isAuthPage = request.nextUrl.pathname.startsWith("/auth")
-    const isLandingPage = request.nextUrl.pathname === "/"
+    // Extract path without locale prefix for checking routes
+    const pathname = request.nextUrl.pathname
+    // Check if path starts with locale (e.g., /en/, /es/, /pt/)
+    const localePattern = /^\/(en|es|pt)(\/|$)/
+    const pathWithoutLocale = pathname.replace(localePattern, '/')
+
+    const isAuthPage = pathWithoutLocale.startsWith("/auth")
+    const isLandingPage = pathWithoutLocale === "/" || pathname === "/"
 
     const protectedRoutes = ["/dashboard", "/votes", "/referrals", "/badges", "/admin"]
-    const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+    const isProtectedRoute = protectedRoutes.some((route) => pathWithoutLocale.startsWith(route))
 
     if (!user && isProtectedRoute) {
       const url = request.nextUrl.clone()
-      url.pathname = "/auth/login"
-      url.searchParams.set("redirect", request.nextUrl.pathname)
+      // Get the locale from the pathname if present
+      const localeMatch = pathname.match(localePattern)
+      const locale = localeMatch ? localeMatch[1] : ''
+      url.pathname = locale ? `/${locale}/auth/login` : "/auth/login"
+      url.searchParams.set("redirect", pathname)
       return NextResponse.redirect(url)
     }
 
     if (user && isAuthPage) {
       const url = request.nextUrl.clone()
       const redirectTo = request.nextUrl.searchParams.get("redirect")
-      url.pathname = redirectTo || "/dashboard"
+      // Get the locale from the pathname if present
+      const localeMatch = pathname.match(localePattern)
+      const locale = localeMatch ? localeMatch[1] : ''
+      url.pathname = redirectTo || (locale ? `/${locale}/dashboard` : "/dashboard")
       url.search = "" // Clear query params
       return NextResponse.redirect(url)
     }

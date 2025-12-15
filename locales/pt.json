@@ -1,0 +1,963 @@
+{
+  "common": {
+    "login": "Entrar",
+    "signup": "Cadastre-se",
+    "logout": "Sair",
+    "back": "Voltar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "email": "Email",
+    "password": "Senha",
+    "name": "Nome",
+    "submit": "Enviar",
+    "learnMore": "Saiba Mais",
+    "privacy": "Privacidade",
+    "member": "Membro",
+    "activeWish": "Desejo ativo",
+    "dashboard": "Painel",
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "clinicalTrials": "Estudos Clinicos",
+    "wishes": "Desejos"
+  },
+  "nav": {
+    "about": "Sobre",
+    "community": "Comunidade",
+    "contact": "Contato"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Bem-vindo a Comunidade",
+      "title1": "JUNTOS",
+      "title2": "SOMOS",
+      "title3": "MAIS FORTES",
+      "description": "A primeira plataforma que conecta a comunidade tetraplegica do Brasil a estudos clinicos, realiza desejos e amplifica sua voz. Juntos, construimos mudancas reais.",
+      "cta": "Comecar Agora",
+      "learnMore": "Saber Mais"
+    },
+    "pillars": {
+      "clinicalTrials": {
+        "title": "Estudos Clinicos",
+        "description": "Receba notificacoes de estudos que podem mudar sua vida. Conectamos voce a pesquisas relevantes.",
+        "cta": "Buscar Estudos"
+      },
+      "wishes": {
+        "title": "Desejos",
+        "description": "A comunidade se une para ajudar voce. Compartilhe suas necessidades e receba apoio.",
+        "cta": "Criar Desejo"
+      },
+      "publicProfile": {
+        "title": "Sua Historia",
+        "description": "Seu link pessoal para o mundo. Compartilhe sua jornada e conecte-se com quem importa.",
+        "cta": "Criar Meu Perfil"
+      }
+    },
+    "clinicalTrials": {
+      "badge": "Estudos Clinicos",
+      "title": "Estudos que podem",
+      "titleHighlight": "mudar sua vida",
+      "description": "Conectamos voce a pesquisas clinicas relevantes para sua condicao. Receba notificacoes automaticas quando novos estudos surgirem na sua regiao.",
+      "features": {
+        "location": {
+          "title": "Busca por Localizacao",
+          "description": "Encontre estudos proximos a voce, em qualquer estado do Brasil"
+        },
+        "notifications": {
+          "title": "Notificacoes Personalizadas",
+          "description": "Seja avisado quando estudos compativeis com seu perfil forem publicados"
+        },
+        "filters": {
+          "title": "Filtros Avancados",
+          "description": "Filtre por fase, status e condicoes especificas"
+        }
+      },
+      "cta": "Cadastre-se para ser notificado",
+      "source": "Dados atualizados diretamente da fonte oficial"
+    },
+    "howItWorks": {
+      "title": "COMO",
+      "titleHighlight": "FUNCIONA",
+      "description": "Ganhe pontos, desbloqueie badges e suba no ranking enquanto fortalece nossa comunidade",
+      "actions": {
+        "signup": {
+          "title": "Cadastre-se e Ganhe",
+          "description": "ao criar sua conta. Comece sua jornada na comunidade com pontos de boas-vindas.",
+          "points": "+10 pontos"
+        },
+        "vote": {
+          "title": "Vote e Participe",
+          "description": "por cada votacao. Sua opiniao importa e e recompensada.",
+          "points": "+5 pontos"
+        },
+        "inviteMembers": {
+          "title": "Convide Membros",
+          "description": "por cada membro tetraplegico que voce trouxer. Fortaleca nossa voz coletiva.",
+          "points": "+20 pontos"
+        },
+        "inviteSupporters": {
+          "title": "Traga Apoiadores",
+          "description": "por cada apoiador. Amplie o alcance da nossa causa.",
+          "points": "+10 pontos"
+        }
+      },
+      "badges": {
+        "title": "Desbloqueie Badges",
+        "description": "Acompanhe sua evolucao e conquiste badges conforme acumula pontos:",
+        "firstStep": "Primeiro Passo",
+        "engaged": "Engajado",
+        "influencer": "Influenciador",
+        "activist": "Ativista",
+        "communityLeader": "Lider Comunitario"
+      },
+      "ranking": {
+        "title": "Suba no Ranking",
+        "description": "Apareca no leaderboard e seja reconhecido como um dos membros mais ativos da comunidade. Quanto mais voce participa, mais visibilidade ganha.",
+        "cta": "Ver Ranking Completo"
+      },
+      "impact": {
+        "title": "Impacto Real",
+        "description": "Seus pontos nao sao apenas numeros - sao a medida do quanto voce ajuda a transformar nossa comunidade. Cada acao conta. Cada voz importa."
+      },
+      "cta": "Comecar a Ganhar Pontos"
+    },
+    "publicProfile": {
+      "badge": "Perfil Publico",
+      "title": "Seu link",
+      "titleHighlight": "pessoal",
+      "titleEnd": "para o mundo",
+      "description": "Crie sua pagina publica e compartilhe sua historia. Mostre seus desejos, conquistas e conecte-se com pessoas que querem ajudar.",
+      "preview": {
+        "urlPrefix": "somostetra.org/p/",
+        "urlSuffix": "seunome",
+        "name": "Seu Nome",
+        "bio": "Sua historia, seus desejos, suas conquistas",
+        "wishes": "Desejos",
+        "badges": "Badges",
+        "studies": "Estudos"
+      },
+      "features": {
+        "uniqueLink": "Link unico e facil de compartilhar",
+        "clinicalAccess": "Acesse estudos clinicos relevantes",
+        "showWishes": "Mostre seus desejos e conquistas"
+      },
+      "cta": "Criar Meu Perfil Publico"
+    },
+    "stats": {
+      "members": "Membros",
+      "supporters": "Apoiadores",
+      "wishesFulfilled": "Desejos Realizados",
+      "votes": "Votos"
+    },
+    "wishes": {
+      "badge": "Desejos da Comunidade",
+      "title1": "CONECTAMOS QUEM",
+      "titleHighlight1": "PRECISA",
+      "title2": "COM QUEM PODE",
+      "titleHighlight2": "AJUDAR",
+      "description": "Nos somos a ponte entre necessidades e solidariedade. A comunidade se une para transformar desejos em realidade.",
+      "fulfilledCounter": "desejos ja realizados",
+      "helpCta": "Quer ajudar a realizar um desses desejos ou criar o seu?",
+      "helpButton": "Quero Ajudar",
+      "createButton": "Criar Meu Desejo"
+    },
+    "cta": {
+      "title1": "PRONTO PARA",
+      "title2": "FAZER PARTE?",
+      "description": "Sua voz pode mudar vidas. Junte-se a nos e faca parte de algo maior.",
+      "button": "Cadastrar Agora"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "subtitle": "Entre na sua conta SomosTetra",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "forgotPassword": "Esqueceu a senha?",
+      "submit": "Entrar",
+      "submitting": "Entrando...",
+      "noAccount": "Nao tem uma conta?",
+      "signupLink": "Cadastre-se",
+      "error": "Erro ao fazer login"
+    },
+    "signup": {
+      "title": "Cadastre-se",
+      "subtitle": "Junte-se a comunidade SomosTetra",
+      "displayName": "Nome de exibicao",
+      "displayNamePlaceholder": "Como quer ser chamado?",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "submit": "Criar conta",
+      "submitting": "Criando conta...",
+      "hasAccount": "Ja tem uma conta?",
+      "loginLink": "Entrar",
+      "error": "Erro ao criar conta",
+      "invitedBy": "Voce foi convidado por {name}!"
+    },
+    "join": {
+      "title": "Como voce quer",
+      "titleHighlight": "participar",
+      "subtitle": "Escolha a opcao que melhor descreve voce e junte-se a nossa comunidade",
+      "member": {
+        "title": "Sou Tetraplegico",
+        "description": "Faca parte da comunidade, vote em peticoes, convide amigos e ganhe reconhecimento",
+        "benefit1": "Participe de votacoes e peticoes",
+        "benefit2": "Ganhe pontos e badges por contribuicoes",
+        "benefit3": "Convide membros e apoiadores",
+        "benefit4": "Acesse dashboard completo",
+        "cta": "Cadastrar como Membro"
+      },
+      "supporter": {
+        "title": "Quero Apoiar",
+        "description": "Fortaleca nossa voz coletiva e ajude a pressionar autoridades por mudancas reais",
+        "benefit1": "Amplifique nossa causa",
+        "benefit2": "Convide outros apoiadores",
+        "benefit3": "Acompanhe seu impacto",
+        "benefit4": "Receba atualizacoes da comunidade",
+        "cta": "Cadastrar como Apoiador"
+      },
+      "hasAccount": "Ja tem uma conta?",
+      "loginLink": "Entrar"
+    },
+    "resetPassword": {
+      "title": "Recuperar Senha",
+      "subtitle": "Digite seu email e enviaremos um link para redefinir sua senha",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "submit": "Enviar Link de Recuperacao",
+      "submitting": "Enviando...",
+      "rememberedPassword": "Lembrou a senha?",
+      "loginLink": "Voltar para Login",
+      "error": "Erro ao enviar email de recuperacao",
+      "successTitle": "Email Enviado!",
+      "successMessage": "Enviamos um link de recuperacao para {email}. Verifique sua caixa de entrada e spam.",
+      "backToLogin": "Voltar para Login"
+    },
+    "updatePassword": {
+      "title": "Nova Senha",
+      "subtitle": "Digite sua nova senha abaixo",
+      "newPassword": "Nova Senha",
+      "newPasswordPlaceholder": "Minimo 6 caracteres",
+      "confirmPassword": "Confirmar Nova Senha",
+      "confirmPasswordPlaceholder": "Digite a senha novamente",
+      "submit": "Atualizar Senha",
+      "submitting": "Atualizando...",
+      "error": "Erro ao atualizar senha",
+      "passwordMismatch": "As senhas nao coincidem",
+      "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
+      "invalidLinkTitle": "Link Invalido ou Expirado",
+      "invalidLinkMessage": "Este link de recuperacao de senha e invalido ou ja expirou. Por favor, solicite um novo link.",
+      "requestNewLink": "Solicitar Novo Link",
+      "successMessage": "Senha atualizada com sucesso!"
+    },
+    "checkEmail": {
+      "title": "Verifique seu email",
+      "memberMessage": "Enviamos um link de confirmacao para seu email. Clique no link para ativar sua conta e comecar a usar o SomosTetra.",
+      "supporterMessage": "Enviamos um link de confirmacao para seu email. Clique no link para ativar sua conta de apoiador e comecar a acompanhar seu impacto na comunidade.",
+      "backToLogin": "Voltar para login"
+    },
+    "supporterSignup": {
+      "badge": "Seja um Apoiador",
+      "title": "Junte-se a",
+      "titleHighlight": "Causa",
+      "subtitle": "Ajude-nos a pressionar autoridades e fazer a diferenca na vida de pessoas tetraplegicas",
+      "invitedBy": "{name} convidou voce para apoiar a comunidade!",
+      "fullName": "Nome completo",
+      "fullNamePlaceholder": "Seu nome",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "passwordPlaceholder": "Minimo 6 caracteres",
+      "phone": "Telefone (opcional)",
+      "phonePlaceholder": "(00) 00000-0000",
+      "submit": "Tornar-me Apoiador",
+      "submitting": "Criando conta...",
+      "disclaimer": "Ao se cadastrar, voce recebera um email de confirmacao e podera acompanhar seu impacto na comunidade",
+      "error": "Erro ao criar conta de apoiador",
+      "benefit1": "Fortaleca",
+      "benefit1Sub": "Nossa voz coletiva",
+      "benefit2": "Pressione",
+      "benefit2Sub": "Autoridades",
+      "benefit3": "Transforme",
+      "benefit3Sub": "Vidas"
+    },
+    "supporterSuccess": {
+      "title": "Bem-vindo a",
+      "titleHighlight": "Causa!",
+      "subtitle": "Obrigado por se juntar a nos! Voce recebera atualizacoes sobre nossas campanhas e como pode ajudar a fazer a diferenca.",
+      "message": "Juntos somos mais fortes. Sua participacao e fundamental para pressionar autoridades e conquistar direitos para a comunidade tetraplegica.",
+      "backHome": "Voltar ao Inicio"
+    }
+  },
+  "dashboard": {
+    "badge": "Dashboard",
+    "greeting": "Ola, {name}",
+    "welcome": "Bem-vinda de volta a sua comunidade",
+    "defaultName": "Membro",
+    "completeProfile": {
+      "title": "Complete seu perfil",
+      "points": "+50 pontos",
+      "description": "Preencha suas informacoes para ganhar pontos e criar sua pagina publica para receber doacoes via PIX"
+    },
+    "wishes": {
+      "title": "Seus Desejos",
+      "badge": "Novo!",
+      "description": "Compartilhe o que voce precisa e deixe a comunidade ajudar. Sua necessidade pode ser realizada!"
+    },
+    "clinicalTrials": {
+      "title": "Estudos Clinicos",
+      "badge": "Novo!",
+      "description": "Encontre estudos clinicos relevantes para voce. Receba notificacoes quando surgirem novas oportunidades."
+    },
+    "stats": {
+      "referrals": "Convidados",
+      "referralsDescription": "Pessoas que voce trouxe",
+      "referralsBreakdown": "{members} membros + {supporters} apoiadores",
+      "clickDetails": "Clique para ver detalhes",
+      "points": "Pontos",
+      "pointsTotal": "Total acumulado",
+      "votes": "Votacoes",
+      "votesActive": "{count} ativas",
+      "votesTotal": "Participacoes totais",
+      "topPercent": "Top {percent}%"
+    },
+    "progress": {
+      "title": "Seu Progresso"
+    },
+    "referralLinks": {
+      "title": "Seus Links de Convite",
+      "members": {
+        "title": "Convide Membros",
+        "subtitle": "Pessoas tetraplegicas para a comunidade",
+        "description": "Compartilhe este link e ganhe {points} pontos por cada membro que se cadastrar",
+        "count": "{count} membros convidados",
+        "clickToSee": "Clique para ver quem"
+      },
+      "supporters": {
+        "title": "Convide Apoiadores",
+        "subtitle": "Pessoas engajadas que querem ajudar",
+        "description": "Compartilhe este link e ganhe {points} pontos por cada apoiador que se cadastrar. Apoiadores nos ajudam com numeros para pressionar autoridades!",
+        "count": "{count} apoiadores convidados"
+      },
+      "shareWhatsapp": "WhatsApp",
+      "shareEmail": "Email",
+      "shareMessageMember": "Junte-se a comunidade SomosTetra!",
+      "shareMessageSupporter": "Ajude a comunidade SomosTetra! Torne-se um apoiador:",
+      "emailSubjectMember": "Junte-se a SomosTetra",
+      "emailSubjectSupporter": "Apoie a SomosTetra",
+      "emailBodyMember": "Ola! Convido voce a fazer parte da comunidade SomosTetra:",
+      "emailBodySupporter": "Ola! Convido voce a apoiar a comunidade SomosTetra e ajudar a fazer a diferenca:"
+    },
+    "activeVotes": {
+      "title": "Votacoes Ativas",
+      "create": "Criar",
+      "viewAll": "Ver Todas",
+      "statusActive": "Ativa",
+      "voteCount": "{count} votos",
+      "voteNow": "Votar Agora",
+      "empty": "Nenhuma votacao ativa no momento"
+    },
+    "achievements": {
+      "title": "Suas Conquistas",
+      "empty": "Nenhuma conquista ainda",
+      "viewAll": "Ver Todas as Badges"
+    },
+    "ranking": {
+      "title": "Ranking",
+      "points": "{count} pts",
+      "you": "Voce",
+      "empty": "Nenhum dado disponivel",
+      "viewFull": "Ver Ranking Completo"
+    }
+  },
+  "footer": {
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "privacy": "Privacidade"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Pagina nao encontrada",
+    "backHome": "Voltar ao inicio"
+  },
+  "clinicalTrialsPage": {
+    "title": "Estudos Clinicos",
+    "subtitle": "Encontre estudos clinicos relevantes para voce",
+    "dataSource": "Dados de",
+    "dataSourceLink": "ClinicalTrials.gov",
+    "dataSourceDesc": "(U.S. National Library of Medicine)",
+    "alsoSee": "Veja tambem:",
+    "brazilianRegistry": "ensaiosclinicos.gov.br",
+    "brazilianRegistryDesc": "(Registro Brasileiro de Ensaios Clinicos)",
+    "searchTitle": "Buscar Estudos",
+    "filters": "Filtros",
+    "conditions": "Condicoes medicas",
+    "conditionsPlaceholder": "tetraplegia, quadriplegia, spinal cord injury",
+    "conditionsHint": "Separadas por virgula",
+    "useEnglish": "Use palavras em ingles",
+    "conditionsExample": "(ex: tetraplegia, spinal cord injury)",
+    "searchDisclaimer": "Para fins de estudo, armazenamos as buscas realizadas.",
+    "status": "Status",
+    "statusRecruiting": "Recrutando",
+    "statusNotYetRecruiting": "Em breve",
+    "statusActiveNotRecruiting": "Ativo (nao recrutando)",
+    "statusCompleted": "Concluido",
+    "phase": "Fase",
+    "phase0": "Fase 0",
+    "phase1": "Fase 1",
+    "phase2": "Fase 2",
+    "phase3": "Fase 3",
+    "phase4": "Fase 4",
+    "phaseNA": "N/A",
+    "location": "Localizacao (Estado)",
+    "locationAll": "Todos os locais",
+    "distance": "Distancia: {distance} milhas",
+    "brazilOnly": "Apenas Brasil",
+    "search": "Buscar",
+    "resultsCount": "{count} estudos encontrados",
+    "resultsCountBrazil": "{count} estudos no Brasil",
+    "noResults": "Nenhum estudo encontrado. Tente ajustar os filtros.",
+    "viewDetails": "Ver Detalhes",
+    "locations": "Locais",
+    "locationsCount": "{count} localizacao(oes)",
+    "eligibility": "Elegibilidade",
+    "period": "Periodo",
+    "until": "ate",
+    "brazil": "Brasil"
+  },
+  "profilePage": {
+    "title": "Completar Perfil",
+    "profileComplete": "Perfil completo",
+    "completeAndEarn": "Complete seu perfil e ganhe 50 pontos!",
+    "savedSuccess": "Perfil salvo com sucesso!",
+    "pointsAwarded": "+{points} pontos",
+    "profilePicture": "Foto de Perfil",
+    "username": "Nome de Usuario",
+    "publicProfileUrl": "URL do seu perfil publico",
+    "urlPrefix": "somostetra.org/p/",
+    "usernamePlaceholder": "seu_nome",
+    "usernameHint": "Use apenas letras minusculas, numeros e underscore (_)",
+    "contactInfo": "Informacoes de Contato",
+    "gender": "Genero",
+    "genderFemale": "Feminino",
+    "genderMale": "Masculino",
+    "genderNonBinary": "Nao-binario",
+    "genderPreferNotToSay": "Prefiro nao informar",
+    "phone": "Telefone",
+    "phonePlaceholder": "(11) 99999-9999",
+    "email": "E-mail",
+    "emailCannotChange": "E-mail nao pode ser alterado",
+    "preferredCommunication": "Meio de Comunicacao Preferido",
+    "commEmail": "E-mail",
+    "commWhatsapp": "WhatsApp",
+    "commSms": "SMS",
+    "commPhone": "Ligacao telefonica",
+    "location": "Localizacao",
+    "city": "Cidade",
+    "cityPlaceholder": "Sao Paulo",
+    "state": "Estado",
+    "stateSelect": "Selecione...",
+    "cep": "CEP",
+    "cepPlaceholder": "00000-000",
+    "personalInfo": "Informacoes Pessoais",
+    "dateOfBirth": "Data de Nascimento",
+    "aboutYou": "Sobre Voce",
+    "bio": "Bio",
+    "bioPlaceholder": "Conte um pouco sobre voce...",
+    "bioHint": "Uma breve descricao sobre voce que pode ser exibida no perfil publico",
+    "bioPublic": "Exibir bio no perfil publico",
+    "bioPublicHint": "Sua bio sera visivel para todos que visitarem seu perfil",
+    "medicalInfo": "Informacoes Medicas",
+    "medicalInfoHint": "Estas informacoes sao opcionais e nos ajudam a entender melhor a comunidade.",
+    "injuryDate": "Data da Lesao",
+    "injuryDateHint": "Mes e ano aproximados",
+    "injuryLevel": "Nivel da Lesao",
+    "injuryLevelPlaceholder": "Ex: C4, T10",
+    "injuryAcquired": "Lesao Medular Adquirida",
+    "injuryAcquiredHint": "Lesao ocorrida apos o nascimento (nao congenita)",
+    "yes": "Sim",
+    "no": "Nao",
+    "asiaScale": "Escala ASIA (AIS)",
+    "asiaDontKnow": "Nao sei",
+    "asiaRecentEvaluation": "Avaliacao ASIA/ISNCSCI Recente",
+    "asiaRecentEvaluationHint": "Realizada por profissional qualificado nos ultimos 6 meses",
+    "publicProfile": "Perfil Publico",
+    "makeProfilePublic": "Tornar perfil publico",
+    "publicProfileHint": "Seu perfil ficara visivel em somostetra.org/p/{username}",
+    "saving": "Salvando...",
+    "saveProfile": "Salvar Perfil"
+  },
+  "referralsPage": {
+    "backToDashboard": "Voltar ao Dashboard",
+    "title": "Seus",
+    "titleHighlight": "Convidados",
+    "subtitle": "Voce trouxe {count} pessoas para a comunidade",
+    "membersCard": {
+      "title": "Membros",
+      "subtitle": "Pessoas tetraplegicas",
+      "pointsEarned": "Voce ganhou {points} pontos"
+    },
+    "supportersCard": {
+      "title": "Apoiadores",
+      "subtitle": "Pessoas engajadas",
+      "pointsEarned": "Voce ganhou {points} pontos"
+    },
+    "invitedMembers": "Membros Convidados",
+    "member": "Membro",
+    "joinedOn": "Entrou em",
+    "points": "{count} pontos",
+    "youEarned": "Voce ganhou",
+    "noMembersYet": "Nenhum membro convidado ainda",
+    "noMembersHint": "Compartilhe seu link de convite para comecar a ganhar pontos!",
+    "invitedSupporters": "Apoiadores Convidados",
+    "supporter": "Apoiador",
+    "noSupportersYet": "Nenhum apoiador convidado ainda",
+    "noSupportersHint": "Compartilhe seu link de apoiador para trazer mais pessoas engajadas!"
+  },
+  "wishesPage": {
+    "backToDashboard": "Voltar ao Dashboard",
+    "badge": "Meus Desejos",
+    "title": "Seus",
+    "titleHighlight": "Desejos",
+    "subtitle": "Compartilhe suas necessidades com a comunidade",
+    "locked": {
+      "title": "Complete seu perfil para desbloquear",
+      "description": "Para criar desejos e receber ajuda da comunidade, voce precisa completar seu perfil primeiro.",
+      "cta": "Completar Perfil"
+    },
+    "createNew": "Criar Novo Desejo"
+  },
+  "badgesPage": {
+    "title": "Suas",
+    "titleHighlight": "Conquistas",
+    "badgeCount": "Voce tem {earned} de {total} badges",
+    "yourPoints": "Seus Pontos",
+    "nextBadge": "Proxima Badge",
+    "maxPoints": "Max",
+    "earned": "Conquistada",
+    "available": "Disponivel",
+    "requires": "Requer: {points} pontos",
+    "backToDashboard": "Dashboard"
+  },
+  "leaderboardPage": {
+    "title": "da Comunidade",
+    "titleHighlight": "Ranking",
+    "subtitle": "Os membros mais engajados da SomosTetra",
+    "loginToCompete": "Entrar para Competir",
+    "yourPosition": "Sua Posicao",
+    "membersReferred": "{members} membros + {supporters} apoiadores indicados",
+    "points": "Pontos",
+    "pointsLabel": "pontos",
+    "you": "Voce",
+    "supporter": "Apoiador",
+    "top3": "Top 3",
+    "backToDashboard": "Dashboard"
+  },
+  "publicProfile": {
+    "notFound": "Perfil nao encontrado | SomosTetra",
+    "metaDescription": "Conheca {name} na comunidade SomosTetra",
+    "joinUs": "Fazer parte",
+    "memberSince": "Membro desde {date}",
+    "tetraplegic": "Pessoa com Tetraplegia",
+    "achievements": "Conquistas",
+    "wishes": "Desejos",
+    "ctaBadge": "Junte-se a nos",
+    "ctaTitle": "Quer fazer parte da comunidade SomosTetra?",
+    "ctaButton": "Cadastre-se gratuitamente",
+    "footer": "SomosTetra - Comunidade de pessoas com tetraplegia"
+  },
+  "votesPage": {
+    "title": "Ativas",
+    "titleHighlight": "Votacoes",
+    "subtitle": "Participe das decisoes da comunidade e ganhe pontos por cada voto",
+    "adminOnly": "Apenas administradores podem criar votacoes",
+    "adminOnlyDescription": "Para propor uma nova votacao, entre em contato com um administrador da comunidade.",
+    "createNew": "Criar Nova Votacao",
+    "youVoted": "Voce votou",
+    "active": "Ativa",
+    "votes": "{count} votos",
+    "viewResults": "Ver Resultados",
+    "voteNow": "Votar Agora",
+    "noVotes": "Nenhuma votacao ativa",
+    "noVotesDescription": "Seja o primeiro a criar uma votacao e engajar a comunidade!"
+  },
+  "supporterDashboard": {
+    "badge": "Apoiador",
+    "greeting": "Ola, {name}",
+    "subtitle": "Obrigado por apoiar a comunidade SomosTetra!",
+    "clinicalTrials": {
+      "title": "Estudos Clinicos",
+      "newBadge": "Novo!",
+      "description": "Explore estudos clinicos relacionados a comunidade tetraplegica. Ajude a divulgar oportunidades de pesquisa."
+    },
+    "stats": {
+      "members": "Membros",
+      "tetraplegic": "Tetraplegicos",
+      "inCommunity": "Na comunidade",
+      "supporters": "Apoiadores",
+      "likeYou": "Como voce",
+      "engaged": "Engajados na causa",
+      "votes": "Votacoes",
+      "activeLabel": "Ativas",
+      "youVoted": "Voce votou {count}x",
+      "participateNow": "Participe agora"
+    },
+    "progress": {
+      "title": "Amplifique Nosso Impacto",
+      "yourProgress": "Seu Progresso",
+      "recognized": "Suas contribuicoes sao reconhecidas!",
+      "voting": "Votacoes",
+      "votingDescription": "Cada voto em causas importantes",
+      "referrals": "Indicacoes",
+      "referralsDescription": "Cada apoiador que voce trouxer",
+      "yourPoints": "Seus Pontos",
+      "yourReferrals": "Suas Indicacoes",
+      "earnedFromReferrals": "Voce ganhou {points} pontos por suas indicacoes!"
+    },
+    "activeVotes": {
+      "title": "Votacoes Ativas",
+      "viewAll": "Ver Todas",
+      "active": "Ativa",
+      "votes": "{count} votos",
+      "voteNow": "Votar Agora"
+    },
+    "referrer": {
+      "title": "Convidado por",
+      "description": "Voce foi convidado por um membro da comunidade. Sua participacao ajuda a fortalecer nossa voz!"
+    },
+    "share": {
+      "title": "Compartilhe SEU Link Unico",
+      "earnPoints": "Ganhe +10 pontos por cada apoiador!",
+      "description": "Este e o seu link pessoal. Compartilhe com amigos e familiares que tambem querem apoiar a causa. Voce ganha pontos por cada pessoa que se cadastrar usando seu link!",
+      "whatsappMessage": "Ajude a comunidade SomosTetra! Torne-se um apoiador: {link}",
+      "emailSubject": "Apoie a SomosTetra",
+      "emailBody": "Ola! Convido voce a apoiar a comunidade SomosTetra e ajudar a fazer a diferenca: {link}"
+    },
+    "roleEssential": {
+      "title": "Seu Papel e Essencial",
+      "description": "Como apoiador, voce ajuda a aumentar nossos numeros e fortalecer nossa capacidade de pressionar autoridades por mudancas reais."
+    },
+    "trackProgress": {
+      "title": "Acompanhe o Progresso",
+      "description": "Fique por dentro das votacoes ativas e veja como a comunidade esta crescendo e conquistando seus objetivos."
+    },
+    "ranking": {
+      "title": "Ranking da Comunidade",
+      "subtitle": "Veja os membros mais engajados",
+      "description": "Descubra quem sao os membros mais ativos da comunidade, quantos pontos conquistaram e quais badges desbloquearam. Inspire-se com os lideres comunitarios!",
+      "viewFull": "Ver Ranking Completo"
+    }
+  },
+  "referralsStandalone": {
+    "title": "Suas",
+    "titleHighlight": "Indicacoes",
+    "subtitle": "Compartilhe o SomosTetra e ganhe pontos por cada pessoa que se juntar",
+    "membersReferred": "Membros Indicados",
+    "membersDescription": "Tetraplegicos que voce trouxe",
+    "supporters": "Apoiadores",
+    "supportersDescription": "Pessoas engajadas",
+    "pointsEarned": "Pontos Ganhos",
+    "pointsDescription": "Por todas indicacoes",
+    "yourLinks": "Seus Links de Convite",
+    "forTetraplegics": "Para Tetraplegicos",
+    "forTetraplegicsDescription": "Compartilhe este link com outros tetraplegicos e ganhe {points} pontos por cada cadastro",
+    "forSupporters": "Para Apoiadores",
+    "forSupportersDescription": "Compartilhe com pessoas que querem apoiar a causa e ganhe {points} pontos por cada apoiador",
+    "yourReferrals": "Suas Indicacoes",
+    "tetraplegicMembers": "Membros Tetraplegicos",
+    "joinedOn": "Entrou em",
+    "member": "Membro",
+    "totalPoints": "pts totais",
+    "supportedOn": "Apoiou em",
+    "noReferralsYet": "Nenhuma indicacao ainda",
+    "noReferralsDescription": "Compartilhe seus links de convite e seja o primeiro a trazer novos membros e apoiadores!",
+    "backToDashboard": "Dashboard",
+    "shareMemberWhatsapp": "Junte-se a comunidade SomosTetra!",
+    "shareMemberEmailSubject": "Junte-se a SomosTetra",
+    "shareMemberEmailBody": "Ola! Convido voce a fazer parte da comunidade SomosTetra:",
+    "shareSupporterWhatsapp": "Apoie a causa SomosTetra!",
+    "shareSupporterEmailSubject": "Apoie a SomosTetra",
+    "shareSupporterEmailBody": "Ola! Convido voce a apoiar a causa SomosTetra:"
+  },
+  "voteDetail": {
+    "backToVotes": "Todas as Votacoes",
+    "youVoted": "Voce votou",
+    "active": "Ativa",
+    "votes": "{count} votos",
+    "status": "Status",
+    "statusActive": "Ativa",
+    "statusClosed": "Encerrada",
+    "thankYou": "Obrigado por votar!",
+    "thankYouDescription": "Seu voto foi registrado com sucesso. Voce ganhou {points} pontos por participar desta votacao.",
+    "participate": "Participe desta votacao",
+    "participateDescription": "Ao votar, voce ganha {points} pontos e ajuda a comunidade a tomar decisoes importantes."
+  },
+  "createVote": {
+    "back": "Voltar",
+    "title": "Criar",
+    "titleHighlight": "Votacao",
+    "subtitle": "Proponha uma pauta importante para a comunidade decidir"
+  },
+  "privacyPage": {
+    "back": "Voltar",
+    "title": "POLITICA DE",
+    "titleHighlight": "PRIVACIDADE",
+    "subtitle": "Sua privacidade e nossa prioridade. Entenda como coletamos, usamos e protegemos seus dados.",
+    "lastUpdate": "Ultima atualizacao: 12 de outubro de 2025",
+    "introduction": {
+      "title": "Introducao",
+      "text": "A plataforma SomosTetra esta comprometida em proteger sua privacidade e seus dados pessoais. Esta Politica de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informacoes, em conformidade com a Lei Geral de Protecao de Dados (LGPD - Lei n 13.709/2018)."
+    },
+    "dataCollection": {
+      "title": "Dados Coletados",
+      "registration": {
+        "title": "Informacoes de Cadastro",
+        "items": ["Nome de usuario", "Endereco de e-mail", "Senha (criptografada)", "Codigo de referencia (quando aplicavel)"]
+      },
+      "activity": {
+        "title": "Dados de Atividade",
+        "items": ["Participacao em votacoes", "Convites e referencias realizadas", "Pontos e badges conquistados", "Historico de atividades na plataforma"]
+      }
+    },
+    "dataUsage": {
+      "title": "Como Usamos Seus Dados",
+      "intro": "Utilizamos seus dados pessoais para:",
+      "items": ["Autenticar e gerenciar sua conta", "Processar sua participacao em votacoes e peticoes", "Calcular pontos e atribuir badges de gamificacao", "Gerenciar o sistema de referencias e convites", "Enviar notificacoes importantes sobre a plataforma", "Melhorar nossos servicos e experiencia do usuario", "Cumprir obrigacoes legais e regulatorias"]
+    },
+    "dataStorage": {
+      "title": "Armazenamento e Seguranca",
+      "intro": "Seus dados sao armazenados de forma segura utilizando a infraestrutura Supabase, com as seguintes medidas de seguranca:",
+      "items": ["Criptografia de dados em transito e em repouso", "Senhas protegidas com hash bcrypt", "Politicas de seguranca em nivel de linha (RLS)", "Backups regulares e redundancia de dados", "Acesso restrito apenas a pessoal autorizado", "Monitoramento continuo de seguranca"]
+    },
+    "userRights": {
+      "title": "Seus Direitos",
+      "intro": "De acordo com a LGPD, voce tem os seguintes direitos:",
+      "access": "Solicitar acesso aos seus dados pessoais",
+      "correction": "Corrigir dados incompletos ou desatualizados",
+      "deletion": "Solicitar a exclusao de seus dados",
+      "portability": "Receber seus dados em formato estruturado",
+      "revocation": "Revogar consentimento a qualquer momento",
+      "opposition": "Opor-se ao tratamento de seus dados"
+    },
+    "dataSharing": {
+      "title": "Compartilhamento de Dados",
+      "intro": "Nao vendemos, alugamos ou compartilhamos seus dados pessoais com terceiros para fins comerciais. Seus dados podem ser compartilhados apenas nas seguintes situacoes:",
+      "items": ["Com provedores de servicos essenciais (Supabase, Vercel)", "Quando exigido por lei ou ordem judicial", "Para proteger direitos, propriedade ou seguranca da plataforma", "Com seu consentimento explicito"]
+    },
+    "cookies": {
+      "title": "Cookies e Tecnologias Similares",
+      "text": "Utilizamos cookies essenciais para autenticacao e funcionamento da plataforma. Estes cookies sao necessarios para manter sua sessao ativa e garantir a seguranca da sua conta."
+    },
+    "minors": {
+      "title": "Menores de Idade",
+      "text": "Nossa plataforma e destinada a maiores de 18 anos. Nao coletamos intencionalmente dados de menores de idade. Se voce acredita que coletamos dados de um menor, entre em contato conosco imediatamente."
+    },
+    "transparency": {
+      "title": "Transparencia e Codigo Aberto",
+      "nonprofit": {
+        "title": "Organizacao Sem Fins Lucrativos",
+        "text": "A SomosTetra e uma ONG (Organizacao Nao Governamental) sem fins lucrativos. Nunca visamos lucro e toda nossa operacao e voltada exclusivamente para o beneficio da comunidade de pessoas tetraplegicas e seus apoiadores."
+      },
+      "openSource": {
+        "title": "Codigo 100% Aberto",
+        "text": "Todo o codigo-fonte da plataforma SomosTetra e totalmente aberto e publico. Qualquer pessoa pode auditar, contribuir e verificar como seus dados sao tratados.",
+        "link": "Ver codigo no GitHub"
+      }
+    },
+    "changes": {
+      "title": "Alteracoes na Politica",
+      "text": "Podemos atualizar esta Politica de Privacidade periodicamente. Notificaremos voce sobre mudancas significativas por e-mail ou atraves de aviso na plataforma. A data da ultima atualizacao sera sempre indicada no topo desta pagina."
+    },
+    "contact": {
+      "title": "Contato",
+      "intro": "Para exercer seus direitos ou esclarecer duvidas sobre esta Politica de Privacidade, entre em contato conosco:",
+      "email": "E-mail",
+      "platform": "Plataforma (dominios oficiais)",
+      "mainDomain": "principal",
+      "redirectNote": "Dominios alternativos (soutetra.com, soutetra.org) redirecionam automaticamente para somostetra.org",
+      "responseTime": "Responderemos sua solicitacao em ate 15 dias uteis, conforme estabelecido pela LGPD."
+    },
+    "cta": {
+      "title": "Duvidas?",
+      "text": "Estamos aqui para ajudar. Entre em contato conosco se tiver qualquer duvida sobre como tratamos seus dados.",
+      "button": "Voltar ao Inicio"
+    }
+  },
+  "voteButton": {
+    "authError": "Erro de autenticacao. Por favor, faca login novamente.",
+    "notLoggedIn": "Voce precisa estar logado para votar",
+    "checkVoteError": "Erro ao verificar voto existente",
+    "alreadyVoted": "Voce ja votou nesta pauta",
+    "voteNotFound": "Votacao nao encontrada",
+    "permissionDenied": "Permissao negada. Verifique se voce esta logado corretamente.",
+    "voteError": "Erro ao votar",
+    "voting": "Votando...",
+    "confirmVote": "Confirmar Voto"
+  },
+  "createVoteForm": {
+    "successTitle": "Votacao criada com sucesso!",
+    "successDescription": "Sua votacao foi publicada e esta disponivel para a comunidade.",
+    "errorTitle": "Erro ao criar votacao",
+    "errorDescription": "Ocorreu um erro inesperado. Tente novamente.",
+    "titleLabel": "Titulo da Votacao",
+    "titlePlaceholder": "Ex: Devemos criar um programa de mentoria?",
+    "descriptionLabel": "Descricao",
+    "descriptionPlaceholder": "Explique a proposta em detalhes...",
+    "categoryLabel": "Categoria",
+    "categoryPlaceholder": "Selecione uma categoria",
+    "categories": {
+      "accessibility": "Acessibilidade",
+      "technology": "Tecnologia",
+      "rights": "Direitos",
+      "health": "Saude",
+      "community": "Comunidade",
+      "other": "Outro"
+    },
+    "creating": "Criando...",
+    "createVote": "Criar Votacao"
+  },
+  "badgeProgress": {
+    "maxLevelTitle": "Nivel Maximo Alcancado!",
+    "maxLevelDescription": "Voce conquistou todas as badges disponiveis",
+    "nextBadge": "Proximo: {icon} {name}",
+    "pointsRemaining": "Faltam {points} pontos para desbloquear"
+  },
+  "helpWish": {
+    "buttonText": "Quero Ajudar",
+    "dialogTitle": "Quero Ajudar",
+    "dialogDescription": "Preencha seus dados para ajudar {memberName} a realizar este desejo.",
+    "successTitle": "Obrigado!",
+    "successDescription": "Sua oferta de ajuda foi registrada. Entraremos em contato em breve para coordenar a doacao.",
+    "close": "Fechar",
+    "nameLabel": "Seu Nome *",
+    "namePlaceholder": "Como podemos te chamar?",
+    "emailLabel": "Seu Email *",
+    "emailPlaceholder": "seu@email.com",
+    "phoneLabel": "Telefone / WhatsApp",
+    "phonePlaceholder": "(11) 99999-9999",
+    "messageLabel": "Mensagem",
+    "messagePlaceholder": "Conte como voce pode ajudar...",
+    "cancel": "Cancelar",
+    "submitting": "Enviando...",
+    "submit": "Enviar",
+    "errorDefault": "Erro ao enviar. Tente novamente."
+  },
+  "profilePicture": {
+    "invalidFormat": "Formato invalido. Use JPG, JPEG ou PNG.",
+    "fileTooLarge": "Arquivo muito grande. Maximo 2MB.",
+    "uploadError": "Erro ao enviar imagem",
+    "removeError": "Erro ao remover imagem",
+    "alt": "Foto de perfil",
+    "removeTitle": "Remover foto",
+    "uploading": "Enviando...",
+    "changePhoto": "Trocar foto",
+    "uploadPhoto": "Enviar foto",
+    "helpText": "JPG, JPEG ou PNG. Maximo 2MB."
+  },
+  "validation": {
+    "notAuthenticated": "Nao autenticado",
+    "usernameRequired": "Nome de usuario e obrigatorio",
+    "usernameFormat": "Use apenas letras minusculas, numeros e underscore",
+    "usernameMaxLength": "Maximo 100 caracteres",
+    "usernameMinLength": "Minimo 3 caracteres",
+    "usernameReserved": "Este nome esta reservado",
+    "usernameTaken": "Este nome de usuario ja esta em uso",
+    "invalidCep": "CEP invalido. Use o formato 00000-000",
+    "profileSaveError": "Erro ao salvar perfil",
+    "profileCompleted": "Completou o perfil"
+  },
+  "wishValidation": {
+    "notAuthenticated": "Nao autenticado",
+    "completeProfile": "Complete seu perfil para criar desejos",
+    "describeNeed": "Descreva o que voce precisa",
+    "maxCharacters": "Maximo 1000 caracteres",
+    "activeWishExists": "Voce ja possui um desejo ativo. Aguarde a conclusao ou rejeicao para criar outro.",
+    "duplicateWish": "Voce ja possui um desejo ativo ou este conteudo ja foi enviado.",
+    "createError": "Erro ao criar desejo",
+    "updateError": "Erro ao atualizar desejo",
+    "deleteError": "Erro ao deletar desejo",
+    "fetchError": "Erro ao buscar desejos"
+  },
+  "clinicalTrialsValidation": {
+    "apiError": "Erro ao buscar estudos clinicos. Verifique se a API esta rodando.",
+    "notFound": "Estudo nao encontrado: {nctId}",
+    "detailsError": "Erro ao buscar detalhes do estudo.",
+    "notAuthenticated": "Usuario nao autenticado",
+    "saveSearchError": "Erro ao salvar busca"
+  },
+  "wishHelpValidation": {
+    "nameRequired": "Nome e obrigatorio",
+    "invalidEmail": "Email invalido",
+    "wishNotFound": "Desejo nao encontrado",
+    "wishUnavailable": "Desejo nao encontrado ou nao esta mais disponivel",
+    "submitError": "Erro ao enviar. Tente novamente."
+  },
+  "wishStatus": {
+    "pending": "Pendente",
+    "approved": "Aprovado",
+    "fulfilled": "Realizado",
+    "rejected": "Rejeitado"
+  },
+  "wishList": {
+    "noWishes": "Nenhum desejo ainda",
+    "noWishesDescription": "Compartilhe o que voce precisa e deixe a comunidade ajudar.",
+    "yourWishes": "Seus Desejos",
+    "editPlaceholder": "Descreva o que voce precisa...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "fulfilledOn": "Realizado em {date}",
+    "fulfilledBy": "Por: {name}",
+    "createdOn": "Criado em {date}",
+    "deleteTitle": "Excluir Desejo",
+    "deleteDescription": "Tem certeza que deseja excluir este desejo? Esta acao nao pode ser desfeita.",
+    "delete": "Excluir",
+    "errorUpdate": "Erro ao atualizar",
+    "errorDelete": "Erro ao excluir"
+  },
+  "createWish": {
+    "label": "O que voce precisa?",
+    "placeholder": "Descreva o que voce precisa. Seja especifico para que a comunidade possa ajudar melhor. Ex: 'Preciso de uma cadeira de rodas motorizada modelo X' ou 'Preciso de cateteres intermitentes tamanho 14'",
+    "characters": "{count}/1000 caracteres",
+    "successMessage": "Desejo criado com sucesso! Aguarde a aprovacao de um administrador.",
+    "submitting": "Enviando...",
+    "submit": "Enviar Desejo",
+    "errorDefault": "Erro ao criar desejo",
+    "activeWishWarning": "Voce ja possui um desejo ativo. Aguarde ele ser realizado ou rejeitado para criar outro."
+  },
+  "trialDetail": {
+    "summary": "Resumo",
+    "detailedDescription": "Descricao Detalhada",
+    "conditions": "Condicoes",
+    "sponsor": "Patrocinador",
+    "eligibilityCriteria": "Criterios de Elegibilidade",
+    "minimumAge": "Idade Minima",
+    "maximumAge": "Idade Maxima",
+    "gender": "Genero",
+    "all": "Todos",
+    "notSpecified": "Nao especificado",
+    "detailedCriteria": "Criterios Detalhados",
+    "studyPeriod": "Periodo do Estudo",
+    "startDate": "Inicio",
+    "expectedCompletion": "Conclusao Prevista",
+    "notProvided": "Nao informado",
+    "brazilLocations": "Locais no Brasil ({count})",
+    "otherLocations": "Outros Locais ({count})",
+    "contacts": "Contatos",
+    "close": "Fechar",
+    "viewOnClinicalTrials": "Ver no ClinicalTrials.gov"
+  },
+  "trialStatus": {
+    "RECRUITING": "Recrutando",
+    "NOT_YET_RECRUITING": "Em breve",
+    "ACTIVE_NOT_RECRUITING": "Ativo (nao recrutando)",
+    "COMPLETED": "Concluido",
+    "TERMINATED": "Encerrado",
+    "WITHDRAWN": "Retirado",
+    "SUSPENDED": "Suspenso"
+  }
+}

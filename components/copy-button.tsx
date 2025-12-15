@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Copy, Check } from "lucide-react"
 import { useState } from "react"
 import { trackReferralLinkCopied } from "@/lib/analytics"
+import { useTranslations } from "next-intl"
 
 export function CopyButton({ text, linkType }: { text: string; linkType?: "member" | "supporter" }) {
+  const t = useTranslations("common")
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -27,12 +29,12 @@ export function CopyButton({ text, linkType }: { text: string; linkType?: "membe
       {copied ? (
         <>
           <Check className="w-5 h-5 mr-2" />
-          Copiado!
+          {t("copied")}
         </>
       ) : (
         <>
           <Copy className="w-5 h-5 mr-2" />
-          Copiar
+          {t("copy")}
         </>
       )}
     </Button>

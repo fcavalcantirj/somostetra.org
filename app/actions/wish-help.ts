@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { getTranslations } from "next-intl/server"
 
 interface SubmitWishHelpData {
   wishId: string
@@ -15,17 +16,19 @@ export async function submitWishHelp(data: SubmitWishHelpData): Promise<{
   success: boolean
   error?: string
 }> {
+  const t = await getTranslations("wishHelpValidation")
+
   // Validate inputs
   if (!data.name || data.name.trim().length < 2) {
-    return { success: false, error: "Nome é obrigatório" }
+    return { success: false, error: t("nameRequired") }
   }
 
   if (!data.email || !data.email.includes("@")) {
-    return { success: false, error: "Email inválido" }
+    return { success: false, error: t("invalidEmail") }
   }
 
   if (!data.wishId) {
-    return { success: false, error: "Desejo não encontrado" }
+    return { success: false, error: t("wishNotFound") }
   }
 
   const supabase = await createClient()
@@ -39,7 +42,7 @@ export async function submitWishHelp(data: SubmitWishHelpData): Promise<{
     .single()
 
   if (wishError || !wish) {
-    return { success: false, error: "Desejo não encontrado ou não está mais disponível" }
+    return { success: false, error: t("wishUnavailable") }
   }
 
   // Insert help request
@@ -54,7 +57,7 @@ export async function submitWishHelp(data: SubmitWishHelpData): Promise<{
 
   if (error) {
     console.error("Error submitting wish help request:", error)
-    return { success: false, error: "Erro ao enviar. Tente novamente." }
+    return { success: false, error: t("submitError") }
   }
 
   revalidatePath("/admin/wish-help-requests")

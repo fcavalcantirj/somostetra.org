@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CheckCircle2 } from "lucide-react"
 import { trackVoteSubmission, trackVoteError } from "@/lib/analytics"
+import { useTranslations } from "next-intl"
 
 export function VoteButton({
   voteId,
@@ -18,6 +19,7 @@ export function VoteButton({
   voteTitle?: string
   userType: "member" | "supporter"
 }) {
+  const t = useTranslations("voteButton")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -37,12 +39,12 @@ export function VoteButton({
 
       if (authError) {
         console.error("[v0] Auth error:", authError)
-        throw new Error("Erro de autenticação. Por favor, faça login novamente.")
+        throw new Error(t("authError"))
       }
 
       if (!user) {
         console.error("[v0] No user found in session")
-        throw new Error("Você precisa estar logado para votar")
+        throw new Error(t("notLoggedIn"))
       }
 
       console.log("[v0] User authenticated:", user.id)
@@ -56,12 +58,12 @@ export function VoteButton({
 
       if (checkError) {
         console.error("[v0] Error checking existing vote:", checkError)
-        throw new Error("Erro ao verificar voto existente")
+        throw new Error(t("checkVoteError"))
       }
 
       if (existingVote) {
         console.log("[v0] User has already voted")
-        throw new Error("Você já votou nesta pauta")
+        throw new Error(t("alreadyVoted"))
       }
 
       console.log("[v0] Inserting vote...")
@@ -75,16 +77,16 @@ export function VoteButton({
         console.error("[v0] Insert error:", insertError)
 
         if (insertError.code === "23505") {
-          throw new Error("Você já votou nesta pauta")
+          throw new Error(t("alreadyVoted"))
         }
         if (insertError.code === "23503") {
-          throw new Error("Votação não encontrada")
+          throw new Error(t("voteNotFound"))
         }
         if (insertError.message.includes("policy")) {
-          throw new Error("Permissão negada. Verifique se você está logado corretamente.")
+          throw new Error(t("permissionDenied"))
         }
 
-        throw new Error(`Erro ao votar: ${insertError.message}`)
+        throw new Error(`${t("voteError")}: ${insertError.message}`)
       }
 
       console.log("[v0] Vote successful!")
@@ -92,7 +94,7 @@ export function VoteButton({
 
       router.refresh()
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao votar"
+      const errorMessage = error instanceof Error ? error.message : t("voteError")
       console.error("[v0] Vote error:", errorMessage)
       setError(errorMessage)
       trackVoteError(voteId, voteTitle || "Unknown Vote", userType, errorMessage)
@@ -112,11 +114,11 @@ export function VoteButton({
         disabled={isLoading}
       >
         {isLoading ? (
-          "Votando..."
+          t("voting")
         ) : (
           <>
             <CheckCircle2 className="w-6 h-6 mr-2" />
-            Confirmar Voto
+            {t("confirmVote")}
           </>
         )}
       </Button>
