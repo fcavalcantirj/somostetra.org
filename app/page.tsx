@@ -48,7 +48,7 @@ export default function LandingPage() {
   const [wishes, setWishes] = useState<{
     id: string
     content: string
-    profiles: { display_name: string; username: string | null }[] | null
+    profiles: { display_name: string; username: string | null; profile_public: boolean }[] | null
     wish_categories: { icon: string }[] | null
   }[]>([])
 
@@ -86,7 +86,7 @@ export default function LandingPage() {
         .select(`
           id,
           content,
-          profiles!wishes_user_id_fkey(display_name, username),
+          profiles!wishes_user_id_fkey(display_name, username, profile_public),
           wish_categories(icon)
         `)
         .eq("status", "approved")
@@ -718,9 +718,18 @@ export default function LandingPage() {
                       <span className="text-xl">{wish.wish_categories?.[0]?.icon || "🙏"}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-muted-foreground">
-                        {wish.profiles?.[0]?.display_name || "Membro"}
-                      </p>
+                      {wish.profiles?.[0]?.profile_public && wish.profiles?.[0]?.username ? (
+                        <Link
+                          href={`/p/${wish.profiles[0].username}`}
+                          className="font-semibold text-sm text-primary underline decoration-primary/40 hover:decoration-primary transition-colors"
+                        >
+                          {wish.profiles[0].display_name || "Membro"}
+                        </Link>
+                      ) : (
+                        <p className="font-semibold text-sm text-muted-foreground">
+                          {wish.profiles?.[0]?.display_name || "Membro"}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <p className="text-lg leading-relaxed line-clamp-3">{wish.content}</p>
